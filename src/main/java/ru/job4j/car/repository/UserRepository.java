@@ -106,72 +106,30 @@ public class UserRepository {
         return userList;
     }
 
-    /**
-     * Найти пользователя по ID
-     * @return пользователь.
-     */
-    public Optional<User> findById(int userId) {
-        Session session = null;
-        Optional<User> userOptional = Optional.empty();
-        try {
-            session = sf.openSession();
-            Query<User> query = session.createQuery("from User where id = :fId", User.class);
-            query.setParameter("fId", userId);
-            userOptional = Optional.ofNullable(query.uniqueResult());
-            session.close();
-        } catch (Exception e) {
-            if (session != null && session.isOpen()) {
-                session.getTransaction().rollback();
-                session.close();
-            }
-        }
-        return userOptional;
-    }
-
-    /**
-     * Список пользователей по login LIKE %key%
-     * @param key key
-     * @return список пользователей.
-     */
-    public List<User> findByLikeLogin(String key) {
-        Session session = null;
-        List<User> userList = new ArrayList<>();
-        try {
-            session = sf.openSession();
-            Query<User> query = session.createQuery("from User where login like :fKey", User.class);
-            query.setParameter("fKey", "%" + key + "%");
-            userList = query.list();
-            session.close();
-        } catch (Exception e) {
-            if (session != null && session.isOpen()) {
-                session.getTransaction().rollback();
-                session.close();
-            }
-        }
-        return userList;
-    }
-
-    /**
-     * Найти пользователя по login.
-     * @param login login.
-     * @return Optional or user.
-     */
-    public Optional<User> findByLogin(String login) {
-        Session session = null;
-        Optional<User> userOptional = Optional.empty();
-        try {
-            session = sf.openSession();
-            Query<User> query = session.createQuery("from User where login = :fLogin", User.class);
-            query.setParameter("fLogin", login);
-            userOptional = Optional.ofNullable(query.uniqueResult());
-            session.close();
-        } catch (Exception e) {
-            if (session != null && session.isOpen()) {
-                session.getTransaction().rollback();
-                session.close();
-            }
-        }
-        return userOptional;
-    }
-
+//    /**
+//     * Найти пользователя по ID
+//     * @return пользователь.
+//     */
+//    public Optional<User> findById(int userId) {
+//        return Optional.empty();
+//    }
+//
+//    /**
+//     * Список пользователей по login LIKE %key%
+//     * @param key key
+//     * @return список пользователей.
+//     */
+//    public List<User> findByLikeLogin(String key) {
+//        return List.of();
+//    }
+//
+//    /**
+//     * Найти пользователя по login.
+//     * @param login login.
+//     * @return Optional or user.
+//     */
+//    public Optional<User> findByLogin(String login) {
+//        return Optional.empty();
+//    }
+//
 }
