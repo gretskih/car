@@ -95,8 +95,10 @@ public class UserRepository {
         Session session = sf.openSession();
         List<User> userList;
         try {
+            session.beginTransaction();
             Query<User> query = session.createQuery("from User", User.class);
             userList = query.list();
+            session.getTransaction().commit();
         } catch (Exception e) {
             if (session.getTransaction() != null) {
                 session.getTransaction().rollback();
@@ -116,9 +118,11 @@ public class UserRepository {
         Session session = sf.openSession();
         Optional<User> userOptional = Optional.empty();
         try {
+            session.beginTransaction();
             Query<User> query = session.createQuery("from User where id = :fId", User.class);
             query.setParameter("fId", userId);
             userOptional = query.uniqueResultOptional();
+            session.getTransaction().commit();
         } catch (Exception e) {
             if (session.getTransaction() != null) {
                 session.getTransaction().rollback();
@@ -139,9 +143,11 @@ public class UserRepository {
         Session session = sf.openSession();
         List<User> userList;
         try {
+            session.beginTransaction();
             Query<User> query = session.createQuery("from User where login like :fKey", User.class);
             query.setParameter("fKey", "%" + key + "%");
             userList = query.list();
+            session.getTransaction().commit();
         } catch (Exception e) {
             if (session.getTransaction() != null) {
                 session.getTransaction().rollback();
@@ -162,9 +168,11 @@ public class UserRepository {
         Session session = sf.openSession();
         Optional<User> userOptional = Optional.empty();
         try {
+            session.beginTransaction();
             Query<User> query = session.createQuery("from User where login = :fLogin", User.class);
             query.setParameter("fLogin", login);
             userOptional = query.uniqueResultOptional();
+            session.getTransaction().commit();
         } catch (Exception e) {
             if (session.getTransaction() != null) {
                 session.getTransaction().rollback();
