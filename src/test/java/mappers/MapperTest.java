@@ -10,6 +10,7 @@ import ru.job4j.car.model.Post;
 import ru.job4j.car.model.User;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
@@ -18,7 +19,7 @@ public class MapperTest {
     @Test
     public void mapperFromPostAndFromPostDto() {
         PostMapper postMapper = Mappers.getMapper(PostMapper.class);
-        Post postModel = new Post(1, "descr", LocalDateTime.now(), 2);
+        Post postModel = new Post(1, "descr", LocalDateTime.now(), 2, new ArrayList<>());
         PostDto postDto = new PostDto(3, "descrdto", LocalDateTime.now(), 5);
 
         Post modelFromPostDto = postMapper.getModelFromDto(postDto);

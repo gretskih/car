@@ -12,7 +12,8 @@ public class UserUsage {
                 .configure().build();
         try (SessionFactory sf = new MetadataSources(registry)
                 .buildMetadata().buildSessionFactory()) {
-            var userRepository = new UserRepository(sf);
+            var crudRepository = new CrudRepository(sf);
+            UserRepository userRepository = new UserRepository(crudRepository);
             var user = new User();
             user.setLogin("admin");
             user.setPassword("admin");
