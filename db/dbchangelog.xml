@@ -9,4 +9,5 @@
     <include file="scripts/002_ddl_create_auto_posts_table.sql" relativeToChangelogFile="true"/>
     <include file="scripts/update_004.sql" relativeToChangelogFile="true"/>
     <include file="scripts/update_005.sql" relativeToChangelogFile="true"/>
+    <include file="scripts/006_ddl_create_participates_table.sql" relativeToChangelogFile="true"/>
 </databaseChangeLog>

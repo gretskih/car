@@ -19,7 +19,7 @@ public class MapperTest {
     @Test
     public void mapperFromPostAndFromPostDto() {
         PostMapper postMapper = Mappers.getMapper(PostMapper.class);
-        Post postModel = new Post(1, "descr", LocalDateTime.now(), 2, new ArrayList<>());
+        Post postModel = new Post(1, "descr", LocalDateTime.now(), 2, new ArrayList<>(), new ArrayList<>());
         PostDto postDto = new PostDto(3, "descrdto", LocalDateTime.now(), 5);
 
         Post modelFromPostDto = postMapper.getModelFromDto(postDto);
