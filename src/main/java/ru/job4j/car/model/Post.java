@@ -22,14 +22,23 @@ public class Post {
     private String description;
     private LocalDateTime created;
 
+    /**
+     * Владелец поста
+     */
     @ManyToOne
     @JoinColumn(name = "auto_user_id")
-    private int userId;
+    private User user;
 
+    /**
+     * Изменение цены
+     */
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "auto_post_id")
     private List<PriceHistory> priceHistories = new ArrayList<>();
 
+    /**
+     * Подписчики
+     */
     @ManyToMany
     @JoinTable(
             name = "participates",
@@ -37,4 +46,11 @@ public class Post {
             inverseJoinColumns =  @JoinColumn(name = "user_id")
     )
     private List<User> participates = new ArrayList<>();
+
+    /**
+     * Автомобиль в продаже
+     */
+    @OneToOne
+    @JoinColumn(name = "car_id")
+    private Car car;
 }
