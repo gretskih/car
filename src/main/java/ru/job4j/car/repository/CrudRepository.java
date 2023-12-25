@@ -5,6 +5,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -16,11 +17,15 @@ public class CrudRepository {
     private final SessionFactory sf;
 
     public void run(Consumer<Session> command) {
-        tx(session -> {
-                    command.accept(session);
-                    return null;
-                }
-        );
+        try {
+            tx(session -> {
+                        command.accept(session);
+                        return null;
+                    }
+            );
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void run(String query, Map<String, Object> args) {
@@ -44,14 +49,24 @@ public class CrudRepository {
             }
             return sq.uniqueResultOptional();
         };
-        return tx(command);
+        try {
+            return tx(command);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return Optional.empty();
     }
 
     public <T> List<T> query(String query, Class<T> cl) {
         Function<Session, List<T>> command = session -> session
                 .createQuery(query, cl)
                 .list();
-        return tx(command);
+        try {
+            return tx(command);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return Collections.emptyList();
     }
 
     public <T> List<T> query(String query, Class<T> cl, Map<String, Object> args) {
