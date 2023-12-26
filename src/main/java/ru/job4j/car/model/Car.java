@@ -20,8 +20,8 @@ public class Car {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
     private int id;
-
     private String name;
+    private String brand;
 
     /**
      * Модель двигателя
@@ -31,7 +31,7 @@ public class Car {
     private Engine engine;
 
     /**
-     * Текцщий владелец автомобиля
+     * Текущий владелец автомобиля
      */
     @OneToOne
     @JoinColumn(name = "owner_id")
@@ -47,4 +47,11 @@ public class Car {
             inverseJoinColumns = {
                 @JoinColumn(name = "owner_id", nullable = false, updatable = false)})
     private Set<Owner> owners = new HashSet<>();
+
+    /**
+     * Список фото автомобиля
+     */
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "photo_id")
+    private Set<Photo> photos = new HashSet<>();
 }
