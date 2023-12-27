@@ -31,7 +31,11 @@ public class EngineRepositoryTest {
         Session session = sf.openSession();
         try {
             session.beginTransaction();
+            session.createQuery("DELETE FROM Car").executeUpdate();
+            session.createQuery("DELETE FROM Owner").executeUpdate();
             session.createQuery("DELETE FROM Engine").executeUpdate();
+            session.createQuery("DELETE FROM Photo").executeUpdate();
+            session.createQuery("DELETE FROM PeriodHistory").executeUpdate();
             session.getTransaction().commit();
         } catch (Exception e) {
             session.getTransaction().rollback();

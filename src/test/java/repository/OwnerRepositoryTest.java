@@ -33,7 +33,10 @@ class OwnerRepositoryTest {
         Session session = sf.openSession();
         try {
             session.beginTransaction();
+            session.createQuery("DELETE FROM Car").executeUpdate();
             session.createQuery("DELETE FROM Owner").executeUpdate();
+            session.createQuery("DELETE FROM Engine").executeUpdate();
+            session.createQuery("DELETE FROM Photo").executeUpdate();
             session.createQuery("DELETE FROM PeriodHistory").executeUpdate();
             session.getTransaction().commit();
         } catch (Exception e) {
@@ -49,7 +52,6 @@ class OwnerRepositoryTest {
     @Test
     public void whenUpdateOwnerThenGetUpdatedOwner() {
         PeriodHistory periodHistory = new PeriodHistory();
-        crudRepository.run(session -> session.persist(periodHistory));
 
         Owner expectedOwner = new Owner();
         expectedOwner.setName("owner");
@@ -72,7 +74,6 @@ class OwnerRepositoryTest {
     @Test
     public void whenDeleteOwnerThenGetEmptyList() {
         PeriodHistory periodHistory = new PeriodHistory();
-        crudRepository.run(session -> session.persist(periodHistory));
 
         Owner expectedOwner = new Owner();
         expectedOwner.setName("owner");
@@ -91,7 +92,6 @@ class OwnerRepositoryTest {
     @Test
     public void whenCreateNewOwnerThenGetAllOwners() {
         PeriodHistory periodHistory1 = new PeriodHistory();
-        crudRepository.run(session -> session.persist(periodHistory1));
 
         Owner expectedOwner1 = new Owner();
         expectedOwner1.setName("owner1");
@@ -99,7 +99,6 @@ class OwnerRepositoryTest {
         ownerRepository.create(expectedOwner1);
 
         PeriodHistory periodHistory2 = new PeriodHistory();
-        crudRepository.run(session -> session.persist(periodHistory2));
 
         Owner expectedOwner2 = new Owner();
         expectedOwner2.setName("owner2");
@@ -116,7 +115,6 @@ class OwnerRepositoryTest {
     @Test
     public void whenCreateNewOwnerThenGetOwnerById() {
         PeriodHistory periodHistory = new PeriodHistory();
-        crudRepository.run(session -> session.persist(periodHistory));
 
         Owner expectedOwner = new Owner();
         expectedOwner.setName("owner");
@@ -136,7 +134,6 @@ class OwnerRepositoryTest {
     @Test
     public void whenCreateNewOwnerThenGetByLikeName() {
         PeriodHistory periodHistory1 = new PeriodHistory();
-        crudRepository.run(session -> session.persist(periodHistory1));
 
         Owner expectedOwner1 = new Owner();
         expectedOwner1.setName("owner1");
@@ -144,7 +141,6 @@ class OwnerRepositoryTest {
         ownerRepository.create(expectedOwner1);
 
         PeriodHistory periodHistory2 = new PeriodHistory();
-        crudRepository.run(session -> session.persist(periodHistory2));
 
         Owner expectedOwner2 = new Owner();
         expectedOwner2.setName("test");
@@ -161,7 +157,6 @@ class OwnerRepositoryTest {
     @Test
     public void whenCreateNewOwnerThenGetByName() {
         PeriodHistory periodHistory = new PeriodHistory();
-        crudRepository.run(session -> session.persist(periodHistory));
 
         Owner expectedOwner = new Owner();
         expectedOwner.setName("owner");

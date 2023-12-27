@@ -26,14 +26,14 @@ public class Car {
     /**
      * Модель двигателя
      */
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "engine_id", foreignKey = @ForeignKey(name = "ENGINE_ID_FK"))
     private Engine engine;
 
     /**
      * Текущий владелец автомобиля
      */
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "owner_id")
     private Owner owner;
 
@@ -52,6 +52,6 @@ public class Car {
      * Список фото автомобиля
      */
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "photo_id")
+    @JoinColumn(name = "auto_id")
     private Set<Photo> photos = new HashSet<>();
 }

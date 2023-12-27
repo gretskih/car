@@ -4,4 +4,6 @@ CREATE TABLE photo
     name     varchar not null,
     path     varchar not null,
     auto_id int REFERENCES car(id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
 );
