@@ -3,6 +3,7 @@ package ru.job4j.car.repository;
 import lombok.AllArgsConstructor;
 import ru.job4j.car.model.Post;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 @AllArgsConstructor
@@ -14,13 +15,14 @@ public class PostRepository {
      * - показать объявления за последний день;
     */
     public List<Post> getPostsLastDay() {
+        LocalDateTime localDateTimeNow = LocalDateTime.now();
         return crudRepository.query(
           "FROM Post post "
                   + "LEFT JOIN FETCH post.priceHistories "
                   + "LEFT JOIN FETCH post.participates "
                   + "LEFT JOIN FETCH post.car.photos "
-                  + "WHERE post.created > current_date()",
-                Post.class
+                  + "WHERE post.created > :fLocalDateTimeNow",
+                Post.class, Map.of("fLocalDateTimeNow", localDateTimeNow.minusDays(1))
         );
     }
 
