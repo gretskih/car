@@ -46,7 +46,9 @@ public class CarRepository {
      * @return список автомобилей.
      */
     public List<Car> findAllOrderById() {
-        return crudRepository.query("from Car car JOIN FETCH car.owners order by id asc", Car.class);
+        return crudRepository.query("from Car car "
+                + "LEFT JOIN FETCH car.owners "
+                + "LEFT JOIN FETCH car.photos order by car.id asc", Car.class);
     }
 
     /**
@@ -55,7 +57,9 @@ public class CarRepository {
      */
     public Optional<Car> findById(int carId) {
         return crudRepository.optional(
-                "from Car car JOIN FETCH car.owners where id = :fId", Car.class,
+                "from Car car "
+                        + "LEFT JOIN FETCH car.owners "
+                        + "LEFT JOIN FETCH car.photos where car.id = :fId", Car.class,
                 Map.of("fId", carId)
         );
     }
@@ -67,7 +71,9 @@ public class CarRepository {
      */
     public List<Car> findByLikeName(String key) {
         return crudRepository.query(
-                "from Car car JOIN FETCH car.owners where name like :fKey", Car.class,
+                "from Car car "
+                        + "LEFT JOIN FETCH car.owners "
+                        + "LEFT JOIN FETCH car.photos where car.name like :fKey", Car.class,
                 Map.of("fKey", "%" + key + "%")
         );
     }
@@ -79,7 +85,9 @@ public class CarRepository {
      */
     public Optional<Car> findByName(String name) {
         return crudRepository.optional(
-                "from Car car JOIN FETCH car.owners where name = :fName", Car.class,
+                "from Car car "
+                        + "LEFT JOIN FETCH car.owners "
+                        + "LEFT JOIN FETCH car.photos where car.name = :fName", Car.class,
                 Map.of("fName", name)
         );
     }

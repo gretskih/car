@@ -1,18 +1,13 @@
 package repository;
 
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.boot.MetadataSources;
-import org.hibernate.boot.registry.StandardServiceRegistry;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import ru.job4j.car.model.*;
 import ru.job4j.car.repository.CarRepository;
-import ru.job4j.car.repository.CrudRepository;
-import ru.job4j.car.repository.EngineRepository;
-import ru.job4j.car.repository.OwnerRepository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -20,26 +15,16 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class CarRepositoryTest {
 
-    private final StandardServiceRegistry registry = new StandardServiceRegistryBuilder()
-            .configure().build();
-    private final SessionFactory sf = new MetadataSources(registry)
-            .buildMetadata().buildSessionFactory();
-    private final CrudRepository crudRepository = new CrudRepository(sf);
-    private final CarRepository carRepository = new CarRepository(crudRepository);
-    private final EngineRepository engineRepository = new EngineRepository(crudRepository);
-    private final OwnerRepository ownerRepository = new OwnerRepository(crudRepository);
+    private final CarRepository carRepository = new CarRepository(ConfigurationTest.crudRepository);
 
     /**
      * Очистка базы
      */
-    @BeforeEach
-    public void clearTable() {
-        Session session = sf.openSession();
+    @BeforeAll
+    static void clearTablesBefore() {
+        Session session = ConfigurationTest.sf.openSession();
         try {
             session.beginTransaction();
-            session.createQuery("DELETE FROM Engine").executeUpdate();
-            session.createQuery("DELETE FROM Owner").executeUpdate();
-            session.createQuery("DELETE FROM Photo").executeUpdate();
             session.createQuery("DELETE FROM Car").executeUpdate();
             session.getTransaction().commit();
         } catch (Exception e) {
@@ -49,31 +34,28 @@ public class CarRepositoryTest {
         }
     }
 
-    private Car getCar(String name) {
+    /**
+     * Получить объект автомобиль
+     * @param name название
+     * @return автомобиль с name
+     */
+    static Car getCar(String name) {
         Engine engine = new Engine();
         engine.setName("engine");
-        engineRepository.create(engine);
 
         PeriodHistory periodHistory = new PeriodHistory();
-        crudRepository.run(session -> session.persist(periodHistory));
-
         Owner owner = new Owner();
         owner.setName("owner");
         owner.setHistory(periodHistory);
-        ownerRepository.create(owner);
 
         PeriodHistory periodHistorySet = new PeriodHistory();
-        crudRepository.run(session -> session.persist(periodHistorySet));
-
         Owner ownerSet = new Owner();
         ownerSet.setName("ownerSet");
         ownerSet.setHistory(periodHistorySet);
-        ownerRepository.create(ownerSet);
 
         Photo photo = new Photo();
         photo.setName("one");
         photo.setPath("///");
-        crudRepository.run(session -> session.persist(photo));
 
         Car expectedCar = new Car();
         expectedCar.setName(name);
@@ -87,24 +69,114 @@ public class CarRepositoryTest {
     }
 
     /**
-     * Обновление записи
+     * Создание/обновление записи
      */
     @Test
     public void whenUpdateCarThenGetUpdatedCar() {
-        /*
         Car expectedCar = getCar("test1");
-        System.out.println(expectedCar);
         carRepository.create(expectedCar);
         expectedCar.setName("test2");
 
         carRepository.update(expectedCar);
+
+        Optional<Car> actualCar = carRepository.findById(expectedCar.getId());
+        assertThat(actualCar)
+                .isPresent()
+                .isNotEmpty()
+                .contains(expectedCar);
+    }
+
+    /**
+     * Создание/удаление записи
+     */
+    @Test
+    public void whenDeleteCarThenGetEmptyCar() {
+        Car expectedCar = getCar("test3");
+        carRepository.create(expectedCar);
+
+        carRepository.delete(expectedCar.getId());
+
+        Optional<Car> actualCar = carRepository.findById(expectedCar.getId());
+        assertThat(actualCar).isEmpty();
+    }
+
+    /**
+     * Получение полного списка записей
+     */
+    @Test
+    public void whenCreateNewCarsThenGetAllCars() {
+        clearTablesBefore();
+        Car expectedCar1 = getCar("test4");
+        carRepository.create(expectedCar1);
+        Car expectedCar2 = getCar("test5");
+        carRepository.create(expectedCar2);
+
+        List<Car> actualCars = carRepository.findAllOrderById();
+
+        assertThat(actualCars).isEqualTo(List.of(expectedCar1, expectedCar2));
+    }
+
+    /**
+     * Поиск записи по Id
+     */
+    @Test
+    public void whenCreateNewCarThenGetCarById() {
+        Car expectedCar = getCar("test6");
+        carRepository.create(expectedCar);
+
         Optional<Car> actualCar = carRepository.findById(expectedCar.getId());
 
         assertThat(actualCar)
                 .isPresent()
                 .isNotEmpty()
                 .contains(expectedCar);
+    }
 
-         */
+    /**
+     * Поиск по части названия name
+     */
+    @Test
+    public void whenCreateNewCarThenGetByLikeName() {
+        clearTablesBefore();
+        Car expectedCar1 = getCar("car7");
+        carRepository.create(expectedCar1);
+        Car expectedCar2 = getCar("test8");
+        carRepository.create(expectedCar2);
+
+        List<Car> actualCars = carRepository.findByLikeName("st8");
+
+        assertThat(actualCars).isEqualTo(List.of(expectedCar2));
+    }
+
+    /**
+     * Поиск по названию name
+     */
+    @Test
+    public void whenCreateNewCarThenGetByName() {
+        Car expectedCar = getCar("test9");
+        carRepository.create(expectedCar);
+
+        Optional<Car> actualCar = carRepository.findByName(expectedCar.getName());
+        assertThat(actualCar)
+                .isPresent()
+                .isNotEmpty()
+                .contains(expectedCar);
+    }
+
+    /**
+     * Очистка базы
+     */
+    @AfterAll
+    static void clearTablesAfter() {
+        Session session = ConfigurationTest.sf.openSession();
+        try {
+            session.beginTransaction();
+            session.createQuery("DELETE FROM Car").executeUpdate();
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            session.getTransaction().rollback();
+        } finally {
+            session.close();
+        }
     }
 }

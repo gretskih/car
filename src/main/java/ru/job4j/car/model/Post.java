@@ -25,7 +25,7 @@ public class Post {
     /**
      * Владелец поста
      */
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "auto_user_id")
     private User user;
 
@@ -39,7 +39,7 @@ public class Post {
     /**
      * Подписчики
      */
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "participates",
             joinColumns =  @JoinColumn(name = "post_id"),
@@ -50,7 +50,7 @@ public class Post {
     /**
      * Автомобиль в продаже
      */
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "car_id")
     private Car car;
 }

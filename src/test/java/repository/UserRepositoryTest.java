@@ -1,11 +1,8 @@
 package repository;
 
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.boot.MetadataSources;
-import org.hibernate.boot.registry.StandardServiceRegistry;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import ru.job4j.car.model.User;
 import ru.job4j.car.repository.CrudRepository;
@@ -18,18 +15,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class UserRepositoryTest {
 
-    private final StandardServiceRegistry registry = new StandardServiceRegistryBuilder()
-            .configure().build();
-    private final SessionFactory sf = new MetadataSources(registry)
-            .buildMetadata().buildSessionFactory();
-    private final UserRepository userRepository = new UserRepository(new CrudRepository(sf));
+    private final UserRepository userRepository = new UserRepository(new CrudRepository(ConfigurationTest.sf));
 
     /**
      * Очистка базы
      */
-    @BeforeEach
-    public void clearTableUser() {
-        Session session = sf.openSession();
+    @BeforeAll
+    static void clearTableBefore() {
+        Session session = ConfigurationTest.sf.openSession();
         try {
             session.beginTransaction();
             session.createQuery("DELETE FROM User").executeUpdate();
@@ -47,11 +40,11 @@ public class UserRepositoryTest {
     @Test
     public void whenUpdateUserThenGetUpdatedUser() {
         User expectedUser = new User();
-        expectedUser.setLogin("user");
+        expectedUser.setLogin("user1");
         expectedUser.setPassword("0000");
         userRepository.create(expectedUser);
 
-        expectedUser.setLogin("user1");
+        expectedUser.setLogin("user2");
         userRepository.update(expectedUser);
         Optional<User> actualUser = userRepository.findById(expectedUser.getId());
 
@@ -65,16 +58,16 @@ public class UserRepositoryTest {
      * Удаление пользователя
      */
     @Test
-    public void whenDeleteUserThenGetEmptyList() {
+    public void whenDeleteUserThenGetEmpty() {
         User expectedUser = new User();
-        expectedUser.setLogin("user");
+        expectedUser.setLogin("user3");
         expectedUser.setPassword("0000");
         userRepository.create(expectedUser);
 
         userRepository.delete(expectedUser.getId());
-        List<User> actualUsers = userRepository.findAllOrderById();
+        Optional<User> actualUser = userRepository.findById(expectedUser.getId());
 
-        assertThat(actualUsers).isEmpty();
+        assertThat(actualUser).isEmpty();
     }
 
     /**
@@ -82,12 +75,13 @@ public class UserRepositoryTest {
      */
     @Test
     public void whenCreateNewUserThenGetAllUsers() {
+        clearTableBefore();
         User expectedUser1 = new User();
-        expectedUser1.setLogin("user1");
+        expectedUser1.setLogin("user4");
         expectedUser1.setPassword("0000");
         userRepository.create(expectedUser1);
         User expectedUser2 = new User();
-        expectedUser2.setLogin("user2");
+        expectedUser2.setLogin("user5");
         expectedUser2.setPassword("0000");
         userRepository.create(expectedUser2);
 
@@ -101,7 +95,7 @@ public class UserRepositoryTest {
     @Test
     public void whenCreateNewUserThenGetUserById() {
         User expectedUser = new User();
-        expectedUser.setLogin("user");
+        expectedUser.setLogin("user6");
         expectedUser.setPassword("0000");
         userRepository.create(expectedUser);
 
@@ -118,15 +112,15 @@ public class UserRepositoryTest {
     @Test
     public void whenCreateNewUserThenGetByLikeLogin() {
         User expectedUser1 = new User();
-        expectedUser1.setLogin("user");
+        expectedUser1.setLogin("user7");
         expectedUser1.setPassword("0000");
         userRepository.create(expectedUser1);
         User expectedUser2 = new User();
-        expectedUser2.setLogin("test");
+        expectedUser2.setLogin("user8");
         expectedUser2.setPassword("0000");
         userRepository.create(expectedUser2);
 
-        List<User> actualUsers = userRepository.findByLikeLogin("es");
+        List<User> actualUsers = userRepository.findByLikeLogin("er8");
         assertThat(actualUsers).isEqualTo(List.of(expectedUser2));
     }
 
@@ -136,7 +130,7 @@ public class UserRepositoryTest {
     @Test
     public void whenCreateNewUserThenGetByLogin() {
         User expectedUser = new User();
-        expectedUser.setLogin("user");
+        expectedUser.setLogin("user9");
         expectedUser.setPassword("0000");
         userRepository.create(expectedUser);
 
@@ -145,5 +139,22 @@ public class UserRepositoryTest {
                 .isPresent()
                 .isNotEmpty()
                 .contains(expectedUser);
+    }
+
+    /**
+     * Очистка базы
+     */
+    @AfterAll
+    static void clearTableAfter() {
+        Session session = ConfigurationTest.sf.openSession();
+        try {
+            session.beginTransaction();
+            session.createQuery("DELETE FROM User").executeUpdate();
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            session.getTransaction().rollback();
+        } finally {
+            session.close();
+        }
     }
 }
