@@ -2,7 +2,9 @@ package ru.job4j.car.model;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import lombok.*;
 
@@ -25,7 +27,7 @@ public class Post {
     /**
      * Владелец поста
      */
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "auto_user_id")
     private User user;
 
@@ -34,7 +36,7 @@ public class Post {
      */
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "auto_post_id")
-    private List<PriceHistory> priceHistories = new ArrayList<>();
+    private Set<PriceHistory> priceHistories = new HashSet<>();
 
     /**
      * Подписчики
@@ -45,12 +47,12 @@ public class Post {
             joinColumns =  @JoinColumn(name = "post_id"),
             inverseJoinColumns =  @JoinColumn(name = "user_id")
     )
-    private List<User> participates = new ArrayList<>();
+    private Set<User> participates = new HashSet<>();
 
     /**
      * Автомобиль в продаже
      */
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "car_id")
     private Car car;
 }

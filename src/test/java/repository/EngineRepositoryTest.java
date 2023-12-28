@@ -1,11 +1,8 @@
 package repository;
 
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.boot.MetadataSources;
-import org.hibernate.boot.registry.StandardServiceRegistry;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import ru.job4j.car.model.Engine;
 import ru.job4j.car.repository.CrudRepository;
@@ -17,18 +14,15 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class EngineRepositoryTest {
-    private final StandardServiceRegistry registry = new StandardServiceRegistryBuilder()
-            .configure().build();
-    private final SessionFactory sf = new MetadataSources(registry)
-            .buildMetadata().buildSessionFactory();
-    private final EngineRepository engineRepository = new EngineRepository(new CrudRepository(sf));
+
+    private final EngineRepository engineRepository = new EngineRepository(new CrudRepository(ConfigurationTest.sf));
 
     /**
      * Очистка базы
      */
-    @BeforeEach
-    public void clearTableEngine() {
-        Session session = sf.openSession();
+    @BeforeAll
+    static void clearTableBefore() {
+        Session session = ConfigurationTest.sf.openSession();
         try {
             session.beginTransaction();
             session.createQuery("DELETE FROM Car").executeUpdate();
@@ -50,10 +44,10 @@ public class EngineRepositoryTest {
     @Test
     public void whenUpdateEngineThenGetUpdatedEngine() {
         Engine expectedEngine = new Engine();
-        expectedEngine.setName("engine");
+        expectedEngine.setName("engine1");
         engineRepository.create(expectedEngine);
 
-        expectedEngine.setName("engine1");
+        expectedEngine.setName("engine2");
         engineRepository.update(expectedEngine);
         Optional<Engine> actualEngine = engineRepository.findById(expectedEngine.getId());
 
@@ -64,18 +58,18 @@ public class EngineRepositoryTest {
     }
 
     /**
-     * Удаление записи
+     * Создание/удаление записи
      */
     @Test
-    public void whenDeleteEngineThenGetEmptyList() {
+    public void whenDeleteEngineThenGetEmpty() {
         Engine expectedEngine = new Engine();
-        expectedEngine.setName("engine");
+        expectedEngine.setName("engine3");
         engineRepository.create(expectedEngine);
 
         engineRepository.delete(expectedEngine.getId());
-        List<Engine> actualEngines = engineRepository.findAllOrderById();
+        Optional<Engine> actualEngine = engineRepository.findById(expectedEngine.getId());
 
-        assertThat(actualEngines).isEmpty();
+        assertThat(actualEngine).isEmpty();
     }
 
     /**
@@ -83,11 +77,12 @@ public class EngineRepositoryTest {
      */
     @Test
     public void whenCreateNewEngineThenGetAllEngines() {
+        clearTableBefore();
         Engine expectedEngine1 = new Engine();
-        expectedEngine1.setName("engine1");
+        expectedEngine1.setName("engine4");
         engineRepository.create(expectedEngine1);
         Engine expectedEngine2 = new Engine();
-        expectedEngine2.setName("engine2");
+        expectedEngine2.setName("engine5");
         engineRepository.create(expectedEngine2);
 
         List<Engine> actualEngines = engineRepository.findAllOrderById();
@@ -100,7 +95,7 @@ public class EngineRepositoryTest {
     @Test
     public void whenCreateNewEngineThenGetEngineById() {
         Engine expectedEngine = new Engine();
-        expectedEngine.setName("engine");
+        expectedEngine.setName("engine6");
         engineRepository.create(expectedEngine);
 
         Optional<Engine> actualEngine = engineRepository.findById(expectedEngine.getId());
@@ -116,13 +111,13 @@ public class EngineRepositoryTest {
     @Test
     public void whenCreateNewEngineThenGetByLikeName() {
         Engine expectedEngine1 = new Engine();
-        expectedEngine1.setName("engine");
+        expectedEngine1.setName("engine7");
         engineRepository.create(expectedEngine1);
         Engine expectedEngine2 = new Engine();
-        expectedEngine2.setName("test");
+        expectedEngine2.setName("engine8");
         engineRepository.create(expectedEngine2);
 
-        List<Engine> actualEngines = engineRepository.findByLikeName("es");
+        List<Engine> actualEngines = engineRepository.findByLikeName("ne8");
         assertThat(actualEngines).isEqualTo(List.of(expectedEngine2));
     }
 
@@ -132,7 +127,7 @@ public class EngineRepositoryTest {
     @Test
     public void whenCreateNewEngineThenGetByName() {
         Engine expectedEngine = new Engine();
-        expectedEngine.setName("engine");
+        expectedEngine.setName("engine9");
         engineRepository.create(expectedEngine);
 
         Optional<Engine> actualEngine = engineRepository.findByName(expectedEngine.getName());
@@ -140,5 +135,22 @@ public class EngineRepositoryTest {
                 .isPresent()
                 .isNotEmpty()
                 .contains(expectedEngine);
+    }
+
+    /**
+     * Очистка базы
+     */
+    @AfterAll
+    static void clearTableAfter() {
+        Session session = ConfigurationTest.sf.openSession();
+        try {
+            session.beginTransaction();
+            session.createQuery("DELETE FROM Engine").executeUpdate();
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            session.getTransaction().rollback();
+        } finally {
+            session.close();
+        }
     }
 }

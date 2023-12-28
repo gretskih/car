@@ -1,11 +1,8 @@
 package repository;
 
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.boot.MetadataSources;
-import org.hibernate.boot.registry.StandardServiceRegistry;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import ru.job4j.car.model.Owner;
 import ru.job4j.car.model.PeriodHistory;
@@ -18,26 +15,18 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class OwnerRepositoryTest {
-    private final StandardServiceRegistry registry = new StandardServiceRegistryBuilder()
-            .configure().build();
-    private final SessionFactory sf = new MetadataSources(registry)
-            .buildMetadata().buildSessionFactory();
-    private final CrudRepository crudRepository = new CrudRepository(sf);
-    private final OwnerRepository ownerRepository = new OwnerRepository(crudRepository);
+
+    private final OwnerRepository ownerRepository = new OwnerRepository(new CrudRepository(ConfigurationTest.sf));
 
     /**
      * Очистка базы
      */
-    @BeforeEach
-    public void clearTableOwnerPeriodHistory() {
-        Session session = sf.openSession();
+    @BeforeAll
+    static void clearTableBefore() {
+        Session session = ConfigurationTest.sf.openSession();
         try {
             session.beginTransaction();
-            session.createQuery("DELETE FROM Car").executeUpdate();
             session.createQuery("DELETE FROM Owner").executeUpdate();
-            session.createQuery("DELETE FROM Engine").executeUpdate();
-            session.createQuery("DELETE FROM Photo").executeUpdate();
-            session.createQuery("DELETE FROM PeriodHistory").executeUpdate();
             session.getTransaction().commit();
         } catch (Exception e) {
             session.getTransaction().rollback();
@@ -54,11 +43,11 @@ class OwnerRepositoryTest {
         PeriodHistory periodHistory = new PeriodHistory();
 
         Owner expectedOwner = new Owner();
-        expectedOwner.setName("owner");
+        expectedOwner.setName("owner1");
         expectedOwner.setHistory(periodHistory);
         ownerRepository.create(expectedOwner);
 
-        expectedOwner.setName("owner1");
+        expectedOwner.setName("owner2");
         ownerRepository.update(expectedOwner);
         Optional<Owner> actualOwner = ownerRepository.findById(expectedOwner.getId());
 
@@ -72,18 +61,18 @@ class OwnerRepositoryTest {
      * Удаление записи
      */
     @Test
-    public void whenDeleteOwnerThenGetEmptyList() {
+    public void whenDeleteOwnerThenGetEmpty() {
         PeriodHistory periodHistory = new PeriodHistory();
 
         Owner expectedOwner = new Owner();
-        expectedOwner.setName("owner");
+        expectedOwner.setName("owner3");
         expectedOwner.setHistory(periodHistory);
         ownerRepository.create(expectedOwner);
 
         ownerRepository.delete(expectedOwner.getId());
-        List<Owner> actualOwners = ownerRepository.findAllOrderById();
+        Optional<Owner> actualOwner = ownerRepository.findById(expectedOwner.getId());
 
-        assertThat(actualOwners).isEmpty();
+        assertThat(actualOwner).isEmpty();
     }
 
     /**
@@ -91,17 +80,18 @@ class OwnerRepositoryTest {
      */
     @Test
     public void whenCreateNewOwnerThenGetAllOwners() {
+        clearTableBefore();
         PeriodHistory periodHistory1 = new PeriodHistory();
 
         Owner expectedOwner1 = new Owner();
-        expectedOwner1.setName("owner1");
+        expectedOwner1.setName("owner4");
         expectedOwner1.setHistory(periodHistory1);
         ownerRepository.create(expectedOwner1);
 
         PeriodHistory periodHistory2 = new PeriodHistory();
 
         Owner expectedOwner2 = new Owner();
-        expectedOwner2.setName("owner2");
+        expectedOwner2.setName("owner5");
         expectedOwner2.setHistory(periodHistory2);
         ownerRepository.create(expectedOwner2);
 
@@ -117,7 +107,7 @@ class OwnerRepositoryTest {
         PeriodHistory periodHistory = new PeriodHistory();
 
         Owner expectedOwner = new Owner();
-        expectedOwner.setName("owner");
+        expectedOwner.setName("owner6");
         expectedOwner.setHistory(periodHistory);
         ownerRepository.create(expectedOwner);
 
@@ -136,18 +126,18 @@ class OwnerRepositoryTest {
         PeriodHistory periodHistory1 = new PeriodHistory();
 
         Owner expectedOwner1 = new Owner();
-        expectedOwner1.setName("owner1");
+        expectedOwner1.setName("owner7");
         expectedOwner1.setHistory(periodHistory1);
         ownerRepository.create(expectedOwner1);
 
         PeriodHistory periodHistory2 = new PeriodHistory();
 
         Owner expectedOwner2 = new Owner();
-        expectedOwner2.setName("test");
+        expectedOwner2.setName("owner8");
         expectedOwner2.setHistory(periodHistory2);
         ownerRepository.create(expectedOwner2);
 
-        List<Owner> actualOwners = ownerRepository.findByLikeName("es");
+        List<Owner> actualOwners = ownerRepository.findByLikeName("er8");
         assertThat(actualOwners).isEqualTo(List.of(expectedOwner2));
     }
 
@@ -159,7 +149,7 @@ class OwnerRepositoryTest {
         PeriodHistory periodHistory = new PeriodHistory();
 
         Owner expectedOwner = new Owner();
-        expectedOwner.setName("owner");
+        expectedOwner.setName("owner9");
         expectedOwner.setHistory(periodHistory);
         ownerRepository.create(expectedOwner);
 
@@ -168,5 +158,22 @@ class OwnerRepositoryTest {
                 .isPresent()
                 .isNotEmpty()
                 .contains(expectedOwner);
+    }
+
+    /**
+     * Очистка базы
+     */
+    @AfterAll
+    static void clearTableAfter() {
+        Session session = ConfigurationTest.sf.openSession();
+        try {
+            session.beginTransaction();
+            session.createQuery("DELETE FROM Owner").executeUpdate();
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            session.getTransaction().rollback();
+        } finally {
+            session.close();
+        }
     }
 }

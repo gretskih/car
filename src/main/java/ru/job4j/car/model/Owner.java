@@ -23,7 +23,7 @@ public class Owner {
     /**
      * Период владения автомобилем
      */
-    @OneToOne(cascade = {CascadeType.ALL})
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "history_id")
     private PeriodHistory history;
 }
