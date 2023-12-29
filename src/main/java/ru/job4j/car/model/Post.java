@@ -23,6 +23,7 @@ public class Post {
     private int id;
     private String description;
     private LocalDateTime created;
+    private String city;
 
     /**
      * Владелец поста

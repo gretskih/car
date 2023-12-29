@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 import ru.job4j.car.model.Owner;
 import ru.job4j.car.model.PeriodHistory;
 import ru.job4j.car.repository.CrudRepository;
-import ru.job4j.car.repository.OwnerRepository;
+import ru.job4j.car.repository.OwnerRepositoryImpl;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,7 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class OwnerRepositoryTest {
 
-    private final OwnerRepository ownerRepository = new OwnerRepository(new CrudRepository(ConfigurationTest.sf));
+    private final OwnerRepositoryImpl ownerRepository = new OwnerRepositoryImpl(new CrudRepository(ConfigurationTest.sf));
 
     /**
      * Очистка базы

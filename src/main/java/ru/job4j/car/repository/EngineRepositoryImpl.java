@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @AllArgsConstructor
-public class EngineRepository {
+public class EngineRepositoryImpl {
 
     private final CrudRepository crudRepository;
 

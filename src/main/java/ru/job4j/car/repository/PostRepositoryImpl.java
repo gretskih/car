@@ -1,14 +1,13 @@
 package ru.job4j.car.repository;
 
 import lombok.AllArgsConstructor;
-import ru.job4j.car.model.Car;
 import ru.job4j.car.model.Post;
 
 import java.time.LocalDateTime;
 import java.util.*;
 
 @AllArgsConstructor
-public class PostRepository {
+public class PostRepositoryImpl {
 
     private final CrudRepository crudRepository;
 

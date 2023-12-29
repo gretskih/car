@@ -22,6 +22,13 @@ public class Car {
     private int id;
     private String name;
     private String brand;
+    private Integer mileage;
+    private Integer year;
+    private String bodyType;
+    private String gearbox;
+    private String fuelType;
+    private String colour;
+    private String type;
 
     /**
      * Модель двигателя

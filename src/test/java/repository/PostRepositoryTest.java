@@ -2,13 +2,12 @@ package repository;
 
 import org.hibernate.Session;
 import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ru.job4j.car.model.Car;
 import ru.job4j.car.model.Post;
 import ru.job4j.car.model.User;
-import ru.job4j.car.repository.PostRepository;
+import ru.job4j.car.repository.PostRepositoryImpl;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -18,7 +17,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class PostRepositoryTest {
 
-    private final PostRepository postRepository = new PostRepository(ConfigurationTest.crudRepository);
+    private final PostRepositoryImpl postRepository = new PostRepositoryImpl(ConfigurationTest.crudRepository);
 
     /**
      * Очистка базы
