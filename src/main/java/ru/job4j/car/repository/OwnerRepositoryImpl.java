@@ -1,14 +1,16 @@
 package ru.job4j.car.repository;
 
 import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Repository;
 import ru.job4j.car.model.Owner;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+@Repository
 @AllArgsConstructor
-public class OwnerRepositoryImpl {
+public class OwnerRepositoryImpl implements OwnerRepository {
 
     private final CrudRepository crudRepository;
 
@@ -17,6 +19,7 @@ public class OwnerRepositoryImpl {
      * @param owner владелец.
      * @return владелец с id.
      */
+    @Override
     public Owner create(Owner owner) {
         crudRepository.run(session -> session.persist(owner));
         return owner;
@@ -26,6 +29,7 @@ public class OwnerRepositoryImpl {
      * Обновить в базе владельца.
      * @param owner владелец.
      */
+    @Override
     public void update(Owner owner) {
         crudRepository.run(session -> session.merge(owner));
     }
@@ -34,6 +38,7 @@ public class OwnerRepositoryImpl {
      * Удалить владельца по id.
      * @param ownerId ID
      */
+    @Override
     public void delete(int ownerId) {
         crudRepository.run(
                 "delete from Owner where id = :fId",
@@ -45,6 +50,7 @@ public class OwnerRepositoryImpl {
      * Список владельцев отсортированных по id.
      * @return список владельцев.
      */
+    @Override
     public List<Owner> findAllOrderById() {
         return crudRepository.query("from Owner order by id asc", Owner.class);
     }
@@ -53,6 +59,7 @@ public class OwnerRepositoryImpl {
      * Найти владельца по ID
      * @return владелец.
      */
+    @Override
     public Optional<Owner> findById(int ownerId) {
         return crudRepository.optional(
                 "from Owner where id = :fId", Owner.class,
@@ -65,6 +72,7 @@ public class OwnerRepositoryImpl {
      * @param key key
      * @return список владельцев.
      */
+    @Override
     public List<Owner> findByLikeName(String key) {
         return crudRepository.query(
                 "from Owner where name like :fKey", Owner.class,
@@ -77,6 +85,7 @@ public class OwnerRepositoryImpl {
      * @param name name.
      * @return Optional or owner.
      */
+    @Override
     public Optional<Owner> findByName(String name) {
         return crudRepository.optional(
                 "from Owner where name = :fName", Owner.class,

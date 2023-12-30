@@ -1,13 +1,15 @@
 package ru.job4j.car.repository;
 
 import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Repository;
 import ru.job4j.car.model.Post;
 
 import java.time.LocalDateTime;
 import java.util.*;
 
+@Repository
 @AllArgsConstructor
-public class PostRepositoryImpl {
+public class PostRepositoryImpl implements PostRepository{
 
     private final CrudRepository crudRepository;
 
@@ -16,11 +18,17 @@ public class PostRepositoryImpl {
      * @param post объявление.
      * @return объявление с id.
      */
+    @Override
     public Post create(Post post) {
         crudRepository.run(session -> session.persist(post));
         return post;
     }
 
+    /**
+     * Показать все объявления
+     * @return список объявлений
+     */
+    @Override
     public List<Post> getPosts() {
         return crudRepository.query(
                 "FROM Post post "
@@ -33,8 +41,10 @@ public class PostRepositoryImpl {
     }
 
     /**
-     * - показать объявления за последний день;
-    */
+     * Показать объявления за последний день;
+     * @return список объявлений
+     */
+    @Override
     public List<Post> getPostsLastDay() {
         LocalDateTime localDateTimeNow = LocalDateTime.now();
         return crudRepository.query(
@@ -49,8 +59,10 @@ public class PostRepositoryImpl {
     }
 
     /**
-     *  - показать объявления с фото;
+     * Показать объявления с фото;
+     * @return список объявлений
      */
+    @Override
      public List<Post> getPostsWithPhoto() {
          return crudRepository.query(
                  "FROM Post post "
@@ -63,9 +75,12 @@ public class PostRepositoryImpl {
          );
      }
 
-     /**
-     * - показать объявления определенной марки.
+    /**
+     * Показать объявления определенной марки.
+     * @param brand марка автомобиля
+     * @return показать объявления определенной марки.
      */
+    @Override
     public List<Post> getPostsBrand(String brand) {
         return crudRepository.query(
                 "FROM Post post "

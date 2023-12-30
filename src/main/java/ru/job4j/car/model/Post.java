@@ -24,6 +24,7 @@ public class Post {
     private String description;
     private LocalDateTime created;
     private String city;
+    private boolean status;
 
     /**
      * Владелец поста

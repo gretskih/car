@@ -33,7 +33,7 @@ public interface CarRepository {
 
     /**
      * Найти автомобиль по ID
-     * @return автомобиль.
+     * @return Optional or car.
      */
     Optional<Car> findById(int carId);
 

@@ -6,6 +6,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import ru.job4j.car.model.Engine;
 import ru.job4j.car.repository.CrudRepository;
+import ru.job4j.car.repository.EngineRepository;
 import ru.job4j.car.repository.EngineRepositoryImpl;
 
 import java.util.List;
@@ -15,7 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class EngineRepositoryTest {
 
-    private final EngineRepositoryImpl engineRepository = new EngineRepositoryImpl(new CrudRepository(ConfigurationTest.sf));
+    private final EngineRepository engineRepository = new EngineRepositoryImpl(new CrudRepository(ConfigurationTest.sf));
 
     /**
      * Очистка базы

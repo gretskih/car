@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import ru.job4j.car.model.Car;
 import ru.job4j.car.model.Post;
 import ru.job4j.car.model.User;
+import ru.job4j.car.repository.PostRepository;
 import ru.job4j.car.repository.PostRepositoryImpl;
 
 import java.time.LocalDateTime;
@@ -17,7 +18,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class PostRepositoryTest {
 
-    private final PostRepositoryImpl postRepository = new PostRepositoryImpl(ConfigurationTest.crudRepository);
+    private final PostRepository postRepository = new PostRepositoryImpl(ConfigurationTest.crudRepository);
 
     /**
      * Очистка базы

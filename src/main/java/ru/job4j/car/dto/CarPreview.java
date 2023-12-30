@@ -12,6 +12,7 @@ import java.util.Set;
 @ToString
 public class CarPreview {
     private Set<Photo> photos;
+    private String name;
     private String brand;
     private Integer mileage;
     private Integer year;
@@ -20,6 +21,7 @@ public class CarPreview {
     private String fuelType;
     private String colour;
     private String type;
+    private boolean status;
 
     private String engine;
     private String owner;

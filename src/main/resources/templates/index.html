@@ -9,7 +9,7 @@
     <title>Todo</title>
 </head>
 <body>
-<div class="container p-0">
+<div class="container-fluid p-0">
     <header th:insert="blocks/header :: header"></header>
 
         <div class="container-fluid">
@@ -26,15 +26,15 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:each="{car-preview: ${car-previews}">
+                    <tr th:each="{carPreview: ${carPreviews}">
                         <td>Фото</td>
                         <td>
-                            <a th:text="${car-preview.brand}" th:href="@{/}"></a>
+                            <a th:text="${carPreview.brand}" th:href="@{/}"></a>
                         </td>
-                        <td th:text="${car-preview.price}" />
-                        <td th:text="${car-preview.year}" />
-                        <td th:text="${car-preview.mileage}" />
-                        <td th:text="${car-preview.owner}" />
+                        <td th:text="${carPreview.price}" />
+                        <td th:text="${carPreview.year}" />
+                        <td th:text="${carPreview.mileage}" />
+                        <td th:text="${carPreview.owner}" />
                     </tr>
                     </tbody>
                 </table>
