@@ -18,6 +18,7 @@ public class Photo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
     private int id;
+    @EqualsAndHashCode.Include
     private String name;
     private String path;
 }

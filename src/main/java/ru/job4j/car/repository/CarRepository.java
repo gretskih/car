@@ -50,4 +50,6 @@ public interface CarRepository {
      * @return Optional or car.
      */
     Optional<Car> findByName(String name);
+
+    List<Car> findAll();
 }

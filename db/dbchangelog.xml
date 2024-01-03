@@ -21,4 +21,5 @@
     <include file="scripts/014_ddl_add_column_status_to_auto_post_table.sql" relativeToChangelogFile="true"/>
     <include file="scripts/015_ddl_add_column_name_to_auto_user_table.sql" relativeToChangelogFile="true"/>
     <include file="scripts/016_ddl_add_column_contact_to_auto_user_table.sql" relativeToChangelogFile="true"/>
+    <include file="scripts/017_ddl_add_column_city_to_auto_post_table.sql" relativeToChangelogFile="true"/>
 </databaseChangeLog>

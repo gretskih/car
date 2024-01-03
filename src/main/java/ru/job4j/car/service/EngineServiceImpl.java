@@ -6,6 +6,7 @@ import ru.job4j.car.model.Engine;
 import ru.job4j.car.repository.EngineRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -21,5 +22,10 @@ public class EngineServiceImpl implements EngineService {
     @Override
     public List<Engine> findAllOrderById() {
         return engineRepository.findAllOrderById();
+    }
+
+    @Override
+    public Optional<Engine> findById(int engineId) {
+        return engineRepository.findById(engineId);
     }
 }

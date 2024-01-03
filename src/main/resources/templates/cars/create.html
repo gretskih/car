@@ -10,13 +10,13 @@
     <title>Создать автомобиль</title>
 </head>
 <body>
-<div class="container p-0">
+<div class="container-fluid p-0">
     <header th:insert="blocks/header :: header"></header>
     <div class="container">
         <div class="row">
             <div class="col-3"></div>
             <div class="col-6">
-                <form class="mt-3" th:action="@{/cars/create}" method="post">
+                <form class="mt-3" th:action="@{/cars/create}" method="post"  enctype="multipart/form-data">
                     <div class="mb-3" th:if="${error}">
                         <p class="text-danger" th:text="${error}"></p>
                     </div>
@@ -33,6 +33,13 @@
                         <select class="form-control" id="Engine" name="engine.id">
                             <option th:each="engine : ${engines}" th:value="${engine.id}" th:text="${engine.name}"></option>
                         </select>
+                    </div>
+                    <div class="mb-3">
+                            <div class="row">
+                                <div class="col-3">
+                                    <a class="btn btn-info w-100" th:href="@{/engines/create}">Новый</a>
+                                </div>
+                            </div>
                     </div>
                     <div class="mb-3">
                         <label for="Colour" class="form-label" style="color: #442c66"><b>Цвет</b></label>
@@ -62,11 +69,15 @@
                         <label for="Type" class="form-label" style="color: #442c66"><b>Состояние</b></label>
                         <input type="text" class="form-control" id="Type" name="type" placeholder="б/у" required>
                     </div>
+                    <div class="mb-3">
+                        <label for="formFile"><b>Фото</b></label>
+                        <input class="form-control form-control-sm w-100" type="file" id="formFile" name="files" multiple>
+                    </div>
                     <div class="mb-3 row">
                         <div class="col-6"></div>
                         <div class="col-6">
                             <div class="row">
-                                <div class="col-6"><a class="btn btn-danger w-100" th:href="@{/}">Отмена</a></div>
+                                <div class="col-6"><a class="btn btn-danger w-100" th:href="@{/posts/create}">Отмена</a></div>
                                 <div class="col-6"><button class="btn btn-info w-100" type="submit">Создать</button>
                                 </div>
                             </div>

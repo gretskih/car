@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link th:href = "@{/css/bootstrap.min.css}" rel="stylesheet">
+    <script th:src="@{/js/jquery-3.7.0.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+    <title>Создать объявление</title>
+</head>
+<body>
+<div class="container-fluid p-0">
+    <header th:insert="blocks/header :: header"></header>
+    <div class="container">
+        <div class="row">
+            <div class="col-3"></div>
+            <div class="col-6">
+                <form class="mt-3" th:action="@{/posts/create}" method="post">
+                    <div class="mb-3">
+                        <label for="Car" class="form-label"><b>Автомобиль</b></label>
+                        <select class="form-control" id="Car" name="carId">
+                            <option th:each="car : ${cars}" th:value="${car.id}" th:text="${car.brand + ' ' + car.name}"></option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <div class="row">
+                            <div class="col-3">
+                                <a class="btn btn-info w-100" th:href="@{/cars/create}">Создать</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="description" class="form-label"><b>Текст объявления</b></label>
+                        <textarea class="form-control" id="description" name="description" rows="25" placeholder="Текст объявления"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="City" class="form-label"><b>Город</b></label>
+                        <input type="text" class="form-control" id="City" name="city" placeholder="Москва" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="Price" class="form-label"><b>Цена в рублях</b></label>
+                        <input type="text" class="form-control" id="Price" name="price" placeholder="0" required>
+                    </div>
+                    <div class="mb-3 row">
+                        <div class="col-6"></div>
+                        <div class="col-6">
+                            <div class="row">
+                                <div class="col-6"><a class="btn btn-danger w-100" th:href="@{/posts}">Отмена</a></div>
+                                <div class="col-6"><button class="btn btn-info w-100" type="submit">Создать</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="col-3"></div>
+        </div>
+    </div>
+    <footer th:insert="blocks/footer :: footer"></footer>
+</div>
+</body>
+</html>

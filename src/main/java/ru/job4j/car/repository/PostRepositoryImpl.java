@@ -9,7 +9,7 @@ import java.util.*;
 
 @Repository
 @AllArgsConstructor
-public class PostRepositoryImpl implements PostRepository{
+public class PostRepositoryImpl implements PostRepository {
 
     private final CrudRepository crudRepository;
 

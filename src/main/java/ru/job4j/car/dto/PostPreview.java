@@ -9,8 +9,7 @@ import java.util.Set;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
-public class CarPreview {
+public class PostPreview {
     private Set<Photo> photos;
     private String name;
     private String brand;
@@ -25,4 +24,6 @@ public class CarPreview {
 
     private String engine;
     private String owner;
+
+    private String price;
 }

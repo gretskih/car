@@ -101,4 +101,10 @@ public class CarRepositoryImpl implements CarRepository {
                 Map.of("fName", name)
         );
     }
+
+    @Override
+    public List<Car> findAll() {
+        return crudRepository.query("from Car car "
+                + "order by car.id asc", Car.class);
+    }
 }

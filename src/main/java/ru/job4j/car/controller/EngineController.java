@@ -24,6 +24,6 @@ public class EngineController {
     @PostMapping("/create")
     public String create(@ModelAttribute Engine engine) {
         engineService.create(engine);
-        return "engines/create";
+        return "redirect:/cars/create";
     }
 }
