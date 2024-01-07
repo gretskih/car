@@ -4,8 +4,13 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -47,12 +52,8 @@ public class Car {
     /**
      * Список бывших владельцев автомобиля
      */
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "history_owner",
-            joinColumns = {
-                @JoinColumn(name = "car_id", nullable = false, updatable = false)},
-            inverseJoinColumns = {
-                @JoinColumn(name = "owner_id", nullable = false, updatable = false)})
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "auto_id")
     private Set<Owner> owners = new HashSet<>();
 
     /**
@@ -61,4 +62,8 @@ public class Car {
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "auto_id")
     private Set<Photo> photos = new HashSet<>();
+
+    public int getNumberOfOwners() {
+        return owners.size();
+    }
 }

@@ -52,4 +52,6 @@ public interface CarRepository {
     Optional<Car> findByName(String name);
 
     List<Car> findAll();
+
+    List<Car> findByUserId(int userId);
 }

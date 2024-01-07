@@ -9,6 +9,7 @@ import ru.job4j.car.repository.PhotoRepository;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -41,6 +42,46 @@ public class PhotoServiceImpl implements PhotoService {
         photo.setName(photoDto.getName());
         photo.setPath(path);
         return photo;
+    }
+
+    @Override
+    public Optional<PhotoDto> getFileById(int id) {
+        var fileOptional = photoRepository.findById(id);
+        if (fileOptional.isEmpty()) {
+            return Optional.empty();
+        }
+        var content = readFileAsBytes(fileOptional.get().getPath());
+        return Optional.of(new PhotoDto(fileOptional.get().getName(), content));
+    }
+
+    @Override
+    public void deleteById(int id) {
+        var photoOptional = photoRepository.findById(id);
+        if (photoOptional.isPresent()) {
+            deleteFile(photoOptional.get().getPath());
+            photoRepository.deleteById(id);
+        }
+    }
+
+    @Override
+    public void deleteByPhoto(Photo photo) {
+        deleteFile(photo.getPath());
+    }
+
+    private void deleteFile(String path) {
+        try {
+            Files.deleteIfExists(Path.of(path));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private byte[] readFileAsBytes(String path) {
+        try {
+            return Files.readAllBytes(Path.of(path));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private String getNewFilePath(String sourceName) {

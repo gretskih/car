@@ -71,23 +71,6 @@ public class PostRepositoryTest {
     }
 
     /**
-     *  - показать объявления с фото;
-     */
-    @Test
-    public void whenGetPostsWithPhotoThenGetPostWithPhoto() {
-        Post expectedPost = getPost("post3");
-        postRepository.create(expectedPost);
-
-        Post post = getPost("post4");
-        post.getCar().setPhotos(new HashSet<>());
-        postRepository.create(post);
-
-        List<Post> actualPosts = postRepository.getPostsWithPhoto();
-
-        assertThat(actualPosts).isEqualTo(List.of(expectedPost));
-    }
-
-    /**
      * - показать объявления определенной марки.
      */
     @Test

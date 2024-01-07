@@ -5,7 +5,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import ru.job4j.car.dto.PhotoDto;
 import ru.job4j.car.model.Car;
 import ru.job4j.car.model.Owner;
 import ru.job4j.car.model.PeriodHistory;
@@ -35,15 +34,27 @@ public class CarController {
         PeriodHistory periodHistory = new PeriodHistory();
         periodHistory.setStartAt(LocalDateTime.now());
         Owner owner = new Owner();
+        owner.setOwnerId(user.getId());
         owner.setName(user.getName());
         owner.setHistory(periodHistory);
         car.setOwner(owner);
-        try {
-            carService.create(car, files);
-        } catch (Exception exception) {
-            model.addAttribute("message", exception.getMessage());
+        car.setOwners(Set.of(owner));
+        if (carService.create(car, files) == null) {
+            model.addAttribute("message", "Автомобиль не создан!");
             return "errors/404";
         }
-        return "posts/create";
+        return "redirect:/posts/create";
+    }
+
+    @GetMapping("/cars")
+    public String getMyCarsPage(Model model, @SessionAttribute User user) {
+        model.addAttribute("cars", carService.findByUserId(user.getId()));
+        return "cars/delete";
+    }
+
+    @PostMapping("/delete")
+    public String delete(@RequestParam int carId) {
+        carService.delete(carId);
+        return "redirect:/cars/cars";
     }
 }

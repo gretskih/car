@@ -1,10 +1,12 @@
 package ru.job4j.car.model;
 
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Set;
 
 import lombok.*;
+import org.apache.logging.log4j.util.PropertySource;
 
 import javax.persistence.*;
 
@@ -57,6 +59,6 @@ public class Post {
     private Car car;
 
     public String getPrice() {
-        return "10000";
+        return priceHistories.stream().max(Comparator.comparing(PriceHistory::getCreated)).get().getBefore().toString();
     }
 }

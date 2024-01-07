@@ -8,7 +8,6 @@ import ru.job4j.car.model.Car;
 import ru.job4j.car.model.Photo;
 import ru.job4j.car.repository.CarRepository;
 
-import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -27,12 +26,22 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public Car create(Car car, Set<MultipartFile> files) throws IOException {
+    public List<Car> findByUserId(int userId) {
+        return carRepository.findByUserId(userId);
+    }
+
+    @Override
+    public Car create(Car car, Set<MultipartFile> files) {
         Set<Photo> photos = new HashSet<>();
-        for (MultipartFile file : files) {
-            PhotoDto photoDto = new PhotoDto(file.getOriginalFilename(), file.getBytes());
-            Photo photo = photoService.save(photoDto);
-            photos.add(photo);
+        try {
+            for (MultipartFile file : files) {
+                PhotoDto photoDto = new PhotoDto(file.getOriginalFilename(), file.getBytes());
+                Photo photo = photoService.save(photoDto);
+                photos.add(photo);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
         }
         car.setPhotos(photos);
         return carRepository.create(car);
@@ -41,5 +50,15 @@ public class CarServiceImpl implements CarService {
     @Override
     public Optional<Car> findById(int carId) {
         return carRepository.findById(carId);
+    }
+
+    @Override
+    public void delete(int carId) {
+        var carOptional = carRepository.findById(carId);
+        if (carOptional.isPresent()) {
+            Set<Photo> photos = carOptional.get().getPhotos();
+            carRepository.delete(carId);
+            photos.forEach(photoService::deleteByPhoto);
+        }
     }
 }

@@ -103,6 +103,14 @@ public class CarRepositoryImpl implements CarRepository {
     }
 
     @Override
+    public List<Car> findByUserId(int userId) {
+        return crudRepository.query("from Car car "
+                        + "where car.owner.ownerId = :fUserId "
+                        + "order by car.id asc", Car.class,
+                Map.of("fUserId", userId));
+    }
+
+    @Override
     public List<Car> findAll() {
         return crudRepository.query("from Car car "
                 + "order by car.id asc", Car.class);

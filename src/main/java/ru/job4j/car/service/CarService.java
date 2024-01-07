@@ -14,7 +14,11 @@ public interface CarService {
 
     List<Car> findAll();
 
-    Car create(Car car, Set<MultipartFile> files) throws IOException;
+    Car create(Car car, Set<MultipartFile> files);
 
     Optional<Car> findById(int carId);
+
+    List<Car> findByUserId(int userId);
+
+    void delete(int carId);
 }

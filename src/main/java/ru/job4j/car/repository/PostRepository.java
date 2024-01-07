@@ -1,8 +1,11 @@
 package ru.job4j.car.repository;
 
+import ru.job4j.car.model.Photo;
 import ru.job4j.car.model.Post;
+import ru.job4j.car.model.User;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface PostRepository {
     /**
@@ -12,6 +15,12 @@ public interface PostRepository {
      */
     Post create(Post post);
 
+    Optional<Post> findById(int id);
+
+    void delete(int postId);
+
+    void setStatus(int postId, boolean status);
+
     List<Post> getPosts();
 
     /**
@@ -20,12 +29,9 @@ public interface PostRepository {
     List<Post> getPostsLastDay();
 
     /**
-     *  - показать объявления с фото;
-     */
-    List<Post> getPostsWithPhoto();
-
-    /**
      * - показать объявления определенной марки.
      */
     List<Post> getPostsBrand(String brand);
+
+    List<Post> getPostsUser(User user);
 }
