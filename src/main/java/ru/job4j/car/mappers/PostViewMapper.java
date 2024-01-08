@@ -15,5 +15,6 @@ public interface PostViewMapper {
     @Mapping(target = "id", source = "post.id")
     @Mapping(target = "userId", source = "user.id")
     @Mapping(target = "name", source = "car.name")
+    @Mapping(target = "year", source = "car.yearProduction")
     PostView getPostView(Post post, Car car, User user);
 }

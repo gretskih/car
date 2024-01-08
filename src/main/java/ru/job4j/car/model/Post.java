@@ -6,7 +6,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import lombok.*;
-import org.apache.logging.log4j.util.PropertySource;
 
 import javax.persistence.*;
 

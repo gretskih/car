@@ -17,9 +17,6 @@
             <div class="col-3"></div>
             <div class="col-6">
                 <form class="mt-3" th:action="@{/engines/create}" method="post">
-                    <div class="mb-3" th:if="${error}">
-                        <p class="text-danger" th:text="${error}"></p>
-                    </div>
                     <div class="mb-3">
                         <label for="Name" class="form-label" style="color: #442c66"><b>Наименование</b></label>
                         <input type="text" class="form-control" id="Name" name="name" placeholder="Наименование" required>

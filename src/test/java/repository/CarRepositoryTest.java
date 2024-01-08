@@ -7,6 +7,8 @@ import org.junit.jupiter.api.Test;
 import ru.job4j.car.model.*;
 import ru.job4j.car.repository.CarRepository;
 import ru.job4j.car.repository.CarRepositoryImpl;
+import ru.job4j.car.repository.EngineRepository;
+import ru.job4j.car.repository.EngineRepositoryImpl;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,6 +19,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class CarRepositoryTest {
 
     private final CarRepository carRepository = new CarRepositoryImpl(ConfigurationTest.crudRepository);
+    private static EngineRepository engineRepository = new EngineRepositoryImpl(ConfigurationTest.crudRepository);
 
     /**
      * Очистка базы
@@ -27,6 +30,7 @@ public class CarRepositoryTest {
         try {
             session.beginTransaction();
             session.createQuery("DELETE FROM Car").executeUpdate();
+            session.createQuery("DELETE FROM Engine").executeUpdate();
             session.getTransaction().commit();
         } catch (Exception e) {
             session.getTransaction().rollback();
@@ -42,30 +46,34 @@ public class CarRepositoryTest {
      */
     static Car getCar(String name) {
         Engine engine = new Engine();
-        engine.setName("engine");
+        engine.setName("engine" + name);
+        engineRepository.create(engine);
 
-        PeriodHistory periodHistory = new PeriodHistory();
-        Owner owner = new Owner();
-        owner.setName("owner");
-        owner.setHistory(periodHistory);
-
-        PeriodHistory periodHistorySet = new PeriodHistory();
-        Owner ownerSet = new Owner();
-        ownerSet.setName("ownerSet");
-        ownerSet.setHistory(periodHistorySet);
-
-        Photo photo = new Photo();
-        photo.setName("one");
-        photo.setPath("///");
+        var periodHistory = PeriodHistory.of().build();
+        var owner = Owner.of()
+                .name("owner1")
+                .history(periodHistory)
+                .ownerId(1)
+                .build();
 
         Car expectedCar = new Car();
         expectedCar.setName(name);
         expectedCar.setBrand("BMW");
+        expectedCar.setMileage(10000);
+        expectedCar.setYearProduction(2020);
+        expectedCar.setBodyType("Седан");
+        expectedCar.setGearbox("Вариатор");
+        expectedCar.setFuelType("Гибрид");
+        expectedCar.setColour("Белый");
+        expectedCar.setType("б/у");
         expectedCar.setEngine(engine);
         expectedCar.setOwner(owner);
-        expectedCar.setPhotos(Set.of(photo));
-        expectedCar.setOwners(Set.of(ownerSet));
 
+        Photo photo = new Photo();
+        photo.setName("photo" + name);
+        photo.setPath("photoPath" + name);
+
+        expectedCar.setPhotos(Set.of(photo));
         return expectedCar;
     }
 
@@ -75,6 +83,7 @@ public class CarRepositoryTest {
     @Test
     public void whenUpdateCarThenGetUpdatedCar() {
         Car expectedCar = getCar("test1");
+        System.out.println(expectedCar);
         carRepository.create(expectedCar);
         expectedCar.setName("test2");
 
@@ -173,6 +182,7 @@ public class CarRepositoryTest {
         try {
             session.beginTransaction();
             session.createQuery("DELETE FROM Car").executeUpdate();
+            session.createQuery("DELETE FROM Engine").executeUpdate();
             session.getTransaction().commit();
         } catch (Exception e) {
             session.getTransaction().rollback();

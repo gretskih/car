@@ -22,6 +22,12 @@ public class CarController {
     private final CarService carService;
     private final EngineService engineService;
 
+    @GetMapping
+    public String getMyCarsPage(Model model, @SessionAttribute User user) {
+        model.addAttribute("cars", carService.findByUserId(user.getId()));
+        return "cars/cars";
+    }
+
     @GetMapping("/create")
     public String getCreationPage(Model model) {
         model.addAttribute("engines", engineService.findAllOrderById());
@@ -30,13 +36,13 @@ public class CarController {
 
     @PostMapping("/create")
     public String create(@ModelAttribute Car car, @SessionAttribute User user, @RequestParam Set<MultipartFile> files, Model model) {
+        var periodHistory = PeriodHistory.of().startAt(LocalDateTime.now()).build();
+        Owner owner = Owner.of()
+                .ownerId(user.getId())
+                .name(user.getName())
+                .history(periodHistory)
+                .build();
         car.setEngine(engineService.findById(car.getEngine().getId()).get());
-        PeriodHistory periodHistory = new PeriodHistory();
-        periodHistory.setStartAt(LocalDateTime.now());
-        Owner owner = new Owner();
-        owner.setOwnerId(user.getId());
-        owner.setName(user.getName());
-        owner.setHistory(periodHistory);
         car.setOwner(owner);
         car.setOwners(Set.of(owner));
         if (carService.create(car, files) == null) {
@@ -44,12 +50,6 @@ public class CarController {
             return "errors/404";
         }
         return "redirect:/posts/create";
-    }
-
-    @GetMapping("/cars")
-    public String getMyCarsPage(Model model, @SessionAttribute User user) {
-        model.addAttribute("cars", carService.findByUserId(user.getId()));
-        return "cars/delete";
     }
 
     @PostMapping("/delete")

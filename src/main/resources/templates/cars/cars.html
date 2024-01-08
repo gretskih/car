@@ -7,7 +7,7 @@
     <script th:src="@{/js/jquery-3.7.0.min.js}"></script>
     <script th:src="@{/js/bootstrap.min.js}"></script>
 
-    <title>Создать автомобиль</title>
+    <title>cars.ru</title>
 </head>
 <body style="font-family: Verdana">
 <div class="container-fluid p-0">
@@ -26,8 +26,9 @@
                             <option th:each="car : ${cars}" th:value="${car.id}" th:text="${car.brand + ' ' + car.name}"></option>
                         </select>
                             <div class="row mt-3">
-                                <div class="col-6"></div>
+                                <div class="col-3"></div>
                                 <div class="col-3"><a class="btn btn-danger w-100" th:href="@{/posts}">Отмена</a></div>
+                                <div class="col-3"><a class="btn btn-info w-100" th:href="@{/cars/create}">Добавить</a></div>
                                 <div class="col-3"><button class="btn btn-info w-100" type="submit">Удалить</button></div>
                             </div>
                     </div>

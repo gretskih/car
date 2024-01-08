@@ -12,5 +12,6 @@ public interface PostPreviewMapper {
     @Mapping(target = "owner", source = "car.owner.name")
     @Mapping(target = "price", source = "post.price")
     @Mapping(target = "id", source = "post.id")
+    @Mapping(target = "year", source = "car.yearProduction")
     PostPreview getCarPreview(Car car, Post post);
 }

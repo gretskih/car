@@ -58,11 +58,6 @@ public class PostController {
 
     @PostMapping("/create")
     public String create(@ModelAttribute Post post, @SessionAttribute User user, @RequestParam String price, @RequestParam Integer carId) {
-        System.out.println(post);
-        System.out.println(user);
-        System.out.println(price);
-        System.out.println(carId);
-
         post.setCreated(LocalDateTime.now());
 
         post.setUser(user);

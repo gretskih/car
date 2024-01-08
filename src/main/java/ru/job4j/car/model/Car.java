@@ -1,9 +1,6 @@
 package ru.job4j.car.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
@@ -28,7 +25,8 @@ public class Car {
     private String name;
     private String brand;
     private Integer mileage;
-    private Integer year;
+    @Column(name = "year_prod")
+    private Integer yearProduction;
     private String bodyType;
     private String gearbox;
     private String fuelType;

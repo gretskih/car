@@ -3,7 +3,7 @@ CREATE TABLE car
     id              SERIAL PRIMARY KEY,
     name            varchar not null,
     mileage         int     not null,
-    "year"          int     not null,
+    year_prod       int     not null,
     bodyType        varchar not null,
     gearbox         varchar not null,
     fuelType        varchar not null,

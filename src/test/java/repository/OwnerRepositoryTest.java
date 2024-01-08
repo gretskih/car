@@ -41,11 +41,12 @@ class OwnerRepositoryTest {
      */
     @Test
     public void whenUpdateOwnerThenGetUpdatedOwner() {
-        PeriodHistory periodHistory = new PeriodHistory();
-
-        Owner expectedOwner = new Owner();
-        expectedOwner.setName("owner1");
-        expectedOwner.setHistory(periodHistory);
+        var periodHistory = PeriodHistory.of().build();
+        var expectedOwner = Owner.of()
+                .name("owner1")
+                .history(periodHistory)
+                .ownerId(1)
+                .build();
         ownerRepository.create(expectedOwner);
 
         expectedOwner.setName("owner2");
@@ -63,11 +64,13 @@ class OwnerRepositoryTest {
      */
     @Test
     public void whenDeleteOwnerThenGetEmpty() {
-        PeriodHistory periodHistory = new PeriodHistory();
+        var periodHistory = PeriodHistory.of().build();
 
-        Owner expectedOwner = new Owner();
-        expectedOwner.setName("owner3");
-        expectedOwner.setHistory(periodHistory);
+        var expectedOwner = Owner.of()
+                .name("owner3")
+                .history(periodHistory)
+                .ownerId(3)
+                .build();
         ownerRepository.create(expectedOwner);
 
         ownerRepository.delete(expectedOwner.getId());
@@ -82,18 +85,22 @@ class OwnerRepositoryTest {
     @Test
     public void whenCreateNewOwnerThenGetAllOwners() {
         clearTableBefore();
-        PeriodHistory periodHistory1 = new PeriodHistory();
+        var periodHistory1 = PeriodHistory.of().build();
 
-        Owner expectedOwner1 = new Owner();
-        expectedOwner1.setName("owner4");
-        expectedOwner1.setHistory(periodHistory1);
+        var expectedOwner1 = Owner.of()
+                .name("owner4")
+                .history(periodHistory1)
+                .ownerId(4)
+                .build();
         ownerRepository.create(expectedOwner1);
 
-        PeriodHistory periodHistory2 = new PeriodHistory();
+        var periodHistory2 = PeriodHistory.of().build();
 
-        Owner expectedOwner2 = new Owner();
-        expectedOwner2.setName("owner5");
-        expectedOwner2.setHistory(periodHistory2);
+        var expectedOwner2 = Owner.of()
+                .name("owner5")
+                .history(periodHistory2)
+                .ownerId(5)
+                .build();
         ownerRepository.create(expectedOwner2);
 
         List<Owner> actualOwners = ownerRepository.findAllOrderById();
@@ -105,11 +112,13 @@ class OwnerRepositoryTest {
      */
     @Test
     public void whenCreateNewOwnerThenGetOwnerById() {
-        PeriodHistory periodHistory = new PeriodHistory();
+        var periodHistory = PeriodHistory.of().build();
 
-        Owner expectedOwner = new Owner();
-        expectedOwner.setName("owner6");
-        expectedOwner.setHistory(periodHistory);
+        var expectedOwner = Owner.of()
+                .name("owner6")
+                .history(periodHistory)
+                .ownerId(6)
+                .build();
         ownerRepository.create(expectedOwner);
 
         Optional<Owner> actualOwner = ownerRepository.findById(expectedOwner.getId());
@@ -124,18 +133,20 @@ class OwnerRepositoryTest {
      */
     @Test
     public void whenCreateNewOwnerThenGetByLikeName() {
-        PeriodHistory periodHistory1 = new PeriodHistory();
-
-        Owner expectedOwner1 = new Owner();
-        expectedOwner1.setName("owner7");
-        expectedOwner1.setHistory(periodHistory1);
+        var periodHistory1 = PeriodHistory.of().build();
+        var expectedOwner1 = Owner.of()
+                .name("owner7")
+                .history(periodHistory1)
+                .ownerId(7)
+                .build();
         ownerRepository.create(expectedOwner1);
 
-        PeriodHistory periodHistory2 = new PeriodHistory();
-
-        Owner expectedOwner2 = new Owner();
-        expectedOwner2.setName("owner8");
-        expectedOwner2.setHistory(periodHistory2);
+        var periodHistory2 = PeriodHistory.of().build();
+        var expectedOwner2 = Owner.of()
+                .name("owner8")
+                .history(periodHistory2)
+                .ownerId(8)
+                .build();
         ownerRepository.create(expectedOwner2);
 
         List<Owner> actualOwners = ownerRepository.findByLikeName("er8");
@@ -147,11 +158,12 @@ class OwnerRepositoryTest {
      */
     @Test
     public void whenCreateNewOwnerThenGetByName() {
-        PeriodHistory periodHistory = new PeriodHistory();
-
-        Owner expectedOwner = new Owner();
-        expectedOwner.setName("owner9");
-        expectedOwner.setHistory(periodHistory);
+        var periodHistory = PeriodHistory.of().build();
+        var expectedOwner = Owner.of()
+                .name("owner9")
+                .history(periodHistory)
+                .ownerId(9)
+                .build();
         ownerRepository.create(expectedOwner);
 
         Optional<Owner> actualOwner = ownerRepository.findByName(expectedOwner.getName());

@@ -16,7 +16,6 @@ public class PostRepositoryImpl implements PostRepository {
 
     /**
      * Сохранить в базе.
-     *
      * @param post объявление.
      * @return объявление с id.
      */
@@ -26,6 +25,11 @@ public class PostRepositoryImpl implements PostRepository {
         return post;
     }
 
+    /**
+     * Найти по идентификатору
+     * @param id идентификатор объявления
+     * @return optional объявление
+     */
     @Override
     public Optional<Post> findById(int id) {
         return crudRepository.optional(
@@ -39,6 +43,10 @@ public class PostRepositoryImpl implements PostRepository {
         );
     }
 
+    /**
+     * Удалить объявление по идентификатору
+     * @param postId идентификатор объявления
+     */
     @Override
     public void delete(int postId) {
         crudRepository.run(
@@ -47,6 +55,11 @@ public class PostRepositoryImpl implements PostRepository {
         );
     }
 
+    /**
+     * Установить статус объявлению
+     * @param postId идентификатор объявления
+     * @param status статус объявления
+     */
     @Override
     public void setStatus(int postId, boolean status) {
         crudRepository.run(
@@ -57,7 +70,6 @@ public class PostRepositoryImpl implements PostRepository {
 
     /**
      * Показать все объявления
-     *
      * @return список объявлений
      */
     @Override
@@ -75,7 +87,6 @@ public class PostRepositoryImpl implements PostRepository {
 
     /**
      * Показать объявления за последний день;
-     *
      * @return список объявлений
      */
     @Override
@@ -95,7 +106,6 @@ public class PostRepositoryImpl implements PostRepository {
 
     /**
      * Показать объявления определенной марки.
-     *
      * @param brand марка автомобиля
      * @return показать объявления определенной марки.
      */
@@ -113,6 +123,11 @@ public class PostRepositoryImpl implements PostRepository {
         );
     }
 
+    /**
+     * Объявления от заданного пользователя.
+     * @param user пользователь
+     * @return список постов
+     */
     @Override
     public List<Post> getPostsUser(User user) {
         return crudRepository.query(
