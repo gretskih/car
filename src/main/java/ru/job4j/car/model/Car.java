@@ -43,16 +43,27 @@ public class Car {
     /**
      * Текущий владелец автомобиля
      */
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "owner_id")
     private Owner owner;
 
     /**
      * Список бывших владельцев автомобиля
      */
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "auto_id")
+    @ManyToMany
+    @JoinTable(name = "history_owner",
+            joinColumns = {
+                    @JoinColumn(name = "car_id", nullable = false, updatable = false)},
+            inverseJoinColumns = {
+                    @JoinColumn(name = "owner_id", nullable = false, updatable = false)})
     private Set<Owner> owners = new HashSet<>();
+
+    /**
+     * Список периодов владения автомобилем
+     */
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "car_id")
+    private Set<PeriodHistory> periodHistories = new HashSet<>();
 
     /**
      * Список фото автомобиля

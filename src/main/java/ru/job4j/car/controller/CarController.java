@@ -11,6 +11,7 @@ import ru.job4j.car.model.PeriodHistory;
 import ru.job4j.car.model.User;
 import ru.job4j.car.service.CarService;
 import ru.job4j.car.service.EngineService;
+import ru.job4j.car.service.OwnerService;
 
 import java.time.LocalDateTime;
 import java.util.Set;
@@ -21,6 +22,7 @@ import java.util.Set;
 public class CarController {
     private final CarService carService;
     private final EngineService engineService;
+    private final OwnerService ownerService;
 
     @GetMapping
     public String getMyCarsPage(Model model, @SessionAttribute User user) {
@@ -36,15 +38,24 @@ public class CarController {
 
     @PostMapping("/create")
     public String create(@ModelAttribute Car car, @SessionAttribute User user, @RequestParam Set<MultipartFile> files, Model model) {
-        var periodHistory = PeriodHistory.of().startAt(LocalDateTime.now()).build();
-        Owner owner = Owner.of()
-                .ownerId(user.getId())
-                .name(user.getName())
-                .history(periodHistory)
-                .build();
         car.setEngine(engineService.findById(car.getEngine().getId()).get());
+        var ownerOptional = ownerService.findByUserId(user.getId());
+        Owner owner;
+        if (ownerOptional.isEmpty()) {
+            owner = Owner.of()
+                    .ownerId(user.getId())
+                    .name(user.getName())
+                    .build();
+            ownerService.create(owner);
+        } else {
+            owner = ownerOptional.get();
+        }
         car.setOwner(owner);
         car.setOwners(Set.of(owner));
+        var periodHistory = PeriodHistory.of()
+                .ownerId(owner.getId())
+                .startAt(LocalDateTime.now()).build();
+        car.setPeriodHistories(Set.of(periodHistory));
         if (carService.create(car, files) == null) {
             model.addAttribute("message", "Автомобиль не создан!");
             return "errors/404";
@@ -53,8 +64,11 @@ public class CarController {
     }
 
     @PostMapping("/delete")
-    public String delete(@RequestParam int carId) {
-        carService.delete(carId);
-        return "redirect:/cars/cars";
+    public String delete(@RequestParam int carId, Model model) {
+        if (!carService.delete(carId)) {
+            model.addAttribute("message", "Произошла ошибка при удалении!");
+            return "errors/404";
+        }
+        return "redirect:/cars";
     }
 }

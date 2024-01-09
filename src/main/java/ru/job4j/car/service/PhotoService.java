@@ -12,5 +12,5 @@ public interface PhotoService {
 
     void deleteByPhoto(Photo photo);
 
-    void deleteById(int id);
+    boolean deleteById(int id);
 }

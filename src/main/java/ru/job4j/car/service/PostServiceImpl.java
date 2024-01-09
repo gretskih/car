@@ -30,13 +30,13 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public void delete(int postId) {
-        postRepository.delete(postId);
+    public boolean delete(int postId) {
+        return postRepository.delete(postId);
     }
 
     @Override
-    public void setStatus(int postId, boolean status) {
-        postRepository.setStatus(postId, status);
+    public boolean setStatus(int postId, boolean status) {
+        return postRepository.setStatus(postId, status);
     }
 
     @Override

@@ -22,8 +22,10 @@ public class CarRepositoryImpl implements CarRepository {
      */
     @Override
     public Car create(Car car) {
-        crudRepository.run(session -> session.persist(car));
-        return car;
+        if (crudRepository.run(session -> session.persist(car))) {
+            return car;
+        }
+        return null;
     }
 
     /**
@@ -31,8 +33,8 @@ public class CarRepositoryImpl implements CarRepository {
      * @param car автомобиль.
      */
     @Override
-    public void update(Car car) {
-        crudRepository.run(session -> session.merge(car));
+    public boolean update(Car car) {
+        return crudRepository.run(session -> session.merge(car));
     }
 
     /**
@@ -40,8 +42,8 @@ public class CarRepositoryImpl implements CarRepository {
      * @param carId ID
      */
     @Override
-    public void delete(int carId) {
-        crudRepository.run(
+    public boolean delete(int carId) {
+        return crudRepository.run(
                 "delete from Car where id = :fId",
                 Map.of("fId", carId)
         );
@@ -106,7 +108,7 @@ public class CarRepositoryImpl implements CarRepository {
     public List<Car> findByUserId(int userId) {
         return crudRepository.query("from Car car "
                         + "where car.owner.ownerId = :fUserId "
-                        + "order by car.id asc", Car.class,
+                        + "order by car.id desc", Car.class,
                 Map.of("fUserId", userId));
     }
 

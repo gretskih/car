@@ -17,13 +17,13 @@ public interface CarRepository {
      * Обновить в базе автомобиль.
      * @param car автомобиль.
      */
-    void update(Car car);
+    boolean update(Car car);
 
     /**
      * Удалить автомобиль по id.
      * @param carId ID
      */
-    void delete(int carId);
+    boolean delete(int carId);
 
     /**
      * Список автомобилей отсортированных по id.

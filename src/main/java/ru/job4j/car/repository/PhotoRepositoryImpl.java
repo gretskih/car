@@ -27,8 +27,8 @@ public class PhotoRepositoryImpl implements PhotoRepository {
     }
 
     @Override
-    public void deleteById(int photoId) {
-        crudRepository.run(
+    public boolean deleteById(int photoId) {
+        return crudRepository.run(
                 "DELETE from Photo where id = :fId",
                 Map.of("fId", photoId)
         );

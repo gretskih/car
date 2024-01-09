@@ -53,12 +53,15 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public void delete(int carId) {
+    public boolean delete(int carId) {
         var carOptional = carRepository.findById(carId);
         if (carOptional.isPresent()) {
             Set<Photo> photos = carOptional.get().getPhotos();
-            carRepository.delete(carId);
-            photos.forEach(photoService::deleteByPhoto);
+            if (carRepository.delete(carId)) {
+                photos.forEach(photoService::deleteByPhoto);
+                return true;
+            }
         }
+        return false;
     }
 }

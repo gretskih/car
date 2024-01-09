@@ -21,8 +21,10 @@ public class PostRepositoryImpl implements PostRepository {
      */
     @Override
     public Post create(Post post) {
-        crudRepository.run(session -> session.persist(post));
-        return post;
+        if (crudRepository.run(session -> session.persist(post))) {
+            return post;
+        }
+        return null;
     }
 
     /**
@@ -48,8 +50,8 @@ public class PostRepositoryImpl implements PostRepository {
      * @param postId идентификатор объявления
      */
     @Override
-    public void delete(int postId) {
-        crudRepository.run(
+    public boolean delete(int postId) {
+        return crudRepository.run(
                 "delete from Post where id = :fId",
                 Map.of("fId", postId)
         );
@@ -61,8 +63,8 @@ public class PostRepositoryImpl implements PostRepository {
      * @param status статус объявления
      */
     @Override
-    public void setStatus(int postId, boolean status) {
-        crudRepository.run(
+    public boolean setStatus(int postId, boolean status) {
+        return crudRepository.run(
                 "UPDATE Post SET status = :fStatus WHERE id = :fId",
                 Map.of("fStatus", status, "fId", postId)
         );

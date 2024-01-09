@@ -57,11 +57,9 @@ public class PostController {
     }
 
     @PostMapping("/create")
-    public String create(@ModelAttribute Post post, @SessionAttribute User user, @RequestParam String price, @RequestParam Integer carId) {
+    public String create(@ModelAttribute Post post, @SessionAttribute User user, @RequestParam String price, @RequestParam Integer carId, Model model) {
         post.setCreated(LocalDateTime.now());
-
         post.setUser(user);
-
         PriceHistory priceHistory = new PriceHistory();
         priceHistory.setBefore(new BigInteger(price.replaceAll(" ", "")));
         priceHistory.setAfter(new BigInteger(price.replaceAll(" ", "")));
@@ -71,7 +69,10 @@ public class PostController {
         Car car = carService.findById(carId).get();
         post.setCar(car);
 
-        postService.create(post);
+        if (postService.create(post) == null) {
+            model.addAttribute("message", "Объявление не создано!");
+            return "errors/404";
+        }
         return "redirect:/posts";
     }
 
@@ -89,19 +90,28 @@ public class PostController {
 
     @GetMapping("/complete/{id}")
     public String complete(@PathVariable int id, Model model) {
-        postService.setStatus(id, true);
+        if (!postService.setStatus(id, true)) {
+            model.addAttribute("message", "Статус объявления не обновлен!");
+            return "errors/404";
+        }
         return "redirect:/posts";
     }
 
     @GetMapping("/place/{id}")
     public String place(@PathVariable int id, Model model) {
-        postService.setStatus(id, false);
+        if (!postService.setStatus(id, false)) {
+            model.addAttribute("message", "Статус объявления не обновлен!");
+            return "errors/404";
+        }
         return "redirect:/posts";
     }
 
     @GetMapping("/delete/{id}")
-    public String delete(@PathVariable int id) {
-        postService.delete(id);
+    public String delete(@PathVariable int id, Model model) {
+        if (!postService.delete(id)) {
+            model.addAttribute("message", "Оъявление не было удалено!");
+            return "errors/404";
+        }
         return "redirect:/posts";
     }
 }

@@ -17,13 +17,13 @@ public interface UserRepository {
      * Обновить в базе пользователя.
      * @param user пользователь.
      */
-    void update(User user);
+    boolean update(User user);
 
     /**
      * Удалить пользователя по id.
      * @param userId id пользователя
      */
-    void delete(int userId);
+    boolean delete(int userId);
 
     /**
      * Список пользователь отсортированных по id.

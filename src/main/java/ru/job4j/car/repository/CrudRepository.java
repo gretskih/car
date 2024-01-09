@@ -18,28 +18,35 @@ import java.util.function.Function;
 public class CrudRepository {
     private final SessionFactory sf;
 
-    public void run(Consumer<Session> command) {
+    public boolean run(Consumer<Session> command) {
         try {
             tx(session -> {
                         command.accept(session);
                         return null;
                     }
             );
+            return true;
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return false;
     }
 
-    public void run(String query, Map<String, Object> args) {
-        Consumer<Session> command = session -> {
+    public boolean run(String query, Map<String, Object> args) {
+        Function<Session, Boolean> command = session -> {
             var sq = session
                     .createQuery(query);
             for (Map.Entry<String, Object> arg : args.entrySet()) {
                 sq.setParameter(arg.getKey(), arg.getValue());
             }
-            sq.executeUpdate();
+            return sq.executeUpdate() > 0;
         };
-        run(command);
+        try {
+            return tx(command);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     public <T> Optional<T> optional(String query, Class<T> cl, Map<String, Object> args) {
