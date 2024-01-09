@@ -17,6 +17,10 @@ public class PeriodHistory {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
     private int id;
+    @Column(name = "car_id")
+    private int carId;
+    @Column(name = "owner_id")
+    private int ownerId;
     private LocalDateTime startAt;
     private LocalDateTime endAt;
 }

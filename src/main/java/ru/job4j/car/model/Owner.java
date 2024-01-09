@@ -19,11 +19,4 @@ public class Owner {
     @Column(name = "user_id")
     private int ownerId;
     private String name;
-
-    /**
-     * Период владения автомобилем
-     */
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "history_id")
-    private PeriodHistory history;
 }

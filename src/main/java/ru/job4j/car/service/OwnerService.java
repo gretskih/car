@@ -1,11 +1,11 @@
-package ru.job4j.car.repository;
+package ru.job4j.car.service;
 
 import ru.job4j.car.model.Owner;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface OwnerRepository {
+public interface OwnerService {
     /**
      * Сохранить в базе.
      * @param owner владелец.
