@@ -27,8 +27,11 @@
                     <tbody>
                     <tr th:each="postPreview: ${postPreviews}">
                         <td width="20%" height="20%">
-                            <a th:href="@{/posts/{postId}(postId=${postPreview.id})}">
+                            <a th:href="@{/posts/{postId}(postId=${postPreview.id})}" th:if="${user.name != 'Гость'}">
                                 <img  th:each="photo,iterStat : ${postPreview.photos}" th:if="${iterStat.first == true}" th:src="@{/files/{photoId}(photoId=${photo.id})}" class="img-fluid rounded" alt="No image">
+                            </a>
+                            <a th:href="@{/users/login}" th:if="${user.name == 'Гость'}">
+                                <img th:each="photo,iterStat : ${postPreview.photos}" th:if="${iterStat.first == true}" th:src="@{/files/{photoId}(photoId=${photo.id})}" class="img-fluid rounded" alt="No image">
                             </a>
                         </td>
                         <td>
@@ -49,7 +52,7 @@
             </div>
             <div class="row pr-3">
                 <div class="col-9"></div>
-                <div class="col-3"><a class="btn btn-info w-100" th:href="@{/posts/create}">Новое объявление</a></div>
+                <div class="col-3"><a class="btn btn-info w-100" th:href="@{/posts/create}" th:if="${user.name != 'Гость'}">Новое объявление</a></div>
         </div>
     </div>
     <footer th:insert="blocks/footer :: footer"></footer>

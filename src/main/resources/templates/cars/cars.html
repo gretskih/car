@@ -30,6 +30,7 @@
                                 <div class="col-3"><a class="btn btn-danger w-100" th:href="@{/posts}">Отмена</a></div>
                                 <div class="col-3"><a class="btn btn-info w-100" th:href="@{/cars/create}">Добавить</a></div>
                                 <div class="col-3" th:if="${not cars.isEmpty}" ><button class="btn btn-info w-100" type="submit">Удалить</button></div>
+                                <div class="col-3" th:if="${cars.isEmpty}" ><button class="btn btn-info w-100" type="submit" disabled>Удалить</button></div>
                             </div>
                     </div>
                 </form>
