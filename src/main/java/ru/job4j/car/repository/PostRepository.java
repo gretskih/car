@@ -17,9 +17,9 @@ public interface PostRepository {
 
     Optional<Post> findById(int id);
 
-    void delete(int postId);
+    boolean delete(int postId);
 
-    void setStatus(int postId, boolean status);
+    boolean setStatus(int postId, boolean status);
 
     List<Post> getPosts();
 

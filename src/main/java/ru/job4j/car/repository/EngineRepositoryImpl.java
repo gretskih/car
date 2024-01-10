@@ -21,8 +21,10 @@ public class EngineRepositoryImpl implements EngineRepository {
      */
     @Override
     public Engine create(Engine engine) {
-        crudRepository.run(session -> session.persist(engine));
-        return engine;
+        if (crudRepository.run(session -> session.persist(engine))) {
+            return engine;
+        }
+        return null;
     }
 
     /**
@@ -30,8 +32,8 @@ public class EngineRepositoryImpl implements EngineRepository {
      * @param engine двигатель.
      */
     @Override
-    public void update(Engine engine) {
-        crudRepository.run(session -> session.merge(engine));
+    public boolean update(Engine engine) {
+        return crudRepository.run(session -> session.merge(engine));
     }
 
     /**
@@ -39,8 +41,8 @@ public class EngineRepositoryImpl implements EngineRepository {
      * @param engineId ID
      */
     @Override
-    public void delete(int engineId) {
-        crudRepository.run(
+    public boolean delete(int engineId) {
+        return crudRepository.run(
                 "delete from Engine where id = :fId",
                 Map.of("fId", engineId)
         );

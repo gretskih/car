@@ -32,8 +32,8 @@ public class UserRepositoryImpl implements UserRepository {
      * @param user пользователь.
      */
     @Override
-    public void update(User user) {
-        crudRepository.run(session -> session.merge(user));
+    public boolean update(User user) {
+        return crudRepository.run(session -> session.merge(user));
     }
 
     /**
@@ -41,8 +41,8 @@ public class UserRepositoryImpl implements UserRepository {
      * @param userId ID
      */
     @Override
-    public void delete(int userId) {
-        crudRepository.run(
+    public boolean delete(int userId) {
+        return crudRepository.run(
                 "delete from User where id = :fId",
                 Map.of("fId", userId)
         );

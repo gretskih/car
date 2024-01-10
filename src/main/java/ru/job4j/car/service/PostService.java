@@ -11,9 +11,9 @@ import java.util.Optional;
 public interface PostService {
     Post create(Post post);
 
-    void delete(int postId);
+    boolean delete(int postId);
 
-    void setStatus(int postId, boolean status);
+    boolean setStatus(int postId, boolean status);
 
     Optional<PostView> findById(int id);
 

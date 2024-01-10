@@ -41,7 +41,7 @@ public class CarController {
         car.setEngine(engineService.findById(car.getEngine().getId()).get());
         var ownerOptional = ownerService.findByUserId(user.getId());
         Owner owner;
-        if(ownerOptional.isEmpty()) {
+        if (ownerOptional.isEmpty()) {
             owner = Owner.of()
                     .ownerId(user.getId())
                     .name(user.getName())
@@ -64,8 +64,11 @@ public class CarController {
     }
 
     @PostMapping("/delete")
-    public String delete(@RequestParam int carId) {
-        carService.delete(carId);
-        return "redirect:/cars/cars";
+    public String delete(@RequestParam int carId, Model model) {
+        if (!carService.delete(carId)) {
+            model.addAttribute("message", "Произошла ошибка при удалении!");
+            return "errors/404";
+        }
+        return "redirect:/cars";
     }
 }

@@ -55,12 +55,13 @@ public class PhotoServiceImpl implements PhotoService {
     }
 
     @Override
-    public void deleteById(int id) {
+    public boolean deleteById(int id) {
         var photoOptional = photoRepository.findById(id);
         if (photoOptional.isPresent()) {
             deleteFile(photoOptional.get().getPath());
-            photoRepository.deleteById(id);
+            return photoRepository.deleteById(id);
         }
+        return false;
     }
 
     @Override

@@ -52,7 +52,6 @@ public class CarRepositoryTest {
         var periodHistory = PeriodHistory.of().build();
         var owner = Owner.of()
                 .name("owner1")
-                .history(periodHistory)
                 .ownerId(1)
                 .build();
 

@@ -10,5 +10,5 @@ public interface PhotoRepository {
 
     Optional<Photo> findById(int id);
 
-    void deleteById(int id);
+    boolean deleteById(int id);
 }

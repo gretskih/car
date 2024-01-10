@@ -17,13 +17,13 @@ public interface OwnerRepository {
      * Обновить в базе владельца.
      * @param owner владелец.
      */
-    void update(Owner owner);
+    boolean update(Owner owner);
 
     /**
      * Удалить владельца по id.
      * @param ownerId ID
      */
-    void delete(int ownerId);
+    boolean delete(int ownerId);
 
     /**
      * Список владельцев отсортированных по id.

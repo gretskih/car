@@ -30,8 +30,8 @@ public class OwnerRepositoryImpl implements OwnerRepository {
      * @param owner владелец.
      */
     @Override
-    public void update(Owner owner) {
-        crudRepository.run(session -> session.merge(owner));
+    public boolean update(Owner owner) {
+        return crudRepository.run(session -> session.merge(owner));
     }
 
     /**
@@ -39,8 +39,8 @@ public class OwnerRepositoryImpl implements OwnerRepository {
      * @param ownerId ID
      */
     @Override
-    public void delete(int ownerId) {
-        crudRepository.run(
+    public boolean delete(int ownerId) {
+        return crudRepository.run(
                 "delete from Owner where id = :fId",
                 Map.of("fId", ownerId)
         );

@@ -17,13 +17,13 @@ public interface EngineRepository {
      * Обновить в базе двигатель.
      * @param engine двигатель.
      */
-    void update(Engine engine);
+    boolean update(Engine engine);
 
     /**
      * Удалить двигатель по id.
      * @param engineId ID
      */
-    void delete(int engineId);
+    boolean delete(int engineId);
 
     /**
      * Список двигателей отсортированных по id.

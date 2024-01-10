@@ -44,7 +44,6 @@ class OwnerRepositoryTest {
         var periodHistory = PeriodHistory.of().build();
         var expectedOwner = Owner.of()
                 .name("owner1")
-                .history(periodHistory)
                 .ownerId(1)
                 .build();
         ownerRepository.create(expectedOwner);
@@ -68,7 +67,6 @@ class OwnerRepositoryTest {
 
         var expectedOwner = Owner.of()
                 .name("owner3")
-                .history(periodHistory)
                 .ownerId(3)
                 .build();
         ownerRepository.create(expectedOwner);
@@ -89,7 +87,6 @@ class OwnerRepositoryTest {
 
         var expectedOwner1 = Owner.of()
                 .name("owner4")
-                .history(periodHistory1)
                 .ownerId(4)
                 .build();
         ownerRepository.create(expectedOwner1);
@@ -98,7 +95,6 @@ class OwnerRepositoryTest {
 
         var expectedOwner2 = Owner.of()
                 .name("owner5")
-                .history(periodHistory2)
                 .ownerId(5)
                 .build();
         ownerRepository.create(expectedOwner2);
@@ -116,7 +112,6 @@ class OwnerRepositoryTest {
 
         var expectedOwner = Owner.of()
                 .name("owner6")
-                .history(periodHistory)
                 .ownerId(6)
                 .build();
         ownerRepository.create(expectedOwner);
@@ -136,7 +131,6 @@ class OwnerRepositoryTest {
         var periodHistory1 = PeriodHistory.of().build();
         var expectedOwner1 = Owner.of()
                 .name("owner7")
-                .history(periodHistory1)
                 .ownerId(7)
                 .build();
         ownerRepository.create(expectedOwner1);
@@ -144,7 +138,6 @@ class OwnerRepositoryTest {
         var periodHistory2 = PeriodHistory.of().build();
         var expectedOwner2 = Owner.of()
                 .name("owner8")
-                .history(periodHistory2)
                 .ownerId(8)
                 .build();
         ownerRepository.create(expectedOwner2);
@@ -161,7 +154,6 @@ class OwnerRepositoryTest {
         var periodHistory = PeriodHistory.of().build();
         var expectedOwner = Owner.of()
                 .name("owner9")
-                .history(periodHistory)
                 .ownerId(9)
                 .build();
         ownerRepository.create(expectedOwner);
