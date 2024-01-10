@@ -1,6 +1,7 @@
 package ru.job4j.car.repository;
 
 import ru.job4j.car.model.Owner;
+import ru.job4j.car.model.User;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,12 +17,14 @@ public interface OwnerRepository {
     /**
      * Обновить в базе владельца.
      * @param owner владелец.
+     * @return статус транзакции
      */
     boolean update(Owner owner);
 
     /**
      * Удалить владельца по id.
      * @param ownerId ID
+     * @return статус транзакции
      */
     boolean delete(int ownerId);
 
@@ -53,7 +56,7 @@ public interface OwnerRepository {
 
     /**
      * Найти владельца по userId
-     * @return владелец.
+     * @return Optional or owner.
      */
-    Optional<Owner> findByUserId(int userId);
+    Optional<Owner> findByUser(User user);
 }

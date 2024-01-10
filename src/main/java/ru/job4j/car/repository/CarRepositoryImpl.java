@@ -3,6 +3,7 @@ package ru.job4j.car.repository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 import ru.job4j.car.model.Car;
+import ru.job4j.car.model.User;
 
 import java.util.Collection;
 import java.util.List;
@@ -31,6 +32,7 @@ public class CarRepositoryImpl implements CarRepository {
     /**
      * Обновить в базе автомобиль.
      * @param car автомобиль.
+     * @return статус транзакции
      */
     @Override
     public boolean update(Car car) {
@@ -40,6 +42,7 @@ public class CarRepositoryImpl implements CarRepository {
     /**
      * Удалить автомобиль по id.
      * @param carId ID
+     * @return статус транзакции
      */
     @Override
     public boolean delete(int carId) {
@@ -104,14 +107,23 @@ public class CarRepositoryImpl implements CarRepository {
         );
     }
 
+    /**
+     * Найти все автомобили пользователя
+     * @param user пользователь
+     * @return список автомобилей
+     */
     @Override
-    public List<Car> findByUserId(int userId) {
+    public List<Car> findByUser(User user) {
         return crudRepository.query("from Car car "
-                        + "where car.owner.ownerId = :fUserId "
+                        + "where car.owner.user = :fUser "
                         + "order by car.id desc", Car.class,
-                Map.of("fUserId", userId));
+                Map.of("fUser", user));
     }
 
+    /**
+     * Список автомобилей отсортированных по id.
+     * @return список автомобилей
+     */
     @Override
     public List<Car> findAll() {
         return crudRepository.query("from Car car "

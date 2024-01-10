@@ -1,6 +1,7 @@
 package ru.job4j.car.repository;
 
 import ru.job4j.car.model.Car;
+import ru.job4j.car.model.User;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,12 +17,14 @@ public interface CarRepository {
     /**
      * Обновить в базе автомобиль.
      * @param car автомобиль.
+     * @return статус транзакции
      */
     boolean update(Car car);
 
     /**
      * Удалить автомобиль по id.
      * @param carId ID
+     * @return статус транзакции
      */
     boolean delete(int carId);
 
@@ -51,7 +54,16 @@ public interface CarRepository {
      */
     Optional<Car> findByName(String name);
 
-    List<Car> findAll();
+    /**
+     * Найти все автомобили пользователя
+     * @param user пользователь
+     * @return список автомобилей
+     */
+    List<Car> findByUser(User user);
 
-    List<Car> findByUserId(int userId);
+    /**
+     * Список автомобилей отсортированных по id.
+     * @return список автомобилей
+     */
+    List<Car> findAll();
 }

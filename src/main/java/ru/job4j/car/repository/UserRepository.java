@@ -16,12 +16,14 @@ public interface UserRepository {
     /**
      * Обновить в базе пользователя.
      * @param user пользователь.
+     * @return статус транзакции
      */
     boolean update(User user);
 
     /**
      * Удалить пользователя по id.
      * @param userId id пользователя
+     * @return статус транзакции
      */
     boolean delete(int userId);
 
@@ -52,5 +54,11 @@ public interface UserRepository {
      */
     Optional<User> findByLogin(String login);
 
+    /**
+     * Найти пользователя по login и password.
+     * @param login логин
+     * @param password пароль
+     * @return Optional or user.
+     */
     Optional<User> findByLoginAndPassword(String login, String password);
 }

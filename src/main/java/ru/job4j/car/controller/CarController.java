@@ -26,7 +26,7 @@ public class CarController {
 
     @GetMapping
     public String getMyCarsPage(Model model, @SessionAttribute User user) {
-        model.addAttribute("cars", carService.findByUserId(user.getId()));
+        model.addAttribute("cars", carService.findByUser(user));
         return "cars/cars";
     }
 
@@ -39,11 +39,11 @@ public class CarController {
     @PostMapping("/create")
     public String create(@ModelAttribute Car car, @SessionAttribute User user, @RequestParam Set<MultipartFile> files, Model model) {
         car.setEngine(engineService.findById(car.getEngine().getId()).get());
-        var ownerOptional = ownerService.findByUserId(user.getId());
+        var ownerOptional = ownerService.findByUser(user);
         Owner owner;
         if (ownerOptional.isEmpty()) {
             owner = Owner.of()
-                    .ownerId(user.getId())
+                    .user(user)
                     .name(user.getName())
                     .build();
             ownerService.create(owner);

@@ -5,7 +5,6 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import ru.job4j.car.model.Engine;
-import ru.job4j.car.repository.CrudRepository;
 import ru.job4j.car.repository.EngineRepository;
 import ru.job4j.car.repository.EngineRepositoryImpl;
 
@@ -13,10 +12,11 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static repository.ConfigurationTest.crudRepository;
 
 public class EngineRepositoryTest {
 
-    private final EngineRepository engineRepository = new EngineRepositoryImpl(new CrudRepository(ConfigurationTest.sf));
+    private final EngineRepository engineRepository = new EngineRepositoryImpl(crudRepository);
 
     /**
      * Очистка базы
@@ -47,11 +47,12 @@ public class EngineRepositoryTest {
         Engine expectedEngine = new Engine();
         expectedEngine.setName("engine1");
         engineRepository.create(expectedEngine);
-
         expectedEngine.setName("engine2");
-        engineRepository.update(expectedEngine);
+
+        boolean actualStatusTransaction = engineRepository.update(expectedEngine);
         Optional<Engine> actualEngine = engineRepository.findById(expectedEngine.getId());
 
+        assertThat(actualStatusTransaction).isTrue();
         assertThat(actualEngine)
                 .isPresent()
                 .isNotEmpty()
@@ -67,9 +68,10 @@ public class EngineRepositoryTest {
         expectedEngine.setName("engine3");
         engineRepository.create(expectedEngine);
 
-        engineRepository.delete(expectedEngine.getId());
+        boolean actualStatusTransaction = engineRepository.delete(expectedEngine.getId());
         Optional<Engine> actualEngine = engineRepository.findById(expectedEngine.getId());
 
+        assertThat(actualStatusTransaction).isTrue();
         assertThat(actualEngine).isEmpty();
     }
 
@@ -77,7 +79,7 @@ public class EngineRepositoryTest {
      * Получение полного списка записей
      */
     @Test
-    public void whenCreateNewEngineThenGetAllEngines() {
+    public void whenFindAllEnginesOrderByIdThenGetAllEngines() {
         clearTableBefore();
         Engine expectedEngine1 = new Engine();
         expectedEngine1.setName("engine4");
@@ -94,7 +96,7 @@ public class EngineRepositoryTest {
      * Поиск записи по Id
      */
     @Test
-    public void whenCreateNewEngineThenGetEngineById() {
+    public void whenFindEngineByIdThenGetEngine() {
         Engine expectedEngine = new Engine();
         expectedEngine.setName("engine6");
         engineRepository.create(expectedEngine);
@@ -110,7 +112,7 @@ public class EngineRepositoryTest {
      * Поиск по части имени
      */
     @Test
-    public void whenCreateNewEngineThenGetByLikeName() {
+    public void whenFindEngineByLikeNameThenGetEngine() {
         Engine expectedEngine1 = new Engine();
         expectedEngine1.setName("engine7");
         engineRepository.create(expectedEngine1);
@@ -126,7 +128,7 @@ public class EngineRepositoryTest {
      * Поиск по имени name
      */
     @Test
-    public void whenCreateNewEngineThenGetByName() {
+    public void whenFindEngineByNameThenEngine() {
         Engine expectedEngine = new Engine();
         expectedEngine.setName("engine9");
         engineRepository.create(expectedEngine);

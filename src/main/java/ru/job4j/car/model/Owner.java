@@ -16,7 +16,8 @@ public class Owner {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
     private int id;
-    @Column(name = "user_id")
-    private int ownerId;
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    private User user;
     private String name;
 }

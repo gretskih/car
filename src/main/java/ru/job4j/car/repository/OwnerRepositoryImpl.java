@@ -3,6 +3,7 @@ package ru.job4j.car.repository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 import ru.job4j.car.model.Owner;
+import ru.job4j.car.model.User;
 
 import java.util.List;
 import java.util.Map;
@@ -28,6 +29,7 @@ public class OwnerRepositoryImpl implements OwnerRepository {
     /**
      * Обновить в базе владельца.
      * @param owner владелец.
+     * @return статус транзакции
      */
     @Override
     public boolean update(Owner owner) {
@@ -37,6 +39,7 @@ public class OwnerRepositoryImpl implements OwnerRepository {
     /**
      * Удалить владельца по id.
      * @param ownerId ID
+     * @return статус транзакции
      */
     @Override
     public boolean delete(int ownerId) {
@@ -94,14 +97,14 @@ public class OwnerRepositoryImpl implements OwnerRepository {
     }
 
     /**
-     * Найти владельца по userId
-     * @return владелец.
+     * Найти владельца по User
+     * @return Optional or owner.
      */
     @Override
-    public Optional<Owner> findByUserId(int userId) {
+    public Optional<Owner> findByUser(User user) {
         return crudRepository.optional(
-                "from Owner where ownerId = :fOwnerId", Owner.class,
-                Map.of("fOwnerId", userId)
+                "from Owner where user = :fUser", Owner.class,
+                Map.of("fUser", user)
         );
     }
 }

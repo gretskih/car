@@ -3,6 +3,7 @@ package ru.job4j.car.service;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.job4j.car.model.Owner;
+import ru.job4j.car.model.User;
 import ru.job4j.car.repository.OwnerRepository;
 
 import java.util.List;
@@ -50,7 +51,7 @@ public class OwnerServiceImpl implements OwnerService {
     }
 
     @Override
-    public Optional<Owner> findByUserId(int userId) {
-        return ownerRepository.findByUserId(userId);
+    public Optional<Owner> findByUser(User user) {
+        return ownerRepository.findByUser(user);
     }
 }

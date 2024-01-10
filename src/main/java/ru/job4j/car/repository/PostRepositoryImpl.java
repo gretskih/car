@@ -48,6 +48,7 @@ public class PostRepositoryImpl implements PostRepository {
     /**
      * Удалить объявление по идентификатору
      * @param postId идентификатор объявления
+     * @return статус транзакции
      */
     @Override
     public boolean delete(int postId) {
@@ -61,6 +62,7 @@ public class PostRepositoryImpl implements PostRepository {
      * Установить статус объявлению
      * @param postId идентификатор объявления
      * @param status статус объявления
+     * @return статус транзакции
      */
     @Override
     public boolean setStatus(int postId, boolean status) {
@@ -109,7 +111,7 @@ public class PostRepositoryImpl implements PostRepository {
     /**
      * Показать объявления определенной марки.
      * @param brand марка автомобиля
-     * @return показать объявления определенной марки.
+     * @return объявления определенной марки.
      */
     @Override
     public List<Post> getPostsBrand(String brand) {
@@ -128,7 +130,7 @@ public class PostRepositoryImpl implements PostRepository {
     /**
      * Объявления от заданного пользователя.
      * @param user пользователь
-     * @return список постов
+     * @return список объявлений пользователя user
      */
     @Override
     public List<Post> getPostsUser(User user) {

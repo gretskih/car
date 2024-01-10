@@ -5,19 +5,20 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import ru.job4j.car.model.Owner;
-import ru.job4j.car.model.PeriodHistory;
-import ru.job4j.car.repository.CrudRepository;
-import ru.job4j.car.repository.OwnerRepository;
-import ru.job4j.car.repository.OwnerRepositoryImpl;
+import ru.job4j.car.model.User;
+import ru.job4j.car.repository.*;
 
 import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static repository.ConfigurationTest.crudRepository;
+import static repository.UserRepositoryTest.getUser;
 
 class OwnerRepositoryTest {
 
-    private final OwnerRepository ownerRepository = new OwnerRepositoryImpl(new CrudRepository(ConfigurationTest.sf));
+    public static OwnerRepository ownerRepository = new OwnerRepositoryImpl(crudRepository);
+    public static UserRepository userRepository = new UserRepositoryImpl(crudRepository);
 
     /**
      * Очистка базы
@@ -28,6 +29,7 @@ class OwnerRepositoryTest {
         try {
             session.beginTransaction();
             session.createQuery("DELETE FROM Owner").executeUpdate();
+            session.createQuery("DELETE FROM User").executeUpdate();
             session.getTransaction().commit();
         } catch (Exception e) {
             session.getTransaction().rollback();
@@ -37,21 +39,30 @@ class OwnerRepositoryTest {
     }
 
     /**
+     * Фабрика владельцев
+     */
+    public static Owner getOwner(String name, User user) {
+        return Owner.of()
+                .name(name)
+                .user(user)
+                .build();
+    }
+
+    /**
      * Обновление записи
      */
     @Test
     public void whenUpdateOwnerThenGetUpdatedOwner() {
-        var periodHistory = PeriodHistory.of().build();
-        var expectedOwner = Owner.of()
-                .name("owner1")
-                .ownerId(1)
-                .build();
+        User user = getUser("user1");
+        userRepository.create(user);
+        var expectedOwner = getOwner("owner1", user);
         ownerRepository.create(expectedOwner);
 
         expectedOwner.setName("owner2");
-        ownerRepository.update(expectedOwner);
+        boolean actualStatusTransaction = ownerRepository.update(expectedOwner);
         Optional<Owner> actualOwner = ownerRepository.findById(expectedOwner.getId());
 
+        assertThat(actualStatusTransaction).isTrue();
         assertThat(actualOwner)
                 .isPresent()
                 .isNotEmpty()
@@ -63,17 +74,15 @@ class OwnerRepositoryTest {
      */
     @Test
     public void whenDeleteOwnerThenGetEmpty() {
-        var periodHistory = PeriodHistory.of().build();
-
-        var expectedOwner = Owner.of()
-                .name("owner3")
-                .ownerId(3)
-                .build();
+        User user = getUser("user3");
+        userRepository.create(user);
+        var expectedOwner = getOwner("owner3", user);
         ownerRepository.create(expectedOwner);
 
-        ownerRepository.delete(expectedOwner.getId());
+        boolean actualStatusTransaction = ownerRepository.delete(expectedOwner.getId());
         Optional<Owner> actualOwner = ownerRepository.findById(expectedOwner.getId());
 
+        assertThat(actualStatusTransaction).isTrue();
         assertThat(actualOwner).isEmpty();
     }
 
@@ -81,22 +90,16 @@ class OwnerRepositoryTest {
      * Получение полного списка записей
      */
     @Test
-    public void whenCreateNewOwnerThenGetAllOwners() {
+    public void whenFindAllOwnerOrderByIdThenGetAllOwners() {
         clearTableBefore();
-        var periodHistory1 = PeriodHistory.of().build();
-
-        var expectedOwner1 = Owner.of()
-                .name("owner4")
-                .ownerId(4)
-                .build();
+        User user1 = getUser("user4");
+        userRepository.create(user1);
+        User user2 = getUser("user5");
+        userRepository.create(user2);
+        var expectedOwner1 = getOwner("owner4", user1);
         ownerRepository.create(expectedOwner1);
 
-        var periodHistory2 = PeriodHistory.of().build();
-
-        var expectedOwner2 = Owner.of()
-                .name("owner5")
-                .ownerId(5)
-                .build();
+        var expectedOwner2 = getOwner("owner5", user2);
         ownerRepository.create(expectedOwner2);
 
         List<Owner> actualOwners = ownerRepository.findAllOrderById();
@@ -107,13 +110,10 @@ class OwnerRepositoryTest {
      * Поиск записи по Id
      */
     @Test
-    public void whenCreateNewOwnerThenGetOwnerById() {
-        var periodHistory = PeriodHistory.of().build();
-
-        var expectedOwner = Owner.of()
-                .name("owner6")
-                .ownerId(6)
-                .build();
+    public void whenFindOwnerByIdThenGetOwner() {
+        User user = getUser("user6");
+        userRepository.create(user);
+        var expectedOwner = getOwner("owner6", user);
         ownerRepository.create(expectedOwner);
 
         Optional<Owner> actualOwner = ownerRepository.findById(expectedOwner.getId());
@@ -127,19 +127,15 @@ class OwnerRepositoryTest {
      * Поиск по части имени
      */
     @Test
-    public void whenCreateNewOwnerThenGetByLikeName() {
-        var periodHistory1 = PeriodHistory.of().build();
-        var expectedOwner1 = Owner.of()
-                .name("owner7")
-                .ownerId(7)
-                .build();
+    public void whenFindOwnerByLikeNameThenGetOwner() {
+        User user1 = getUser("user7");
+        userRepository.create(user1);
+        User user2 = getUser("user8");
+        userRepository.create(user2);
+        var expectedOwner1 = getOwner("owner7", user1);
         ownerRepository.create(expectedOwner1);
 
-        var periodHistory2 = PeriodHistory.of().build();
-        var expectedOwner2 = Owner.of()
-                .name("owner8")
-                .ownerId(8)
-                .build();
+        var expectedOwner2 = getOwner("owner8", user2);
         ownerRepository.create(expectedOwner2);
 
         List<Owner> actualOwners = ownerRepository.findByLikeName("er8");
@@ -150,15 +146,30 @@ class OwnerRepositoryTest {
      * Поиск по имени name
      */
     @Test
-    public void whenCreateNewOwnerThenGetByName() {
-        var periodHistory = PeriodHistory.of().build();
-        var expectedOwner = Owner.of()
-                .name("owner9")
-                .ownerId(9)
-                .build();
+    public void whenFindOwnerByNameThenGetOwner() {
+        User user = getUser("user9");
+        userRepository.create(user);
+        var expectedOwner = getOwner("owner9", user);
         ownerRepository.create(expectedOwner);
 
         Optional<Owner> actualOwner = ownerRepository.findByName(expectedOwner.getName());
+        assertThat(actualOwner)
+                .isPresent()
+                .isNotEmpty()
+                .contains(expectedOwner);
+    }
+
+    /**
+     * Найти владельца по User
+     */
+    @Test
+    public void whenFindOwnerByUserThenGetOwner() {
+        User user = getUser("user10");
+        userRepository.create(user);
+        var expectedOwner = getOwner("owner10", user);
+        ownerRepository.create(expectedOwner);
+
+        Optional<Owner> actualOwner = ownerRepository.findByUser(user);
         assertThat(actualOwner)
                 .isPresent()
                 .isNotEmpty()
@@ -174,6 +185,7 @@ class OwnerRepositoryTest {
         try {
             session.beginTransaction();
             session.createQuery("DELETE FROM Owner").executeUpdate();
+            session.createQuery("DELETE FROM User").executeUpdate();
             session.getTransaction().commit();
         } catch (Exception e) {
             session.getTransaction().rollback();

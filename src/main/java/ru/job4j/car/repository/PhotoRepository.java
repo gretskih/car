@@ -6,9 +6,24 @@ import java.util.Optional;
 
 public interface PhotoRepository {
 
-    Photo save(Photo file);
+    /**
+     * Сохранение фото
+     * @param photo фото
+     * @return фото
+     */
+    Photo save(Photo photo);
 
-    Optional<Photo> findById(int id);
+    /**
+     * Поиск фото по идентификатору
+     * @param photoId идентификатор
+     * @return optional фото
+     */
+    Optional<Photo> findById(int photoId);
 
-    boolean deleteById(int id);
+    /**
+     * Удаление фото по идентификатору
+     * @param photoId идентификатор фото
+     * @return true - удачно, false - неудачно
+     */
+    boolean deleteById(int photoId);
 }

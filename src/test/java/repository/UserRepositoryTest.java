@@ -5,7 +5,6 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import ru.job4j.car.model.User;
-import ru.job4j.car.repository.CrudRepository;
 import ru.job4j.car.repository.UserRepository;
 import ru.job4j.car.repository.UserRepositoryImpl;
 
@@ -13,10 +12,11 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static repository.ConfigurationTest.crudRepository;
 
 public class UserRepositoryTest {
 
-    private final UserRepository userRepository = new UserRepositoryImpl(new CrudRepository(ConfigurationTest.sf));
+    public static UserRepository userRepository = new UserRepositoryImpl(crudRepository);
 
     /**
      * Очистка базы
@@ -36,21 +36,32 @@ public class UserRepositoryTest {
     }
 
     /**
+     * Фабрика пользователей
+     * @param login логин
+     * @return User
+     */
+    public static User getUser(String login) {
+        User user = new User();
+        user.setName("Тест");
+        user.setLogin(login);
+        user.setPassword("0000");
+        user.setContact("login@login.com");
+        return user;
+    }
+
+    /**
      * Обновление пользователя
      */
     @Test
     public void whenUpdateUserThenGetUpdatedUser() {
-        User expectedUser = new User();
-        expectedUser.setLogin("user1");
-        expectedUser.setName("name1");
-        expectedUser.setPassword("0000");
-        expectedUser.setContact("user1@user.ru");
+        User expectedUser = getUser("user1");
         userRepository.create(expectedUser);
-
         expectedUser.setLogin("user2");
-        userRepository.update(expectedUser);
+
+        boolean actualStatusTransaction = userRepository.update(expectedUser);
         Optional<User> actualUser = userRepository.findById(expectedUser.getId());
 
+        assertThat(actualStatusTransaction).isTrue();
         assertThat(actualUser)
                 .isPresent()
                 .isNotEmpty()
@@ -62,16 +73,13 @@ public class UserRepositoryTest {
      */
     @Test
     public void whenDeleteUserThenGetEmpty() {
-        User expectedUser = new User();
-        expectedUser.setLogin("user3");
-        expectedUser.setName("name3");
-        expectedUser.setPassword("0000");
-        expectedUser.setContact("user3@user.ru");
+        User expectedUser = getUser("user3");
         userRepository.create(expectedUser);
 
-        userRepository.delete(expectedUser.getId());
+        boolean actualStatusTransaction = userRepository.delete(expectedUser.getId());
         Optional<User> actualUser = userRepository.findById(expectedUser.getId());
 
+        assertThat(actualStatusTransaction).isTrue();
         assertThat(actualUser).isEmpty();
     }
 
@@ -79,20 +87,12 @@ public class UserRepositoryTest {
      * Получение всего списка пользователей
      */
     @Test
-    public void whenCreateNewUserThenGetAllUsers() {
+    public void whenFindAllUsersOrderByIdThenGetAllUsers() {
         clearTableBefore();
-        User expectedUser1 = new User();
-        expectedUser1.setLogin("user4");
-        expectedUser1.setName("name4");
-        expectedUser1.setPassword("0000");
-        expectedUser1.setContact("user4@user.ru");
+        User expectedUser1 = getUser("user4");
         userRepository.create(expectedUser1);
 
-        User expectedUser2 = new User();
-        expectedUser2.setLogin("user5");
-        expectedUser2.setName("name5");
-        expectedUser2.setPassword("0000");
-        expectedUser2.setContact("user5@user.ru");
+        User expectedUser2 = getUser("user5");
         userRepository.create(expectedUser2);
 
         List<User> actualUsers = userRepository.findAllOrderById();
@@ -103,12 +103,8 @@ public class UserRepositoryTest {
      * Поиск по Id
      */
     @Test
-    public void whenCreateNewUserThenGetUserById() {
-        User expectedUser = new User();
-        expectedUser.setLogin("user6");
-        expectedUser.setName("name6");
-        expectedUser.setPassword("0000");
-        expectedUser.setContact("user6@user.ru");
+    public void whenFindUserByIdThenGetUser() {
+        User expectedUser = getUser("user6");
         userRepository.create(expectedUser);
 
         Optional<User> actualUser = userRepository.findById(expectedUser.getId());
@@ -122,19 +118,11 @@ public class UserRepositoryTest {
      * Поиск по части логина
      */
     @Test
-    public void whenCreateNewUserThenGetByLikeLogin() {
-        User expectedUser1 = new User();
-        expectedUser1.setLogin("user7");
-        expectedUser1.setName("name7");
-        expectedUser1.setPassword("0000");
-        expectedUser1.setContact("user7@user.ru");
+    public void whenFindUserByLikeLoginThenGetUser() {
+        User expectedUser1 = getUser("user7");
         userRepository.create(expectedUser1);
 
-        User expectedUser2 = new User();
-        expectedUser2.setLogin("user8");
-        expectedUser2.setName("name8");
-        expectedUser2.setPassword("0000");
-        expectedUser2.setContact("user8@user.ru");
+        User expectedUser2 = getUser("user8");
         userRepository.create(expectedUser2);
 
         List<User> actualUsers = userRepository.findByLikeLogin("er8");
@@ -145,15 +133,28 @@ public class UserRepositoryTest {
      * Поиск по логину login
      */
     @Test
-    public void whenCreateNewUserThenGetByLogin() {
-        User expectedUser = new User();
-        expectedUser.setLogin("user9");
-        expectedUser.setName("name9");
-        expectedUser.setPassword("0000");
-        expectedUser.setContact("user9@user.ru");
+    public void whenFindUserByLoginThenGetUser() {
+        User expectedUser = getUser("user9");
         userRepository.create(expectedUser);
 
         Optional<User> actualUser = userRepository.findByLogin(expectedUser.getLogin());
+        assertThat(actualUser)
+                .isPresent()
+                .isNotEmpty()
+                .contains(expectedUser);
+    }
+
+    /**
+     * Поиск по login и password
+     */
+    @Test
+    public void whenFindUserByLoginAndPasswordThenGetUser() {
+        User expectedUser = getUser("user10");
+        expectedUser.setPassword("5dfds1");
+        userRepository.create(expectedUser);
+
+        Optional<User> actualUser = userRepository
+                .findByLoginAndPassword(expectedUser.getLogin(), expectedUser.getPassword());
         assertThat(actualUser)
                 .isPresent()
                 .isNotEmpty()

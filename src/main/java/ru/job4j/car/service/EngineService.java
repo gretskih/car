@@ -11,9 +11,5 @@ public interface EngineService {
 
     List<Engine> findAllOrderById();
 
-    /**
-     * Найти двигатель по ID
-     * @return Optional or engine.
-     */
     Optional<Engine> findById(int engineId);
 }

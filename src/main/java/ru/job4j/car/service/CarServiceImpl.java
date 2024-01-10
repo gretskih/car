@@ -6,6 +6,7 @@ import org.springframework.web.multipart.MultipartFile;
 import ru.job4j.car.dto.PhotoDto;
 import ru.job4j.car.model.Car;
 import ru.job4j.car.model.Photo;
+import ru.job4j.car.model.User;
 import ru.job4j.car.repository.CarRepository;
 
 import java.util.HashSet;
@@ -26,8 +27,8 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public List<Car> findByUserId(int userId) {
-        return carRepository.findByUserId(userId);
+    public List<Car> findByUser(User user) {
+        return carRepository.findByUser(user);
     }
 
     @Override

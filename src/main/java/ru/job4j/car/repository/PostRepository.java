@@ -15,23 +15,51 @@ public interface PostRepository {
      */
     Post create(Post post);
 
+    /**
+     * Найти по идентификатору
+     * @param id идентификатор объявления
+     * @return optional объявление
+     */
     Optional<Post> findById(int id);
 
+    /**
+     * Удалить объявление по идентификатору
+     * @param postId идентификатор объявления
+     * @return статус транзакции
+     */
     boolean delete(int postId);
 
+    /**
+     * Установить статус объявлению
+     * @param postId идентификатор объявления
+     * @param status статус объявления
+     * @return статус транзакции
+     */
     boolean setStatus(int postId, boolean status);
 
+    /**
+     * Показать все объявления
+     * @return список объявлений
+     */
     List<Post> getPosts();
 
     /**
-     * - показать объявления за последний день;
+     * Показать объявления за последний день;
+     * @return список объявлений
      */
     List<Post> getPostsLastDay();
 
     /**
-     * - показать объявления определенной марки.
+     * Показать объявления определенной марки.
+     * @param brand марка автомобиля
+     * @return объявления марки brand.
      */
     List<Post> getPostsBrand(String brand);
 
+    /**
+     * Объявления от заданного пользователя.
+     * @param user пользователь
+     * @return список объявлений пользователя user
+     */
     List<Post> getPostsUser(User user);
 }

@@ -30,6 +30,7 @@ public class EngineRepositoryImpl implements EngineRepository {
     /**
      * Обновить в базе двигатель.
      * @param engine двигатель.
+     * @return статус транзакции
      */
     @Override
     public boolean update(Engine engine) {
@@ -39,6 +40,7 @@ public class EngineRepositoryImpl implements EngineRepository {
     /**
      * Удалить двигатель по id.
      * @param engineId ID
+     * @return статус транзакции
      */
     @Override
     public boolean delete(int engineId) {

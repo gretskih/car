@@ -30,6 +30,7 @@ public class UserRepositoryImpl implements UserRepository {
     /**
      * Обновить в базе пользователя.
      * @param user пользователь.
+     * @return статус транзакции
      */
     @Override
     public boolean update(User user) {
@@ -39,6 +40,7 @@ public class UserRepositoryImpl implements UserRepository {
     /**
      * Удалить пользователя по id.
      * @param userId ID
+     * @return статус транзакции
      */
     @Override
     public boolean delete(int userId) {

@@ -13,12 +13,22 @@ public class PhotoRepositoryImpl implements PhotoRepository {
 
     private final CrudRepository crudRepository;
 
+    /**
+     * Сохранение фото
+     * @param photo фото
+     * @return фото
+     */
     @Override
     public Photo save(Photo photo) {
         crudRepository.run(session -> session.persist(photo));
         return photo;
     }
 
+    /**
+     * Поиск фото по идентификатору
+     * @param photoId идентификатор
+     * @return optional фото
+     */
     @Override
     public Optional<Photo> findById(int photoId) {
         return crudRepository.optional("from Photo where id = :fId", Photo.class,
@@ -26,6 +36,11 @@ public class PhotoRepositoryImpl implements PhotoRepository {
                 );
     }
 
+    /**
+     * Удаление фото по идентификатору
+     * @param photoId идентификатор фото
+     * @return true - удачно, false - неудачно
+     */
     @Override
     public boolean deleteById(int photoId) {
         return crudRepository.run(

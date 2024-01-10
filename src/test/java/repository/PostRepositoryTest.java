@@ -13,12 +13,14 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static repository.CarRepositoryTest.getCar;
+import static repository.ConfigurationTest.crudRepository;
 
 public class PostRepositoryTest {
 
-    private final PostRepository postRepository = new PostRepositoryImpl(ConfigurationTest.crudRepository);
-    public static UserRepository userRepository = new UserRepositoryImpl(new CrudRepository(ConfigurationTest.sf));
-    public static CarRepository carRepository = new CarRepositoryImpl(ConfigurationTest.crudRepository);
+    public static PostRepository postRepository = new PostRepositoryImpl(crudRepository);
+    public static UserRepository userRepository = new UserRepositoryImpl(crudRepository);
+    public static CarRepository carRepository = new CarRepositoryImpl(crudRepository);
 
     /**
      * Очистка базы
@@ -45,7 +47,7 @@ public class PostRepositoryTest {
     }
 
     static Post getPost(String postName, String carBrand) {
-        Car car = CarRepositoryTest.getCar("Car" + postName);
+        Car car = getCar("Car" + postName);
         car.setBrand(carBrand);
         carRepository.create(car);
 
@@ -70,7 +72,7 @@ public class PostRepositoryTest {
      * - показать объявления за последний день;
      */
     @Test
-    public void whenGetPostsLastDayThenGetPostLastDay() {
+    public void whenFindPostsLastDayThenGetPostsLastDay() {
         Post expectedPost = getPost("post1", "BMW");
         postRepository.create(expectedPost);
 
@@ -87,14 +89,14 @@ public class PostRepositoryTest {
      * Показать все объявления
      */
     @Test
-    public void whenGetPostsThenGetAllPosts() {
+    public void whenFindPostsThenGetAllPosts() {
         Post expectedPost1 = getPost("post3", "BMW");
         postRepository.create(expectedPost1);
 
         Post expectedPost2 = getPost("post4", "Toyota");
         postRepository.create(expectedPost2);
 
-        List<Post> actualPosts = postRepository.getPostsLastDay();
+        List<Post> actualPosts = postRepository.getPosts();
 
         assertThat(actualPosts).isEqualTo(List.of(expectedPost1, expectedPost2));
     }
@@ -103,7 +105,7 @@ public class PostRepositoryTest {
      * - показать объявления определенной марки.
      */
     @Test
-    public void whenGetPostsBrandThenGetPostBrand() {
+    public void whenFindPostsBrandThenGetPostBrand() {
         Post expectedPost = getPost("post5", "BMW");
         postRepository.create(expectedPost);
 
@@ -119,7 +121,7 @@ public class PostRepositoryTest {
      * - показать объявления от заданного пользователя.
      */
     @Test
-    public void whenGetPostsUserThenGetPagePosts() {
+    public void whenFindPostsUserThenGetPosts() {
         Post expectedPost = getPost("post7", "BMW");
         postRepository.create(expectedPost);
 
@@ -135,7 +137,7 @@ public class PostRepositoryTest {
      * - найти по идентификатору
      */
     @Test
-    public void whenCreateNewPostThenGetPostById() {
+    public void whenFindPostByIdThenGetPost() {
         Post expectedPost = getPost("post9", "BMW");
         postRepository.create(expectedPost);
 
@@ -152,13 +154,14 @@ public class PostRepositoryTest {
      */
 
     @Test
-    public void whenDeletePostThenGetPostByIdIsEmpty() {
+    public void whenDeletePostThenGetPostEmpty() {
         Post expectedPost = getPost("post10", "BMW");
         postRepository.create(expectedPost);
-        postRepository.delete(expectedPost.getId());
+        boolean actualStatusTransaction = postRepository.delete(expectedPost.getId());
 
         var actualPost = postRepository.findById(expectedPost.getId());
 
+        assertThat(actualStatusTransaction).isTrue();
         assertThat(actualPost).isEmpty();
     }
 
@@ -170,10 +173,11 @@ public class PostRepositoryTest {
     public void whenSetTrueToPostThenGetPostStatusTrue() {
         Post expectedPost = getPost("post11", "BMW");
         postRepository.create(expectedPost);
-        postRepository.setStatus(expectedPost.getId(), true);
+        boolean actualStatusTransaction = postRepository.setStatus(expectedPost.getId(), true);
 
         var actualPost = postRepository.findById(expectedPost.getId());
 
+        assertThat(actualStatusTransaction).isTrue();
         assertThat(actualPost.get().isStatus())
                 .isTrue();
     }

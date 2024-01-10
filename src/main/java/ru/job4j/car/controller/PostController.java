@@ -52,7 +52,7 @@ public class PostController {
 
     @GetMapping("/create")
     public String getCreationPage(Model model, @SessionAttribute User user) {
-        model.addAttribute("cars", carService.findByUserId(user.getId()));
+        model.addAttribute("cars", carService.findByUser(user));
         return "posts/create";
     }
 
