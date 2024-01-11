@@ -8,6 +8,7 @@ import ru.job4j.car.model.Car;
 import ru.job4j.car.model.Photo;
 import ru.job4j.car.model.User;
 import ru.job4j.car.repository.CarRepository;
+import ru.job4j.car.repository.OwnerRepository;
 
 import java.util.HashSet;
 import java.util.List;
@@ -20,6 +21,7 @@ public class CarServiceImpl implements CarService {
 
     private final CarRepository carRepository;
     private final PhotoService photoService;
+    private final OwnerRepository ownerRepository;
 
     @Override
     public List<Car> findAll() {
@@ -58,8 +60,10 @@ public class CarServiceImpl implements CarService {
         var carOptional = carRepository.findById(carId);
         if (carOptional.isPresent()) {
             Set<Photo> photos = carOptional.get().getPhotos();
+            int ownerId = carOptional.get().getOwner().getId();
             if (carRepository.delete(carId)) {
                 photos.forEach(photoService::deleteByPhoto);
+                ownerRepository.delete(ownerId);
                 return true;
             }
         }
