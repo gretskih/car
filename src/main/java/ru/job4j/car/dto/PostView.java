@@ -24,7 +24,7 @@ public class PostView {
     private String bodyType;
     private String gearbox;
     private String fuelType;
-    private String colour;
+    private String color;
     private String type;
     private boolean status;
 

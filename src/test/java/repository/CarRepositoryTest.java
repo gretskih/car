@@ -22,6 +22,12 @@ public class CarRepositoryTest {
     public static EngineRepository engineRepository = new EngineRepositoryImpl(crudRepository);
     public static OwnerRepository ownerRepository = new OwnerRepositoryImpl(crudRepository);
     public static UserRepository userRepository = new UserRepositoryImpl(crudRepository);
+    public static BrandRepository brandRepository = new BrandRepositoryImpl(crudRepository);
+    public static ColorRepository colorRepository = new ColorRepositoryImpl(crudRepository);
+    public static YearRepository yearRepository = new YearRepositoryImpl(crudRepository);
+    public static BodyRepository bodyRepository = new BodyRepositoryImpl(crudRepository);
+    public static GearboxRepository gearboxRepository = new GearboxRepositoryImpl(crudRepository);
+    public static FuelRepository fuelRepository = new FuelRepositoryImpl(crudRepository);
 
     /**
      * Очистка базы
@@ -55,13 +61,13 @@ public class CarRepositoryTest {
 
         Car expectedCar = new Car();
         expectedCar.setName(name);
-        expectedCar.setBrand("BMW");
+        expectedCar.setBrand(brandRepository.findById(4).get());
         expectedCar.setMileage(10000);
-        expectedCar.setYearProduction(2020);
-        expectedCar.setBodyType("Седан");
-        expectedCar.setGearbox("Вариатор");
-        expectedCar.setFuelType("Гибрид");
-        expectedCar.setColour("Белый");
+        expectedCar.setYear(yearRepository.findById(66).get());
+        expectedCar.setBody(bodyRepository.findById(1).get());
+        expectedCar.setGearbox(gearboxRepository.findById(1).get());
+        expectedCar.setFuel(fuelRepository.findById(1).get());
+        expectedCar.setColor(colorRepository.findById(31).get());
         expectedCar.setType("б/у");
         expectedCar.setEngine(engine);
 

@@ -49,7 +49,7 @@ public interface EngineRepository {
     /**
      * Найти двигатель по name.
      * @param name name.
-     * @return Optional or engine.
+     * @return Optional of engine.
      */
     Optional<Engine> findByName(String name);
 }

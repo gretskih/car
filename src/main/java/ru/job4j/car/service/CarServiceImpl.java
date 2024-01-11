@@ -1,6 +1,8 @@
 package ru.job4j.car.service;
 
 import lombok.AllArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import ru.job4j.car.dto.PhotoDto;
@@ -8,6 +10,7 @@ import ru.job4j.car.model.Car;
 import ru.job4j.car.model.Photo;
 import ru.job4j.car.model.User;
 import ru.job4j.car.repository.CarRepository;
+import ru.job4j.car.repository.CrudRepository;
 import ru.job4j.car.repository.OwnerRepository;
 
 import java.util.HashSet;
@@ -22,6 +25,7 @@ public class CarServiceImpl implements CarService {
     private final CarRepository carRepository;
     private final PhotoService photoService;
     private final OwnerRepository ownerRepository;
+    private final Logger logger = LoggerFactory.getLogger(CrudRepository.class);
 
     @Override
     public List<Car> findAll() {
@@ -43,7 +47,7 @@ public class CarServiceImpl implements CarService {
                 photos.add(photo);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
             return null;
         }
         car.setPhotos(photos);

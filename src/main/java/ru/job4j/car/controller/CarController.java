@@ -9,9 +9,7 @@ import ru.job4j.car.model.Car;
 import ru.job4j.car.model.Owner;
 import ru.job4j.car.model.PeriodHistory;
 import ru.job4j.car.model.User;
-import ru.job4j.car.service.CarService;
-import ru.job4j.car.service.EngineService;
-import ru.job4j.car.service.OwnerService;
+import ru.job4j.car.service.*;
 
 import java.time.LocalDateTime;
 import java.util.Set;
@@ -23,6 +21,12 @@ public class CarController {
     private final CarService carService;
     private final EngineService engineService;
     private final OwnerService ownerService;
+    private final BrandService brandService;
+    private final ColorService colorService;
+    private final YearService yearService;
+    private final BodyService bodyService;
+    private final GearboxService gearboxService;
+    private final FuelService fuelService;
 
     @GetMapping
     public String getMyCarsPage(Model model, @SessionAttribute User user) {
@@ -33,6 +37,12 @@ public class CarController {
     @GetMapping("/create")
     public String getCreationPage(Model model) {
         model.addAttribute("engines", engineService.findAllOrderById());
+        model.addAttribute("brands", brandService.findAllOrderById());
+        model.addAttribute("colors", colorService.findAllOrderById());
+        model.addAttribute("years", yearService.findAllOrderById());
+        model.addAttribute("bodies", bodyService.findAllOrderByType());
+        model.addAttribute("gearboxes", gearboxService.findAllOrderById());
+        model.addAttribute("fuels", fuelService.findAllOrderById());
         return "cars/create";
     }
 

@@ -22,8 +22,10 @@ public class OwnerRepositoryImpl implements OwnerRepository {
      */
     @Override
     public Owner create(Owner owner) {
-        crudRepository.run(session -> session.persist(owner));
-        return owner;
+        if (crudRepository.run(session -> session.persist(owner))) {
+            return owner;
+        }
+        return null;
     }
 
     /**

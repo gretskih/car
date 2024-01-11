@@ -1,5 +1,6 @@
 package ru.job4j.car.service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import ru.job4j.car.dto.PhotoDto;
@@ -13,10 +14,9 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
+@Slf4j
 public class PhotoServiceImpl implements PhotoService {
-
     private final PhotoRepository photoRepository;
-
     private final String storageDirectory;
 
     public PhotoServiceImpl(PhotoRepository photoRepository,
@@ -30,7 +30,7 @@ public class PhotoServiceImpl implements PhotoService {
         try {
             Files.createDirectories(Path.of(path));
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            log.error(e.getMessage(), e);
         }
     }
 
@@ -73,7 +73,7 @@ public class PhotoServiceImpl implements PhotoService {
         try {
             Files.deleteIfExists(Path.of(path));
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            log.error(e.getMessage(), e);
         }
     }
 
@@ -81,8 +81,9 @@ public class PhotoServiceImpl implements PhotoService {
         try {
             return Files.readAllBytes(Path.of(path));
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            log.error(e.getMessage(), e);
         }
+        return new byte[]{};
     }
 
     private String getNewFilePath(String sourceName) {

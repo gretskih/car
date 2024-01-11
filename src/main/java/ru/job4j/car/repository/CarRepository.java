@@ -36,7 +36,7 @@ public interface CarRepository {
 
     /**
      * Найти автомобиль по ID
-     * @return Optional or car.
+     * @return Optional of car.
      */
     Optional<Car> findById(int carId);
 
@@ -50,7 +50,7 @@ public interface CarRepository {
     /**
      * Найти автомобиль по name.
      * @param name name.
-     * @return Optional or car.
+     * @return Optional of car.
      */
     Optional<Car> findByName(String name);
 

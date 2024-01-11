@@ -20,8 +20,10 @@ public class PhotoRepositoryImpl implements PhotoRepository {
      */
     @Override
     public Photo save(Photo photo) {
-        crudRepository.run(session -> session.persist(photo));
-        return photo;
+        if (crudRepository.run(session -> session.persist(photo))) {
+            return photo;
+        }
+        return null;
     }
 
     /**

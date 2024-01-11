@@ -23,7 +23,7 @@
                     <div class="mb-3">
                         <label for="Car" class="form-label"><b>Автомобиль</b></label>
                         <select class="form-control" id="Car" name="carId">
-                            <option th:each="car : ${cars}" th:value="${car.id}" th:text="${car.brand + ' ' + car.name}"></option>
+                            <option th:each="car : ${cars}" th:value="${car.id}" th:text="${car.brand.name + ' ' + car.name}"></option>
                         </select>
                             <div class="row mt-3">
                                 <div class="col-3"></div>

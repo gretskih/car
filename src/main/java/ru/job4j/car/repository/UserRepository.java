@@ -36,7 +36,7 @@ public interface UserRepository {
     /**
      * Найти пользователя по ID
      * @param userId id пользователя
-     * @return Optional or user.
+     * @return Optional of user.
      */
     Optional<User> findById(int userId);
 
@@ -50,7 +50,7 @@ public interface UserRepository {
     /**
      * Найти пользователя по login.
      * @param login login.
-     * @return Optional or user.
+     * @return Optional of user.
      */
     Optional<User> findByLogin(String login);
 
@@ -58,7 +58,7 @@ public interface UserRepository {
      * Найти пользователя по login и password.
      * @param login логин
      * @param password пароль
-     * @return Optional or user.
+     * @return Optional of user.
      */
     Optional<User> findByLoginAndPassword(String login, String password);
 }

@@ -18,14 +18,31 @@ public class Car {
     @EqualsAndHashCode.Include
     private int id;
     private String name;
-    private String brand;
     private Integer mileage;
-    @Column(name = "year_prod")
-    private Integer yearProduction;
-    private String bodyType;
-    private String gearbox;
-    private String fuelType;
-    private String colour;
+
+    @ManyToOne
+    @JoinColumn(name = "brand_id")
+    private Brand brand;
+
+    @ManyToOne
+    @JoinColumn(name = "year_prod_id")
+    private Year year;
+
+    @ManyToOne
+    @JoinColumn(name = "body_id")
+    private Body body;
+
+    @ManyToOne
+    @JoinColumn(name = "gearbox_id")
+    private Gearbox gearbox;
+
+    @ManyToOne
+    @JoinColumn(name = "fuel_id")
+    private Fuel fuel;
+
+    @ManyToOne
+    @JoinColumn(name = "color_id")
+    private Color color;
     private String type;
 
     /**

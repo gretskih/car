@@ -8,7 +8,7 @@
         <property name="hibernate.connection.url">jdbc:h2:./testdb;MODE=PostgreSQL;CASE_INSENSITIVE_IDENTIFIERS=TRUE;</property>
         <property name="hibernate.connection.username"></property>
         <property name="hibernate.connection.password"></property>
-        <property name="hibernate.connection.pool_size">1</property>
+        <property name="hibernate.connection.pool_size">3</property>
         <property name="hibernate.current_session_context_class">thread</property>
         <property name="hibernate.show_sql">true</property>
         <property name="hibernate.format_sql">true</property>
@@ -22,5 +22,11 @@
         <mapping class="ru.job4j.car.model.PriceHistory" />
         <mapping class="ru.job4j.car.model.User" />
         <mapping class="ru.job4j.car.model.Photo" />
+        <mapping class="ru.job4j.car.model.Brand" />
+        <mapping class="ru.job4j.car.model.Color" />
+        <mapping class="ru.job4j.car.model.Year" />
+        <mapping class="ru.job4j.car.model.Body" />
+        <mapping class="ru.job4j.car.model.Gearbox" />
+        <mapping class="ru.job4j.car.model.Fuel" />
     </session-factory>
 </hibernate-configuration>

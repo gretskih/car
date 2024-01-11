@@ -36,7 +36,7 @@ public interface OwnerRepository {
 
     /**
      * Найти владельца по ID
-     * @return  Optional or owner.
+     * @return  Optional of owner.
      */
     Optional<Owner> findById(int ownerId);
 
@@ -50,13 +50,13 @@ public interface OwnerRepository {
     /**
      * Найти владельца по name.
      * @param name name.
-     * @return Optional or owner.
+     * @return Optional of owner.
      */
     Optional<Owner> findByName(String name);
 
     /**
      * Найти владельца по userId
-     * @return Optional or owner.
+     * @return Optional of owner.
      */
     Optional<Owner> findByUser(User user);
 }

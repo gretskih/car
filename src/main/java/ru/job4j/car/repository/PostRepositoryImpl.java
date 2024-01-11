@@ -122,7 +122,7 @@ public class PostRepositoryImpl implements PostRepository {
                         + "LEFT JOIN FETCH post.car.photos "
                         + "LEFT JOIN FETCH post.car.owners "
                         + "WHERE post.status = false AND "
-                        + "post.car.brand = :fBrand",
+                        + "post.car.brand.name = :fBrand",
                 Post.class, Map.of("fBrand", brand)
         );
     }

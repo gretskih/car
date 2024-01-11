@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd
+    http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+    <include file="001_ddl_create_brand_table.sql" relativeToChangelogFile="true"/>
+    <include file="002_ddl_delete_column_brand_from_car_table.sql" relativeToChangelogFile="true"/>
+    <include file="003_dml_insert_brands.sql" relativeToChangelogFile="true"/>
+    <include file="004_ddl_add_column_brand_id_to_car_table.sql" relativeToChangelogFile="true"/>
+    <include file="005_ddl_create_color_table.sql" relativeToChangelogFile="true"/>
+    <include file="006_dml_insert_colors.sql" relativeToChangelogFile="true"/>
+    <include file="007_ddl_delete_column_colour_from_car_table.sql" relativeToChangelogFile="true"/>
+    <include file="008_ddl_add_column_color_id_to_car_table.sql" relativeToChangelogFile="true"/>
+    <include file="009_ddl_create_year_prod_table.sql" relativeToChangelogFile="true"/>
+    <include file="010_dml_insert_year_prods.sql" relativeToChangelogFile="true"/>
+    <include file="011_ddl_delete_column_year_prods_from_car_table.sql" relativeToChangelogFile="true"/>
+    <include file="012_ddl_add_column_year_prod_id_to_car_table.sql" relativeToChangelogFile="true"/>
+    <include file="013_ddl_create_body_table.sql" relativeToChangelogFile="true"/>
+    <include file="014_dml_insert_bodies.sql" relativeToChangelogFile="true"/>
+    <include file="015_ddl_delete_column_bodyType_from_car_table.sql" relativeToChangelogFile="true"/>
+    <include file="016_ddl_add_column_body_id_to_car_table.sql" relativeToChangelogFile="true"/>
+    <include file="017_ddl_create_gearbox_table.sql" relativeToChangelogFile="true"/>
+    <include file="018_dml_insert_gearboxes.sql" relativeToChangelogFile="true"/>
+    <include file="019_ddl_delete_column_gearbox_from_car_table.sql" relativeToChangelogFile="true"/>
+    <include file="020_ddl_add_column_gearbox_id_to_car_table.sql" relativeToChangelogFile="true"/>
+    <include file="021_ddl_create_fuel_table.sql" relativeToChangelogFile="true"/>
+    <include file="022_dml_insert_fuels.sql" relativeToChangelogFile="true"/>
+    <include file="023_ddl_delete_column_fuelType_from_car_table.sql" relativeToChangelogFile="true"/>
+    <include file="024_ddl_add_column_fuel_id_to_car_table.sql" relativeToChangelogFile="true"/>
+</databaseChangeLog>

@@ -21,6 +21,7 @@ public class PostRepositoryTest {
     public static PostRepository postRepository = new PostRepositoryImpl(crudRepository);
     public static UserRepository userRepository = new UserRepositoryImpl(crudRepository);
     public static CarRepository carRepository = new CarRepositoryImpl(crudRepository);
+    public static BrandRepository brandRepository = new BrandRepositoryImpl(crudRepository);
 
     /**
      * Очистка базы
@@ -46,9 +47,9 @@ public class PostRepositoryTest {
         }
     }
 
-    static Post getPost(String postName, String carBrand) {
+    static Post getPost(String postName, int brandId) {
         Car car = getCar("Car" + postName);
-        car.setBrand(carBrand);
+        car.setBrand(brandRepository.findById(brandId).get());
         carRepository.create(car);
 
         User user = new User();
@@ -73,10 +74,10 @@ public class PostRepositoryTest {
      */
     @Test
     public void whenFindPostsLastDayThenGetPostsLastDay() {
-        Post expectedPost = getPost("post1", "BMW");
+        Post expectedPost = getPost("post1", 4);
         postRepository.create(expectedPost);
 
-        Post post = getPost("post2", "Toyota");
+        Post post = getPost("post2", 47);
         post.setCreated(LocalDateTime.now().minusDays(2));
         postRepository.create(post);
 
@@ -90,10 +91,10 @@ public class PostRepositoryTest {
      */
     @Test
     public void whenFindPostsThenGetAllPosts() {
-        Post expectedPost1 = getPost("post3", "BMW");
+        Post expectedPost1 = getPost("post3", 4);
         postRepository.create(expectedPost1);
 
-        Post expectedPost2 = getPost("post4", "Toyota");
+        Post expectedPost2 = getPost("post4", 47);
         postRepository.create(expectedPost2);
 
         List<Post> actualPosts = postRepository.getPosts();
@@ -106,10 +107,10 @@ public class PostRepositoryTest {
      */
     @Test
     public void whenFindPostsBrandThenGetPostBrand() {
-        Post expectedPost = getPost("post5", "BMW");
+        Post expectedPost = getPost("post5", 4);
         postRepository.create(expectedPost);
 
-        Post post = getPost("post6", "Nissan");
+        Post post = getPost("post6", 33);
         postRepository.create(post);
 
         List<Post> actualPosts = postRepository.getPostsBrand("BMW");
@@ -122,10 +123,10 @@ public class PostRepositoryTest {
      */
     @Test
     public void whenFindPostsUserThenGetPosts() {
-        Post expectedPost = getPost("post7", "BMW");
+        Post expectedPost = getPost("post7", 4);
         postRepository.create(expectedPost);
 
-        Post post = getPost("post8", "Nissan");
+        Post post = getPost("post8", 33);
         postRepository.create(post);
 
         List<Post> actualPosts = postRepository.getPostsUser(expectedPost.getUser());
@@ -138,7 +139,7 @@ public class PostRepositoryTest {
      */
     @Test
     public void whenFindPostByIdThenGetPost() {
-        Post expectedPost = getPost("post9", "BMW");
+        Post expectedPost = getPost("post9", 4);
         postRepository.create(expectedPost);
 
         var actualPost = postRepository.findById(expectedPost.getId());
@@ -155,7 +156,7 @@ public class PostRepositoryTest {
 
     @Test
     public void whenDeletePostThenGetPostEmpty() {
-        Post expectedPost = getPost("post10", "BMW");
+        Post expectedPost = getPost("post10", 4);
         postRepository.create(expectedPost);
         boolean actualStatusTransaction = postRepository.delete(expectedPost.getId());
 
@@ -171,7 +172,7 @@ public class PostRepositoryTest {
 
     @Test
     public void whenSetTrueToPostThenGetPostStatusTrue() {
-        Post expectedPost = getPost("post11", "BMW");
+        Post expectedPost = getPost("post11", 4);
         postRepository.create(expectedPost);
         boolean actualStatusTransaction = postRepository.setStatus(expectedPost.getId(), true);
 

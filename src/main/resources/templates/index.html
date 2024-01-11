@@ -36,9 +36,13 @@
                         </td>
                         <td>
                             <b><p th:text="${postPreview.brand + ' ' + postPreview.name}" ></p></b>
-                            <p th:text="${postPreview.engine + ' / ' + postPreview.fuelType + ' ' + ' ' + postPreview.colour}"></p>
-                            <p th:text="${postPreview.gearbox}"></p>
-                            <p th:text="${postPreview.bodyType}"></p>
+                            <p> <span th:text="${postPreview.engine + ' / ' + postPreview.fuelType}"></span>
+                                <br>
+                                <span th:text="${postPreview.color}"></span>
+                                <br>
+                                <span th:text="${postPreview.gearbox}"></span>
+                                <br>
+                                <span th:text="${postPreview.bodyType}"></span></p>
                         </td>
                         <td>
                         <b><p th:text="${postPreview.price} + ' ₽'" ></p></b>

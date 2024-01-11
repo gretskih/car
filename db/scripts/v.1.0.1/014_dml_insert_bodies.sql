@@ -1,0 +1,18 @@
+insert into body(id, body_type) values(1, 'Седан');
+insert into body(id, body_type) values(2, 'Купе');
+insert into body(id, body_type) values(3, 'Хэтчбек');
+insert into body(id, body_type) values(4, 'Лифтбек');
+insert into body(id, body_type) values(5, 'Фастбэк');
+insert into body(id, body_type) values(6, 'Универсал');
+insert into body(id, body_type) values(7, 'Кроссовер');
+insert into body(id, body_type) values(8, 'Внедорожник (полноразмерный кроссовер)');
+insert into body(id, body_type) values(9, 'Пикап');
+insert into body(id, body_type) values(10, 'Легковой фургон');
+insert into body(id, body_type) values(11, 'Минивэн');
+insert into body(id, body_type) values(12, 'Компактвэн');
+insert into body(id, body_type) values(13, 'Микровэн');
+insert into body(id, body_type) values(14, 'Кабриолет');
+insert into body(id, body_type) values(15, 'Родстер');
+insert into body(id, body_type) values(16, 'Тарга');
+insert into body(id, body_type) values(17, 'Ландо');
+insert into body(id, body_type) values(18, 'Лимузин');

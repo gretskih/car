@@ -1,6 +1,7 @@
 package ru.job4j.car.repository;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -15,6 +16,7 @@ import java.util.function.Function;
 
 @Component
 @AllArgsConstructor
+@Slf4j
 public class CrudRepository {
     private final SessionFactory sf;
 
@@ -27,7 +29,7 @@ public class CrudRepository {
             );
             return true;
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error(e.getMessage(), e);
         }
         return false;
     }
@@ -44,7 +46,7 @@ public class CrudRepository {
         try {
             return tx(command);
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error(e.getMessage(), e);
         }
         return false;
     }
@@ -61,7 +63,7 @@ public class CrudRepository {
         try {
             return tx(command);
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error(e.getMessage(), e);
         }
         return Optional.empty();
     }
@@ -70,7 +72,7 @@ public class CrudRepository {
         try {
             return Optional.of(tx(command));
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error(e.getMessage(), e);
         }
         return Optional.empty();
     }
@@ -82,7 +84,7 @@ public class CrudRepository {
         try {
             return tx(command);
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error(e.getMessage(), e);
         }
         return Collections.emptyList();
     }
@@ -96,7 +98,12 @@ public class CrudRepository {
             }
             return sq.list();
         };
-        return tx(command);
+        try {
+            return tx(command);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+        return Collections.emptyList();
     }
 
     public <T> T tx(Function<Session, T> command) {

@@ -11,7 +11,6 @@ import java.util.Optional;
 @Repository
 @AllArgsConstructor
 public class EngineRepositoryImpl implements EngineRepository {
-
     private final CrudRepository crudRepository;
 
     /**
