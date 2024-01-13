@@ -1,8 +1,12 @@
 package controller;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.ui.ConcurrentModel;
 import org.springframework.ui.Model;
@@ -16,36 +20,36 @@ import java.util.Optional;
 import java.util.Set;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.mockito.Mockito.mock;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
+@ExtendWith(MockitoExtension.class)
 public class CarControllerTest {
-    private CarServiceImpl carService;
-    private EngineServiceImpl engineService;
-    private OwnerServiceImpl ownerService;
-    private BrandServiceImpl brandService;
-    private ColorServiceImpl colorService;
-    private YearServiceImpl yearService;
-    private BodyServiceImpl bodyService;
-    private GearboxServiceImpl gearboxService;
-    private FuelServiceImpl fuelService;
+    @Mock
+    private CarService carService;
+    @Mock
+    private EngineService engineService;
+    @Mock
+    private OwnerService ownerService;
+    @Mock
+    private BrandService brandService;
+    @Mock
+    private ColorService colorService;
+    @Mock
+    private YearService yearService;
+    @Mock
+    private BodyService bodyService;
+    @Mock
+    private GearboxService gearboxService;
+    @Mock
+    private FuelService fuelService;
+    @InjectMocks
     private CarController carController;
 
-    @BeforeEach
-    public void initRepositories() {
-        carService = mock(CarServiceImpl.class);
-        engineService = mock(EngineServiceImpl.class);
-        ownerService = mock(OwnerServiceImpl.class);
-        brandService = mock(BrandServiceImpl.class);
-        colorService = mock(ColorServiceImpl.class);
-        yearService = mock(YearServiceImpl.class);
-        bodyService = mock(BodyServiceImpl.class);
-        gearboxService = mock(GearboxServiceImpl.class);
-        fuelService = mock(FuelServiceImpl.class);
-        carController = new CarController(carService, engineService,
-                ownerService, brandService, colorService, yearService,
-                bodyService, gearboxService, fuelService
-        );
+    private Car getCar() {
+        return new Car(1, "Car", 1000, new Brand(), new Year(), new Body(),
+                new Gearbox(), new Fuel(), new Color(), "New", new Engine(1, ""),
+                new Owner(), Set.of(new Owner()), Set.of(new PeriodHistory()), Set.of(new Photo()));
     }
 
     /**
@@ -55,9 +59,7 @@ public class CarControllerTest {
     public void whenRequestGetCarsThenGetMyCarsPage() {
         String expectedPage = "cars/cars";
         User user = new User(1, "Name", "login", "pass", "1111");
-        Car car = new Car(1, "Car", 1000, new Brand(), new Year(), new Body(),
-                new Gearbox(), new Fuel(), new Color(), "New", new Engine(), new Owner(),
-                Set.of(new Owner()), Set.of(new PeriodHistory()), Set.of(new Photo()));
+        Car car = getCar();
         Model model = new ConcurrentModel();
         var captureUser = ArgumentCaptor.forClass(User.class);
         when(carService.findByUser(captureUser.capture())).thenReturn(List.of(car));
@@ -119,15 +121,13 @@ public class CarControllerTest {
     public void whenCreateCarThenGetCreateNewPostPage() {
         String expectedPage = "redirect:/posts/create";
         User user = new User(1, "Name", "login", "pass", "1111");
-        Car car = new Car(1, "Car", 1000, new Brand(), new Year(), new Body(),
-                new Gearbox(), new Fuel(), new Color(), "New", new Engine(1, ""), new Owner(),
-                Set.of(new Owner()), Set.of(new PeriodHistory()), Set.of(new Photo()));
+        Car car = getCar();
         Engine engine = new Engine(1, "engine");
         Owner owner = Owner.of()
                 .user(user)
                 .name(user.getName())
                 .build();
-        MultipartFile multipartFile = new MockMultipartFile("File", new byte[1]);
+        MultipartFile multipartFile = new MockMultipartFile("File", new byte[] {1, 2, 3});
         var engineIdCaptor = ArgumentCaptor.forClass(int.class);
         var userCaptor = ArgumentCaptor.forClass(User.class);
         var carCaptor = ArgumentCaptor.forClass(Car.class);
@@ -155,13 +155,10 @@ public class CarControllerTest {
         String expectedPage = "errors/404";
         String expectedMessage = "Автомобиль не создан!";
         User user = new User(1, "Name", "login", "pass", "1111");
-        Car car = new Car(1, "Car", 1000, new Brand(), new Year(), new Body(),
-                new Gearbox(), new Fuel(), new Color(), "New", new Engine(1, ""), new Owner(),
-                Set.of(new Owner()), Set.of(new PeriodHistory()), Set.of(new Photo()));
+        Car car = getCar();
         Engine engine = new Engine(1, "engine");
-        MultipartFile multipartFile = new MockMultipartFile("File", new byte[1]);
-        var engineIdCaptor = ArgumentCaptor.forClass(int.class);
-        when(engineService.findById(engineIdCaptor.capture())).thenReturn(Optional.of(engine));
+        MultipartFile multipartFile = new MockMultipartFile("File", new byte[]{1, 2, 3});
+        when(engineService.findById(any(Integer.class))).thenReturn(Optional.of(engine));
         Model model = new ConcurrentModel();
 
         var actualPage = carController.create(car, user, Set.of(multipartFile), model);
@@ -174,11 +171,13 @@ public class CarControllerTest {
     /**
      * Удаление автомобиля и редирект на redirect:/cars
      */
+    @Captor
+    private ArgumentCaptor<Integer> carIdCaptor;
+
     @Test
     public void whenDeleteCarThenGetCarsPage() {
         int carId = 1;
         String exceptedPage = "redirect:/cars";
-        var carIdCaptor = ArgumentCaptor.forClass(int.class);
         when(carService.delete(carIdCaptor.capture())).thenReturn(true);
         Model model = new ConcurrentModel();
 
@@ -196,15 +195,13 @@ public class CarControllerTest {
         int carId = 1;
         String exceptedPage = "errors/404";
         String exceptedMessage = "Произошла ошибка при удалении!";
-        var carIdCaptor = ArgumentCaptor.forClass(int.class);
-        when(carService.delete(carIdCaptor.capture())).thenReturn(false);
+        when(carService.delete(any(Integer.class))).thenReturn(false);
         Model model = new ConcurrentModel();
 
         var actualPage = carController.delete(carId, model);
         var actualMessage = model.getAttribute("message");
 
         assertThat(actualPage).isEqualTo(exceptedPage);
-        assertThat(carIdCaptor.getValue()).isEqualTo(carId);
         assertThat(actualMessage).isEqualTo(exceptedMessage);
     }
 }

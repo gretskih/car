@@ -32,7 +32,7 @@ public class UserController {
             model.addAttribute("error", "Пользователь с логином %s уже существует.".formatted(user.getLogin()));
             return "users/register";
         }
-        return "redirect:/";
+        return "redirect:/users/login";
     }
 
     @GetMapping("/login")
