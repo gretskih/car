@@ -13,6 +13,23 @@ import java.util.Optional;
 public class YearRepositoryImpl implements YearRepository {
     private final CrudRepository crudRepository;
 
+    /**
+     * Сохранить в базе
+     * @param year год
+     * @return Year или null
+     */
+    @Override
+    public Year create(Year year) {
+        if (crudRepository.run(session -> session.persist(year))) {
+            return year;
+        }
+        return null;
+    }
+
+    /**
+     * Список лет отсортированных по id.
+     * @return список лет.
+     */
     @Override
     public List<Year> findAllOrderById() {
         return crudRepository.query(
@@ -20,6 +37,10 @@ public class YearRepositoryImpl implements YearRepository {
         );
     }
 
+    /**
+     * Найти год по ID
+     * @return Optional of year.
+     */
     @Override
     public Optional<Year> findById(int yearId) {
         return crudRepository.optional(

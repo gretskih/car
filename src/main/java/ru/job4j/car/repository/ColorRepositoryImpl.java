@@ -14,6 +14,19 @@ public class ColorRepositoryImpl implements ColorRepository {
     private final CrudRepository crudRepository;
 
     /**
+     * Сохранить в базе
+     * @param color цвет
+     * @return цвет
+     */
+    @Override
+    public Color create(Color color) {
+        if (crudRepository.run(session -> session.persist(color))) {
+            return color;
+        }
+        return null;
+    }
+
+    /**
      * Список цветов отсортированных по id.
      * @return список цветов.
      */

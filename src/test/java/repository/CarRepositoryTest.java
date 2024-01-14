@@ -28,6 +28,7 @@ public class CarRepositoryTest {
     public static BodyRepository bodyRepository = new BodyRepositoryImpl(crudRepository);
     public static GearboxRepository gearboxRepository = new GearboxRepositoryImpl(crudRepository);
     public static FuelRepository fuelRepository = new FuelRepositoryImpl(crudRepository);
+    public static int yearCar = 1950;
 
     /**
      * Очистка базы
@@ -41,6 +42,13 @@ public class CarRepositoryTest {
             session.createQuery("DELETE FROM Engine").executeUpdate();
             session.createQuery("DELETE FROM Owner").executeUpdate();
             session.createQuery("DELETE FROM User").executeUpdate();
+            session.createQuery("DELETE FROM Body").executeUpdate();
+            session.createQuery("DELETE FROM Brand").executeUpdate();
+            session.createQuery("DELETE FROM Color").executeUpdate();
+            session.createQuery("DELETE FROM Fuel").executeUpdate();
+            session.createQuery("DELETE FROM Gearbox").executeUpdate();
+            session.createQuery("DELETE FROM Photo").executeUpdate();
+            session.createQuery("DELETE FROM Year").executeUpdate();
             session.getTransaction().commit();
         } catch (Exception e) {
             session.getTransaction().rollback();
@@ -55,37 +63,48 @@ public class CarRepositoryTest {
      * @return автомобиль с name
      */
     static Car getCar(String name) {
+        Car expectedCar = new Car();
         Engine engine = new Engine();
         engine.setName("engine" + name);
         engineRepository.create(engine);
-
-        Car expectedCar = new Car();
-        expectedCar.setName(name);
-        expectedCar.setBrand(brandRepository.findById(4).get());
-        expectedCar.setMileage(10000);
-        expectedCar.setYear(yearRepository.findById(66).get());
-        expectedCar.setBody(bodyRepository.findById(1).get());
-        expectedCar.setGearbox(gearboxRepository.findById(1).get());
-        expectedCar.setFuel(fuelRepository.findById(1).get());
-        expectedCar.setColor(colorRepository.findById(31).get());
-        expectedCar.setType("б/у");
         expectedCar.setEngine(engine);
-
+        expectedCar.setName(name);
+        Brand expectedBrand = new Brand();
+        expectedBrand.setName("brand" + name);
+        brandRepository.create(expectedBrand);
+        expectedCar.setBrand(expectedBrand);
+        expectedCar.setMileage(1000);
+        Year expectedYear = new Year();
+        expectedYear.setYear(yearCar++);
+        yearRepository.create(expectedYear);
+        expectedCar.setYear(expectedYear);
+        Body expectedBody = new Body();
+        expectedBody.setBodyType("body" + name);
+        bodyRepository.create(expectedBody);
+        expectedCar.setBody(expectedBody);
+        Gearbox expectedGearbox = new Gearbox();
+        expectedGearbox.setType("gearbox" + name);
+        gearboxRepository.create(expectedGearbox);
+        expectedCar.setGearbox(expectedGearbox);
+        Fuel expectedFuel = new Fuel();
+        expectedFuel.setType("fuel" + name);
+        fuelRepository.create(expectedFuel);
+        expectedCar.setFuel(expectedFuel);
+        Color expectedColor = new Color();
+        expectedColor.setName("color" + name);
+        colorRepository.create(expectedColor);
+        expectedCar.setColor(expectedColor);
+        expectedCar.setType("С пробегом");
         var user = getUser("user" + name);
         userRepository.create(user);
-
         var owner = getOwner("owner" + name, user);
         ownerRepository.create(owner);
-
         expectedCar.setOwner(owner);
         expectedCar.setOwners(Set.of(owner));
-
         expectedCar.setPeriodHistories(Set.of(PeriodHistory.of().build()));
-
         Photo photo = new Photo();
         photo.setName("photo" + name);
         photo.setPath("photoPath" + name);
-
         expectedCar.setPhotos(Set.of(photo));
         return expectedCar;
     }
@@ -228,6 +247,13 @@ public class CarRepositoryTest {
             session.createQuery("DELETE FROM Engine").executeUpdate();
             session.createQuery("DELETE FROM Owner").executeUpdate();
             session.createQuery("DELETE FROM User").executeUpdate();
+            session.createQuery("DELETE FROM Body").executeUpdate();
+            session.createQuery("DELETE FROM Brand").executeUpdate();
+            session.createQuery("DELETE FROM Color").executeUpdate();
+            session.createQuery("DELETE FROM Fuel").executeUpdate();
+            session.createQuery("DELETE FROM Gearbox").executeUpdate();
+            session.createQuery("DELETE FROM Photo").executeUpdate();
+            session.createQuery("DELETE FROM Year").executeUpdate();
             session.getTransaction().commit();
         } catch (Exception e) {
             session.getTransaction().rollback();

@@ -7,6 +7,13 @@ import java.util.Optional;
 
 public interface ColorRepository {
     /**
+     * Сохранить в базе
+     * @param color цвет
+     * @return цвет
+     */
+    Color create(Color color);
+
+    /**
      * Список цветов отсортированных по id.
      * @return список цветов.
      */

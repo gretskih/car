@@ -7,6 +7,13 @@ import java.util.Optional;
 
 public interface YearRepository {
     /**
+     * Сохранить в базе
+     * @param year год
+     * @return Year или null
+     */
+    Year create(Year year);
+
+    /**
      * Список лет отсортированных по id.
      * @return список лет.
      */

@@ -14,6 +14,19 @@ public class BrandRepositoryImpl implements BrandRepository {
     private final CrudRepository crudRepository;
 
     /**
+     * Сохранить в базе
+     * @param brand бренд
+     * @return бренд
+     */
+    @Override
+    public Brand create(Brand brand) {
+        if (crudRepository.run(session -> session.persist(brand))) {
+            return brand;
+        }
+        return null;
+    }
+
+    /**
      * Список производителей отсортированных по id.
      * @return список производителей.
      */
@@ -22,6 +35,10 @@ public class BrandRepositoryImpl implements BrandRepository {
         return crudRepository.query("from Brand order by id asc", Brand.class);
     }
 
+    /**
+     * Найти производителя по ID
+     * @return Optional of brand.
+     */
     @Override
     public Optional<Brand> findById(int brandId) {
         return crudRepository.optional("from Brand where id = :fId",

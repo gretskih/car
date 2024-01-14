@@ -13,6 +13,23 @@ import java.util.Optional;
 public class GearboxRepositoryImpl implements GearboxRepository {
     private final CrudRepository crudRepository;
 
+    /**
+     * Сохранить в базе
+     * @param gearbox коробка
+     * @return Gearbox или null
+     */
+    @Override
+    public Gearbox create(Gearbox gearbox) {
+        if (crudRepository.run(session -> session.persist(gearbox))) {
+            return gearbox;
+        }
+        return null;
+    }
+
+    /**
+     * Список коробок отсортированных по id.
+     * @return список коробок.
+     */
     @Override
     public List<Gearbox> findAllOrderById() {
         return crudRepository.query(
@@ -20,6 +37,10 @@ public class GearboxRepositoryImpl implements GearboxRepository {
         );
     }
 
+    /**
+     * Найти коробку по ID
+     * @return Optional of gearbox.
+     */
     @Override
     public Optional<Gearbox> findById(int gearboxId) {
         return crudRepository.optional(

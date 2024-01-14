@@ -14,8 +14,21 @@ public class FuelRepositoryImpl implements FuelRepository {
     private final CrudRepository crudRepository;
 
     /**
+     * Сохранить в базе
+     * @param fuel топливо
+     * @return Fuel или null
+     */
+    @Override
+    public Fuel create(Fuel fuel) {
+        if (crudRepository.run(session -> session.persist(fuel))) {
+            return fuel;
+        }
+        return null;
+    }
+
+    /**
      * Список типов топлива отсортированных по id.
-     * @return список типов топлива.
+     * @return List список типов топлива.
      */
     @Override
     public List<Fuel> findAllOrderById() {

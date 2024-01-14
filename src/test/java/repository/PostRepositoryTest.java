@@ -34,11 +34,15 @@ public class PostRepositoryTest {
             session.createQuery("DELETE FROM Post").executeUpdate();
             session.createQuery("DELETE FROM Car").executeUpdate();
             session.createQuery("DELETE FROM Engine").executeUpdate();
-            session.createQuery("DELETE FROM Photo").executeUpdate();
             session.createQuery("DELETE FROM Owner").executeUpdate();
-            session.createQuery("DELETE FROM PriceHistory").executeUpdate();
             session.createQuery("DELETE FROM User").executeUpdate();
-            session.createQuery("DELETE FROM PeriodHistory").executeUpdate();
+            session.createQuery("DELETE FROM Body").executeUpdate();
+            session.createQuery("DELETE FROM Brand").executeUpdate();
+            session.createQuery("DELETE FROM Color").executeUpdate();
+            session.createQuery("DELETE FROM Fuel").executeUpdate();
+            session.createQuery("DELETE FROM Gearbox").executeUpdate();
+            session.createQuery("DELETE FROM Photo").executeUpdate();
+            session.createQuery("DELETE FROM Year").executeUpdate();
             session.getTransaction().commit();
         } catch (Exception e) {
             session.getTransaction().rollback();
@@ -47,9 +51,8 @@ public class PostRepositoryTest {
         }
     }
 
-    static Post getPost(String postName, int brandId) {
+    static Post getPost(String postName) {
         Car car = getCar("Car" + postName);
-        car.setBrand(brandRepository.findById(brandId).get());
         carRepository.create(car);
 
         User user = new User();
@@ -74,10 +77,10 @@ public class PostRepositoryTest {
      */
     @Test
     public void whenFindPostsLastDayThenGetPostsLastDay() {
-        Post expectedPost = getPost("post1", 4);
+        Post expectedPost = getPost("post1");
         postRepository.create(expectedPost);
 
-        Post post = getPost("post2", 47);
+        Post post = getPost("post2");
         post.setCreated(LocalDateTime.now().minusDays(2));
         postRepository.create(post);
 
@@ -91,10 +94,10 @@ public class PostRepositoryTest {
      */
     @Test
     public void whenFindPostsThenGetAllPosts() {
-        Post expectedPost1 = getPost("post3", 4);
+        Post expectedPost1 = getPost("post3");
         postRepository.create(expectedPost1);
 
-        Post expectedPost2 = getPost("post4", 47);
+        Post expectedPost2 = getPost("post4");
         postRepository.create(expectedPost2);
 
         List<Post> actualPosts = postRepository.getPosts();
@@ -107,13 +110,13 @@ public class PostRepositoryTest {
      */
     @Test
     public void whenFindPostsBrandThenGetPostBrand() {
-        Post expectedPost = getPost("post5", 4);
+        Post expectedPost = getPost("post5");
         postRepository.create(expectedPost);
 
-        Post post = getPost("post6", 33);
+        Post post = getPost("post6");
         postRepository.create(post);
 
-        List<Post> actualPosts = postRepository.getPostsBrand("BMW");
+        List<Post> actualPosts = postRepository.getPostsBrand("brandCar" + "post5");
 
         assertThat(actualPosts).isEqualTo(List.of(expectedPost));
     }
@@ -123,10 +126,10 @@ public class PostRepositoryTest {
      */
     @Test
     public void whenFindPostsUserThenGetPosts() {
-        Post expectedPost = getPost("post7", 4);
+        Post expectedPost = getPost("post7");
         postRepository.create(expectedPost);
 
-        Post post = getPost("post8", 33);
+        Post post = getPost("post8");
         postRepository.create(post);
 
         List<Post> actualPosts = postRepository.getPostsUser(expectedPost.getUser());
@@ -139,7 +142,7 @@ public class PostRepositoryTest {
      */
     @Test
     public void whenFindPostByIdThenGetPost() {
-        Post expectedPost = getPost("post9", 4);
+        Post expectedPost = getPost("post9");
         postRepository.create(expectedPost);
 
         var actualPost = postRepository.findById(expectedPost.getId());
@@ -156,7 +159,7 @@ public class PostRepositoryTest {
 
     @Test
     public void whenDeletePostThenGetPostEmpty() {
-        Post expectedPost = getPost("post10", 4);
+        Post expectedPost = getPost("post10");
         postRepository.create(expectedPost);
         boolean actualStatusTransaction = postRepository.delete(expectedPost.getId());
 
@@ -172,7 +175,7 @@ public class PostRepositoryTest {
 
     @Test
     public void whenSetTrueToPostThenGetPostStatusTrue() {
-        Post expectedPost = getPost("post11", 4);
+        Post expectedPost = getPost("post11");
         postRepository.create(expectedPost);
         boolean actualStatusTransaction = postRepository.setStatus(expectedPost.getId(), true);
 
@@ -194,11 +197,15 @@ public class PostRepositoryTest {
             session.createQuery("DELETE FROM Post").executeUpdate();
             session.createQuery("DELETE FROM Car").executeUpdate();
             session.createQuery("DELETE FROM Engine").executeUpdate();
-            session.createQuery("DELETE FROM Photo").executeUpdate();
             session.createQuery("DELETE FROM Owner").executeUpdate();
-            session.createQuery("DELETE FROM PriceHistory").executeUpdate();
             session.createQuery("DELETE FROM User").executeUpdate();
-            session.createQuery("DELETE FROM PeriodHistory").executeUpdate();
+            session.createQuery("DELETE FROM Body").executeUpdate();
+            session.createQuery("DELETE FROM Brand").executeUpdate();
+            session.createQuery("DELETE FROM Color").executeUpdate();
+            session.createQuery("DELETE FROM Fuel").executeUpdate();
+            session.createQuery("DELETE FROM Gearbox").executeUpdate();
+            session.createQuery("DELETE FROM Photo").executeUpdate();
+            session.createQuery("DELETE FROM Year").executeUpdate();
             session.getTransaction().commit();
         } catch (Exception e) {
             session.getTransaction().rollback();

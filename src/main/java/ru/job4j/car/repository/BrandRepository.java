@@ -7,6 +7,13 @@ import java.util.Optional;
 
 public interface BrandRepository {
     /**
+     * Сохранить в базе
+     * @param brand бренд
+     * @return бренд
+     */
+    Brand create(Brand brand);
+
+    /**
      * Список производителей отсортированных по id.
      * @return список производителей.
      */
