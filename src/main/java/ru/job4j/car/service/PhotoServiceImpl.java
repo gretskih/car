@@ -1,5 +1,6 @@
 package ru.job4j.car.service;
 
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -65,16 +66,17 @@ public class PhotoServiceImpl implements PhotoService {
     }
 
     @Override
-    public void deleteByPhoto(Photo photo) {
-        deleteFile(photo.getPath());
+    public boolean deleteByPhoto(Photo photo) {
+        return deleteFile(photo.getPath());
     }
 
-    private void deleteFile(String path) {
+    private boolean deleteFile(String path) {
         try {
-            Files.deleteIfExists(Path.of(path));
+            return Files.deleteIfExists(Path.of(path));
         } catch (IOException e) {
             log.error(e.getMessage(), e);
         }
+        return false;
     }
 
     private byte[] readFileAsBytes(String path) {

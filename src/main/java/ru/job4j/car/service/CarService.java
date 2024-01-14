@@ -12,7 +12,7 @@ public interface CarService {
 
     List<Car> findAll();
 
-    Car create(Car car, Set<MultipartFile> files);
+    Car create(Car car);
 
     Optional<Car> findById(int carId);
 

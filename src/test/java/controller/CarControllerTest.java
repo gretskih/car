@@ -12,6 +12,7 @@ import org.springframework.ui.ConcurrentModel;
 import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
 import ru.job4j.car.controller.CarController;
+import ru.job4j.car.dto.PhotoDto;
 import ru.job4j.car.model.*;
 import ru.job4j.car.service.*;
 
@@ -43,6 +44,8 @@ public class CarControllerTest {
     private GearboxService gearboxService;
     @Mock
     private FuelService fuelService;
+    @Mock
+    private PhotoService photoService;
     @InjectMocks
     private CarController carController;
 
@@ -123,6 +126,7 @@ public class CarControllerTest {
         User user = new User(1, "Name", "login", "pass", "1111");
         Car car = getCar();
         Engine engine = new Engine(1, "engine");
+        Photo photo = new Photo(1, "Photo", "PathPhoto");
         Owner owner = Owner.of()
                 .user(user)
                 .name(user.getName())
@@ -131,10 +135,10 @@ public class CarControllerTest {
         var engineIdCaptor = ArgumentCaptor.forClass(int.class);
         var userCaptor = ArgumentCaptor.forClass(User.class);
         var carCaptor = ArgumentCaptor.forClass(Car.class);
-        ArgumentCaptor<Set<MultipartFile>> filesCaptor = ArgumentCaptor.forClass(Set.class);
         when(engineService.findById(engineIdCaptor.capture())).thenReturn(Optional.of(engine));
         when(ownerService.findByUser(userCaptor.capture())).thenReturn(Optional.of(owner));
-        when(carService.create(carCaptor.capture(), filesCaptor.capture())).thenReturn(car);
+        when(carService.create(carCaptor.capture())).thenReturn(car);
+        when(photoService.save(any(PhotoDto.class))).thenReturn(photo);
         Model model = new ConcurrentModel();
 
         var actualPage = carController.create(car, user, Set.of(multipartFile), model);
@@ -157,8 +161,10 @@ public class CarControllerTest {
         User user = new User(1, "Name", "login", "pass", "1111");
         Car car = getCar();
         Engine engine = new Engine(1, "engine");
+        Photo photo = new Photo(1, "Photo", "PathPhoto");
         MultipartFile multipartFile = new MockMultipartFile("File", new byte[]{1, 2, 3});
         when(engineService.findById(any(Integer.class))).thenReturn(Optional.of(engine));
+        when(photoService.save(any(PhotoDto.class))).thenReturn(photo);
         Model model = new ConcurrentModel();
 
         var actualPage = carController.create(car, user, Set.of(multipartFile), model);
@@ -172,19 +178,24 @@ public class CarControllerTest {
      * Удаление автомобиля и редирект на redirect:/cars
      */
     @Captor
-    private ArgumentCaptor<Integer> carIdCaptor;
+    private ArgumentCaptor<Integer> carIdCaptor1;
+    @Captor
+    private ArgumentCaptor<Integer> carIdCaptor2;
 
     @Test
     public void whenDeleteCarThenGetCarsPage() {
         int carId = 1;
+        Car car = getCar();
         String exceptedPage = "redirect:/cars";
-        when(carService.delete(carIdCaptor.capture())).thenReturn(true);
+        when(carService.findById(carIdCaptor1.capture())).thenReturn(Optional.of(car));
+        when(carService.delete(carIdCaptor2.capture())).thenReturn(true);
         Model model = new ConcurrentModel();
 
         var actualPage = carController.delete(carId, model);
 
         assertThat(actualPage).isEqualTo(exceptedPage);
-        assertThat(carIdCaptor.getValue()).isEqualTo(carId);
+        assertThat(carIdCaptor1.getValue()).isEqualTo(carId);
+        assertThat(carIdCaptor2.getValue()).isEqualTo(carId);
     }
 
     /**
@@ -193,8 +204,10 @@ public class CarControllerTest {
     @Test
     public void whenDeleteCarThenGetErrorPage() {
         int carId = 1;
+        Car car = getCar();
         String exceptedPage = "errors/404";
         String exceptedMessage = "Произошла ошибка при удалении!";
+        when(carService.findById(any(Integer.class))).thenReturn(Optional.of(car));
         when(carService.delete(any(Integer.class))).thenReturn(false);
         Model model = new ConcurrentModel();
 
