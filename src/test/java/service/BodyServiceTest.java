@@ -1,10 +1,13 @@
 package service;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import ru.job4j.car.model.Body;
-import ru.job4j.car.repository.BodyRepositoryImpl;
+import ru.job4j.car.repository.BodyRepository;
 import ru.job4j.car.service.BodyServiceImpl;
 
 import java.util.ArrayList;
@@ -12,18 +15,14 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+@ExtendWith(MockitoExtension.class)
 public class BodyServiceTest {
-    private BodyRepositoryImpl bodyRepository;
+    @Mock
+    private BodyRepository bodyRepository;
+    @InjectMocks
     private BodyServiceImpl bodyService;
-
-    @BeforeEach
-    public void initRepositories() {
-        bodyRepository = mock(BodyRepositoryImpl.class);
-        bodyService = new BodyServiceImpl(bodyRepository);
-    }
 
     /**
      * Получение полного списка записей

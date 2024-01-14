@@ -46,7 +46,7 @@ public class PostServiceImpl implements PostService {
             return Optional.empty();
         }
         Post post = postOptional.get();
-        return Optional.ofNullable(postViewMapper.getPostView(post, post.getCar(), post.getUser()));
+        return Optional.of(postViewMapper.getPostView(post, post.getCar(), post.getUser()));
     }
 
     @Override

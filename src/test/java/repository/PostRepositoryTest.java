@@ -21,7 +21,6 @@ public class PostRepositoryTest {
     public static PostRepository postRepository = new PostRepositoryImpl(crudRepository);
     public static UserRepository userRepository = new UserRepositoryImpl(crudRepository);
     public static CarRepository carRepository = new CarRepositoryImpl(crudRepository);
-    public static BrandRepository brandRepository = new BrandRepositoryImpl(crudRepository);
 
     /**
      * Очистка базы

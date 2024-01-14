@@ -5,13 +5,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import ru.job4j.car.model.Car;
-import ru.job4j.car.model.Owner;
-import ru.job4j.car.model.PeriodHistory;
-import ru.job4j.car.model.User;
+import ru.job4j.car.dto.PhotoDto;
+import ru.job4j.car.model.*;
 import ru.job4j.car.service.*;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Set;
 
 @Controller
@@ -27,6 +26,7 @@ public class CarController {
     private final BodyService bodyService;
     private final GearboxService gearboxService;
     private final FuelService fuelService;
+    private final PhotoService photoService;
 
     @GetMapping
     public String getMyCarsPage(Model model, @SessionAttribute User user) {
@@ -66,7 +66,21 @@ public class CarController {
                 .ownerId(owner.getId())
                 .startAt(LocalDateTime.now()).build();
         car.setPeriodHistories(Set.of(periodHistory));
-        if (carService.create(car, files) == null) {
+
+        Set<Photo> photos = new HashSet<>();
+        try {
+            for (MultipartFile file : files) {
+                PhotoDto photoDto = new PhotoDto(file.getOriginalFilename(), file.getBytes());
+                Photo photo = photoService.save(photoDto);
+                photos.add(photo);
+            }
+        } catch (Exception exception) {
+            model.addAttribute("message", exception.getMessage());
+            return "errors/404";
+        }
+        car.setPhotos(photos);
+
+        if (carService.create(car) == null) {
             model.addAttribute("message", "Автомобиль не создан!");
             return "errors/404";
         }
@@ -75,10 +89,17 @@ public class CarController {
 
     @PostMapping("/delete")
     public String delete(@RequestParam int carId, Model model) {
-        if (!carService.delete(carId)) {
-            model.addAttribute("message", "Произошла ошибка при удалении!");
-            return "errors/404";
+        var carOptional = carService.findById(carId);
+        if (carOptional.isPresent()) {
+            Set<Photo> photos = carOptional.get().getPhotos();
+            int ownerId = carOptional.get().getOwner().getId();
+            if (carService.delete(carId)) {
+                photos.forEach(photoService::deleteByPhoto);
+                ownerService.delete(ownerId);
+                return "redirect:/cars";
+            }
         }
-        return "redirect:/cars";
+        model.addAttribute("message", "Произошла ошибка при удалении!");
+        return "errors/404";
     }
 }
