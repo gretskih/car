@@ -10,7 +10,7 @@ public interface PhotoService {
 
     Optional<PhotoDto> getFileById(int id);
 
-    void deleteByPhoto(Photo photo);
+    boolean deleteByPhoto(Photo photo);
 
     boolean deleteById(int id);
 }

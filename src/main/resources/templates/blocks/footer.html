@@ -1,10 +1,19 @@
 <div th:fragment="footer" xmlns:th="http://www.w3.org/1999/xhtml">
-    <p class="pt-3 mt-4 mb-0 text-dark border-top">
-    <ul class="list-inline">
+    <div class="row">
+    <div class="col-2"></div>
+    <div class="col-8">
+    <ul class="list-inline pt-3 mt-4 mb-0 border-top" style="font-size: 0.85rem">
         <li class="list-inline-item mr-5"><a href="/">Главная</a></li>
+        <li class="list-inline-item mr-5"><a href="/posts/day">За сутки</a></li>
+        <li class="list-inline-item mr-5"><a href="/posts/photos">С фото</a></li>
+        <li class="list-inline-item mr-5"><a href="/posts/my" th:if="${user.name != 'Гость'}">Я продаю</a></li>
+        <li class="list-inline-item mr-5"><a href="/cars" th:if="${user.name != 'Гость'}">Мои авто</a></li>
     </ul>
-        Car
-        <br>
-        <a class="text-dark" href="https://github.com/gretskih">Создано WebGroup</a><br>
-    </p>
+    </div>
+    <div class="col-2"></div>
+    </div>
+    <br>
+    <div class="row mb-3">
+    <a class="text-dark text-center col-12" href="https://github.com/gretskih" style="font-size: 0.75rem">2024 GitHub</a>
+    </div>
 </div>

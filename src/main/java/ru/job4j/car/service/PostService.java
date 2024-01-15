@@ -24,4 +24,6 @@ public interface PostService {
     List<PostPreview> getPostPreviewsWithPhoto();
 
     List<PostPreview> getPostPreviewsUser(User user);
+
+    List<PostPreview> getPostsPreviewsBrandId(int brandId);
 }

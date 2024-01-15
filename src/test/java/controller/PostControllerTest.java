@@ -13,6 +13,7 @@ import ru.job4j.car.controller.PostController;
 import ru.job4j.car.dto.PostPreview;
 import ru.job4j.car.dto.PostView;
 import ru.job4j.car.model.*;
+import ru.job4j.car.service.BrandService;
 import ru.job4j.car.service.CarService;
 import ru.job4j.car.service.PostService;
 
@@ -31,6 +32,8 @@ public class PostControllerTest {
     private PostService postService;
     @Mock
     private CarService carService;
+    @Mock
+    private BrandService brandService;
     @InjectMocks
     private PostController postController;
 
@@ -61,15 +64,19 @@ public class PostControllerTest {
     @Test
     public void whenRequestFindPostsThenGetAllPosts() {
         String expectedPage = "index";
+        List<Brand> expectedBrands = List.of(new Brand(1, "Brand"));
         List<PostPreview> expectedPostPreviews = List.of(getPostPreview());
         when(postService.findAllPostPreview()).thenReturn(expectedPostPreviews);
+        when(brandService.findAllOrderById()).thenReturn(expectedBrands);
         Model model = new ConcurrentModel();
 
         var actualPage = postController.getIndex(model);
         var actualPostPreviews = model.getAttribute("postPreviews");
+        var actualBrands = model.getAttribute("brands");
 
         assertThat(actualPage).isEqualTo(expectedPage);
         assertThat(actualPostPreviews).usingRecursiveComparison().isEqualTo(expectedPostPreviews);
+        assertThat(actualBrands).usingRecursiveComparison().isEqualTo(expectedBrands);
     }
 
     /**
@@ -87,6 +94,32 @@ public class PostControllerTest {
 
         assertThat(actualPage).isEqualTo(expectedPage);
         assertThat(actualPostPreviews).usingRecursiveComparison().isEqualTo(expectedPostPreviews);
+    }
+
+    /**
+     * Получение страницы index со списком объявлений бренда
+     */
+    @Captor
+    private ArgumentCaptor<Integer> brandIdCaptor;
+
+    @Test
+    public void whenRequestFindPostsPostsOneBrandThenGetPosts() {
+        String expectedPage = "index";
+        int expectedId = 1;
+        List<PostPreview> expectedPostPreviews = List.of(getPostPreview());
+        List<Brand> expectedBrands = List.of(new Brand(expectedId, "Brand"));
+        when(postService.getPostsPreviewsBrandId(brandIdCaptor.capture())).thenReturn(expectedPostPreviews);
+        when(brandService.findAllOrderById()).thenReturn(expectedBrands);
+        Model model = new ConcurrentModel();
+
+        var actualPage = postController.getPagePostsOneBrand(expectedId, model);
+        var actualPostPreviews = model.getAttribute("postPreviews");
+        var actualBrands = model.getAttribute("brands");
+
+        assertThat(actualPage).isEqualTo(expectedPage);
+        assertThat(actualPostPreviews).usingRecursiveComparison().isEqualTo(expectedPostPreviews);
+        assertThat(actualBrands).usingRecursiveComparison().isEqualTo(expectedBrands);
+        assertThat(brandIdCaptor.getValue()).isEqualTo(expectedId);
     }
 
     /**

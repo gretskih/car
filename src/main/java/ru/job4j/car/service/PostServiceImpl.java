@@ -57,7 +57,7 @@ public class PostServiceImpl implements PostService {
         }
         List<PostPreview> postPreviews = new ArrayList<>();
         for (Post post: posts.stream().distinct().toList()) {
-            postPreviews.add(postPreviewMapper.getCarPreview(post.getCar(), post));
+            postPreviews.add(postPreviewMapper.getPostPreview(post.getCar(), post));
         }
         return postPreviews;
     }
@@ -70,7 +70,20 @@ public class PostServiceImpl implements PostService {
         }
         List<PostPreview> postPreviews = new ArrayList<>();
         for (Post post: posts.stream().distinct().toList()) {
-            postPreviews.add(postPreviewMapper.getCarPreview(post.getCar(), post));
+            postPreviews.add(postPreviewMapper.getPostPreview(post.getCar(), post));
+        }
+        return postPreviews;
+    }
+
+    @Override
+    public List<PostPreview> getPostsPreviewsBrandId(int brandId) {
+        List<Post> posts = postRepository.getPostsBrandId(brandId);
+        if (posts.isEmpty()) {
+            return Collections.emptyList();
+        }
+        List<PostPreview> postPreviews = new ArrayList<>();
+        for (Post post: posts.stream().distinct().toList()) {
+            postPreviews.add(postPreviewMapper.getPostPreview(post.getCar(), post));
         }
         return postPreviews;
     }
@@ -86,7 +99,7 @@ public class PostServiceImpl implements PostService {
         List<PostPreview> postPreviews = new ArrayList<>();
         for (Post post: posts.stream().distinct().toList()) {
             if (isEmpty(post.getCar().getPhotos())) {
-                postPreviews.add(postPreviewMapper.getCarPreview(post.getCar(), post));
+                postPreviews.add(postPreviewMapper.getPostPreview(post.getCar(), post));
             }
         }
         return postPreviews;
@@ -100,7 +113,7 @@ public class PostServiceImpl implements PostService {
         }
         List<PostPreview> postPreviews = new ArrayList<>();
         for (Post post: posts.stream().distinct().toList()) {
-            postPreviews.add(postPreviewMapper.getCarPreview(post.getCar(), post));
+            postPreviews.add(postPreviewMapper.getPostPreview(post.getCar(), post));
         }
         return postPreviews;
     }

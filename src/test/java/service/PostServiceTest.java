@@ -109,7 +109,7 @@ public class PostServiceTest {
         expectedPostPreview2.setName("namePostPreview3");
 
         when(postRepository.getPosts()).thenReturn(List.of(exceptedPost1, exceptedPost2));
-        when(postPreviewMapper.getCarPreview(carArgumentCaptor.capture(), postArgumentCaptor.capture()))
+        when(postPreviewMapper.getPostPreview(carArgumentCaptor.capture(), postArgumentCaptor.capture()))
                 .thenReturn(expectedPostPreview1, expectedPostPreview2);
 
         var actualPostPreviews = postService.findAllPostPreview();
@@ -146,7 +146,7 @@ public class PostServiceTest {
         expectedPostPreview2.setName("namePostPreview5");
 
         when(postRepository.getPostsLastDay()).thenReturn(List.of(exceptedPost1, exceptedPost2));
-        when(postPreviewMapper.getCarPreview(carArgumentCaptor.capture(), postArgumentCaptor.capture()))
+        when(postPreviewMapper.getPostPreview(carArgumentCaptor.capture(), postArgumentCaptor.capture()))
                 .thenReturn(expectedPostPreview1, expectedPostPreview2);
 
         var actualPostPreviews = postService.getPostPreviewsLastDay();
@@ -194,7 +194,7 @@ public class PostServiceTest {
         expectedPostPreview2.setId(2);
 
         when(postRepository.getPosts()).thenReturn(List.of(exceptedPost1, exceptedPost2));
-        when(postPreviewMapper.getCarPreview(carArgumentCaptor.capture(), postArgumentCaptor.capture()))
+        when(postPreviewMapper.getPostPreview(carArgumentCaptor.capture(), postArgumentCaptor.capture()))
                 .thenReturn(expectedPostPreview1, expectedPostPreview2);
 
         var actualPostPreviews = postService.getPostPreviewsWithPhoto();
@@ -212,30 +212,11 @@ public class PostServiceTest {
      */
     @Test
     public void whenFindPostPreviewsWithPhotoThenGetEmpty() throws IOException {
-        Files.createDirectories(Path.of("files"));
-
-        PhotoDto photoDto1 = new PhotoDto("TestFile1", new byte[]{});
-        String sourseName1 = "files" + java.io.File.separator + "TestFile1";
-        Files.write(Path.of(sourseName1), photoDto1.getContent());
-        Photo expectedPhoto1 = new Photo(1, "TestFile1", sourseName1);
-
-        PhotoDto photoDto2 = new PhotoDto("TestFile2", new byte[]{});
-        String sourseName2 = "files" + java.io.File.separator + "TestFile2";
-        Files.write(Path.of(sourseName2), photoDto2.getContent());
-        Photo expectedPhoto2 = new Photo(2, "TestFile2", sourseName2);
-
         Post exceptedPost1 = getPost("post6");
         Post exceptedPost2 = getPost("post7");
-
-        exceptedPost1.getCar().setPhotos(Set.of(expectedPhoto1));
-        exceptedPost2.getCar().setPhotos(Set.of(expectedPhoto2));
-
         when(postRepository.getPosts()).thenReturn(List.of(exceptedPost1, exceptedPost2));
 
         var actualPostPreviews = postService.getPostPreviewsWithPhoto();
-
-        Files.deleteIfExists(Path.of(sourseName1));
-        Files.deleteIfExists(Path.of(sourseName2));
 
         assertThat(actualPostPreviews).isEmpty();
     }
@@ -257,7 +238,7 @@ public class PostServiceTest {
 
         when(postRepository.getPostsUser(userArgumentCaptor.capture())).thenReturn(List.of(exceptedPost1,
                 exceptedPost2));
-        when(postPreviewMapper.getCarPreview(carArgumentCaptor.capture(), postArgumentCaptor.capture()))
+        when(postPreviewMapper.getPostPreview(carArgumentCaptor.capture(), postArgumentCaptor.capture()))
                 .thenReturn(expectedPostPreview1, expectedPostPreview2);
 
         var actualPostPreviews = postService.getPostPreviewsUser(expectedUser);
@@ -281,6 +262,46 @@ public class PostServiceTest {
         when(postRepository.getPostsUser(any(User.class))).thenReturn(Collections.emptyList());
 
         var actualPostPreviews = postService.getPostPreviewsUser(expectedUser);
+
+        assertThat(actualPostPreviews).isEmpty();
+    }
+
+    /**
+     * Показать все объявления по идентификатору бренда
+     */
+    @Test
+    public void whenFindAllPostPreviewBrandIdThenGetPostPreviews() {
+        int expectedId = 2;
+        Post exceptedPost1 = getPost("post10");
+        Post exceptedPost2 = getPost("post11");
+
+        PostPreview expectedPostPreview1 = new PostPreview();
+        expectedPostPreview1.setName("namePostPreview10");
+        PostPreview expectedPostPreview2 = new PostPreview();
+        expectedPostPreview2.setName("namePostPreview11");
+
+        when(postRepository.getPostsBrandId(integerArgumentCaptor.capture())).thenReturn(List.of(exceptedPost1, exceptedPost2));
+        when(postPreviewMapper.getPostPreview(carArgumentCaptor.capture(), postArgumentCaptor.capture()))
+                .thenReturn(expectedPostPreview1, expectedPostPreview2);
+
+        var actualPostPreviews = postService.getPostsPreviewsBrandId(expectedId);
+
+        assertThat(actualPostPreviews).usingRecursiveComparison().isEqualTo(List.of(expectedPostPreview1, expectedPostPreview2));
+        assertThat(postArgumentCaptor.getAllValues()).isEqualTo(List.of(exceptedPost1, exceptedPost2));
+        assertThat(carArgumentCaptor.getAllValues()).isEqualTo(List.of(exceptedPost1.getCar(), exceptedPost2.getCar()));
+        assertThat(integerArgumentCaptor.getValue()).isEqualTo(expectedId);
+    }
+
+    /**
+     * Показать все объявления по идентификатору бренда
+     * Объявления отсутствуют
+     */
+    @Test
+    public void whenFindAllPostPreviewBrandIdThenGetEmpty() {
+        int expectedId = 2;
+        when(postRepository.getPostsBrandId(any(Integer.class))).thenReturn(Collections.emptyList());
+
+        var actualPostPreviews = postService.getPostsPreviewsBrandId(expectedId);
 
         assertThat(actualPostPreviews).isEmpty();
     }

@@ -128,6 +128,25 @@ public class PostRepositoryImpl implements PostRepository {
     }
 
     /**
+     * Показать объявления определенной марки.
+     * @param brandId идентификатор марки автомобиля
+     * @return объявления определенной марки.
+     */
+    @Override
+    public List<Post> getPostsBrandId(int brandId) {
+        return crudRepository.query(
+                "FROM Post post "
+                        + "LEFT JOIN FETCH post.priceHistories "
+                        + "LEFT JOIN FETCH post.participates "
+                        + "LEFT JOIN FETCH post.car.photos "
+                        + "LEFT JOIN FETCH post.car.owners "
+                        + "WHERE post.status = false AND "
+                        + "post.car.brand.id = :fId",
+                Post.class, Map.of("fId", brandId)
+        );
+    }
+
+    /**
      * Объявления от заданного пользователя.
      * @param user пользователь
      * @return список объявлений пользователя user

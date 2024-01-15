@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.job4j.car.dto.PostView;
 import ru.job4j.car.model.*;
+import ru.job4j.car.service.BrandService;
 import ru.job4j.car.service.CarService;
 import ru.job4j.car.service.PostService;
 
@@ -21,32 +22,37 @@ public class PostController {
 
     private final PostService postService;
     private final CarService carService;
+    private final BrandService brandService;
 
     @GetMapping
     public String getIndex(Model model) {
-        var postPreviews = postService.findAllPostPreview();
-        model.addAttribute("postPreviews", postPreviews);
+        model.addAttribute("postPreviews", postService.findAllPostPreview());
+        model.addAttribute("brands", brandService.findAllOrderById());
+        return "index";
+    }
+
+    @PostMapping("/brand")
+    public String getPagePostsOneBrand(@RequestParam int brandId, Model model) {
+        model.addAttribute("postPreviews", postService.getPostsPreviewsBrandId(brandId));
+        model.addAttribute("brands", brandService.findAllOrderById());
         return "index";
     }
 
     @GetMapping("/day")
     public String getPageLastPosts(Model model) {
-        var postPreviews = postService.getPostPreviewsLastDay();
-        model.addAttribute("postPreviews", postPreviews);
+        model.addAttribute("postPreviews", postService.getPostPreviewsLastDay());
         return "index";
     }
 
     @GetMapping("/photos")
     public String getPagePhotosPosts(Model model) {
-        var postPreviews = postService.getPostPreviewsWithPhoto();
-        model.addAttribute("postPreviews", postPreviews);
+        model.addAttribute("postPreviews", postService.getPostPreviewsWithPhoto());
         return "index";
     }
 
     @GetMapping("/my")
     public String getPageMyPosts(Model model, @SessionAttribute User user) {
-        var postPreviews = postService.getPostPreviewsUser(user);
-        model.addAttribute("postPreviews", postPreviews);
+        model.addAttribute("postPreviews", postService.getPostPreviewsUser(user));
         return "index";
     }
 
