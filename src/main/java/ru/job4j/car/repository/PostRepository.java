@@ -57,6 +57,13 @@ public interface PostRepository {
     List<Post> getPostsBrand(String brand);
 
     /**
+     * Показать объявления определенной марки.
+     * @param brandId дентификатор марки автомобиля
+     * @return объявления марки brand.
+     */
+    List<Post> getPostsBrandId(int brandId);
+
+    /**
      * Объявления от заданного пользователя.
      * @param user пользователь
      * @return список объявлений пользователя user

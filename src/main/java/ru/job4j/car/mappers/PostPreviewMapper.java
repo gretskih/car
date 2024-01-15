@@ -18,5 +18,5 @@ public interface PostPreviewMapper {
     @Mapping(target = "bodyType", source = "car.body.bodyType")
     @Mapping(target = "gearbox", source = "car.gearbox.type")
     @Mapping(target = "fuelType", source = "car.fuel.type")
-    PostPreview getCarPreview(Car car, Post post);
+    PostPreview getPostPreview(Car car, Post post);
 }

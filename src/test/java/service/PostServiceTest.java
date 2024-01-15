@@ -109,7 +109,7 @@ public class PostServiceTest {
         expectedPostPreview2.setName("namePostPreview3");
 
         when(postRepository.getPosts()).thenReturn(List.of(exceptedPost1, exceptedPost2));
-        when(postPreviewMapper.getCarPreview(carArgumentCaptor.capture(), postArgumentCaptor.capture()))
+        when(postPreviewMapper.getPostPreview(carArgumentCaptor.capture(), postArgumentCaptor.capture()))
                 .thenReturn(expectedPostPreview1, expectedPostPreview2);
 
         var actualPostPreviews = postService.findAllPostPreview();
@@ -146,7 +146,7 @@ public class PostServiceTest {
         expectedPostPreview2.setName("namePostPreview5");
 
         when(postRepository.getPostsLastDay()).thenReturn(List.of(exceptedPost1, exceptedPost2));
-        when(postPreviewMapper.getCarPreview(carArgumentCaptor.capture(), postArgumentCaptor.capture()))
+        when(postPreviewMapper.getPostPreview(carArgumentCaptor.capture(), postArgumentCaptor.capture()))
                 .thenReturn(expectedPostPreview1, expectedPostPreview2);
 
         var actualPostPreviews = postService.getPostPreviewsLastDay();
@@ -194,7 +194,7 @@ public class PostServiceTest {
         expectedPostPreview2.setId(2);
 
         when(postRepository.getPosts()).thenReturn(List.of(exceptedPost1, exceptedPost2));
-        when(postPreviewMapper.getCarPreview(carArgumentCaptor.capture(), postArgumentCaptor.capture()))
+        when(postPreviewMapper.getPostPreview(carArgumentCaptor.capture(), postArgumentCaptor.capture()))
                 .thenReturn(expectedPostPreview1, expectedPostPreview2);
 
         var actualPostPreviews = postService.getPostPreviewsWithPhoto();
@@ -238,7 +238,7 @@ public class PostServiceTest {
 
         when(postRepository.getPostsUser(userArgumentCaptor.capture())).thenReturn(List.of(exceptedPost1,
                 exceptedPost2));
-        when(postPreviewMapper.getCarPreview(carArgumentCaptor.capture(), postArgumentCaptor.capture()))
+        when(postPreviewMapper.getPostPreview(carArgumentCaptor.capture(), postArgumentCaptor.capture()))
                 .thenReturn(expectedPostPreview1, expectedPostPreview2);
 
         var actualPostPreviews = postService.getPostPreviewsUser(expectedUser);
@@ -262,6 +262,46 @@ public class PostServiceTest {
         when(postRepository.getPostsUser(any(User.class))).thenReturn(Collections.emptyList());
 
         var actualPostPreviews = postService.getPostPreviewsUser(expectedUser);
+
+        assertThat(actualPostPreviews).isEmpty();
+    }
+
+    /**
+     * Показать все объявления по идентификатору бренда
+     */
+    @Test
+    public void whenFindAllPostPreviewBrandIdThenGetPostPreviews() {
+        int expectedId = 2;
+        Post exceptedPost1 = getPost("post10");
+        Post exceptedPost2 = getPost("post11");
+
+        PostPreview expectedPostPreview1 = new PostPreview();
+        expectedPostPreview1.setName("namePostPreview10");
+        PostPreview expectedPostPreview2 = new PostPreview();
+        expectedPostPreview2.setName("namePostPreview11");
+
+        when(postRepository.getPostsBrandId(integerArgumentCaptor.capture())).thenReturn(List.of(exceptedPost1, exceptedPost2));
+        when(postPreviewMapper.getPostPreview(carArgumentCaptor.capture(), postArgumentCaptor.capture()))
+                .thenReturn(expectedPostPreview1, expectedPostPreview2);
+
+        var actualPostPreviews = postService.getPostsPreviewsBrandId(expectedId);
+
+        assertThat(actualPostPreviews).usingRecursiveComparison().isEqualTo(List.of(expectedPostPreview1, expectedPostPreview2));
+        assertThat(postArgumentCaptor.getAllValues()).isEqualTo(List.of(exceptedPost1, exceptedPost2));
+        assertThat(carArgumentCaptor.getAllValues()).isEqualTo(List.of(exceptedPost1.getCar(), exceptedPost2.getCar()));
+        assertThat(integerArgumentCaptor.getValue()).isEqualTo(expectedId);
+    }
+
+    /**
+     * Показать все объявления по идентификатору бренда
+     * Объявления отсутствуют
+     */
+    @Test
+    public void whenFindAllPostPreviewBrandIdThenGetEmpty() {
+        int expectedId = 2;
+        when(postRepository.getPostsBrandId(any(Integer.class))).thenReturn(Collections.emptyList());
+
+        var actualPostPreviews = postService.getPostsPreviewsBrandId(expectedId);
 
         assertThat(actualPostPreviews).isEmpty();
     }

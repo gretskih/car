@@ -121,6 +121,22 @@ public class PostRepositoryTest {
     }
 
     /**
+     * - показать объявления по идентификатору марки.
+     */
+    @Test
+    public void whenFindPostsBrandIdThenGetPostBrand() {
+        Post expectedPost = getPost("post5");
+        postRepository.create(expectedPost);
+
+        Post post = getPost("post6");
+        postRepository.create(post);
+
+        List<Post> actualPosts = postRepository.getPostsBrandId(expectedPost.getCar().getBrand().getId());
+
+        assertThat(actualPosts).isEqualTo(List.of(expectedPost));
+    }
+
+    /**
      * - показать объявления от заданного пользователя.
      */
     @Test
