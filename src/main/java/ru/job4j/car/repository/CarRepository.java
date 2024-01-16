@@ -26,7 +26,7 @@ public interface CarRepository {
      * @param carId ID
      * @return статус транзакции
      */
-    boolean delete(int carId);
+    boolean delete(Car car);
 
     /**
      * Список автомобилей отсортированных по id.

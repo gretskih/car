@@ -79,7 +79,7 @@ class OwnerRepositoryTest {
         var expectedOwner = getOwner("owner3", user);
         ownerRepository.create(expectedOwner);
 
-        boolean actualStatusTransaction = ownerRepository.delete(expectedOwner.getId());
+        boolean actualStatusTransaction = ownerRepository.delete(expectedOwner);
         Optional<Owner> actualOwner = ownerRepository.findById(expectedOwner.getId());
 
         assertThat(actualStatusTransaction).isTrue();

@@ -91,15 +91,15 @@ public class OwnerServiceTest {
      */
     @Test
     public void whenDeleteOwnerByIdThenGetTrue() {
-        int ownerId = 1;
-        var captureOwnerId = ArgumentCaptor.forClass(int.class);
-        when(ownerRepository.delete(captureOwnerId.capture())).thenReturn(true);
+        Owner expectedOwner = getOwner("Name", getUser("Login"));
+        var captureOwner = ArgumentCaptor.forClass(Owner.class);
+        when(ownerRepository.delete(captureOwner.capture())).thenReturn(true);
 
-        var resultTransaction = ownerService.delete(ownerId);
-        var actualOwnerId = captureOwnerId.getValue();
+        var resultTransaction = ownerService.delete(expectedOwner);
+        var actualOwner = captureOwner.getValue();
 
         Assertions.assertThat(resultTransaction).isTrue();
-        Assertions.assertThat(actualOwnerId).isEqualTo(ownerId);
+        Assertions.assertThat(actualOwner).isEqualTo(expectedOwner);
     }
 
     /**

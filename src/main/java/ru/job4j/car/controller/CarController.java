@@ -92,10 +92,8 @@ public class CarController {
         var carOptional = carService.findById(carId);
         if (carOptional.isPresent()) {
             Set<Photo> photos = carOptional.get().getPhotos();
-            int ownerId = carOptional.get().getOwner().getId();
-            if (carService.delete(carId)) {
+            if (carService.delete(carOptional.get())) {
                 photos.forEach(photoService::deleteByPhoto);
-                ownerService.delete(ownerId);
                 return "redirect:/cars";
             }
         }

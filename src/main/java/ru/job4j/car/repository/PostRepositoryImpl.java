@@ -47,15 +47,12 @@ public class PostRepositoryImpl implements PostRepository {
 
     /**
      * Удалить объявление по идентификатору
-     * @param postId идентификатор объявления
+     * @param post идентификатор объявления
      * @return статус транзакции
      */
     @Override
-    public boolean delete(int postId) {
-        return crudRepository.run(
-                "delete from Post where id = :fId",
-                Map.of("fId", postId)
-        );
+    public boolean delete(Post post) {
+        return crudRepository.run(session -> session.delete(post));
     }
 
     /**

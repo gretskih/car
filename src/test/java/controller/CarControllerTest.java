@@ -178,24 +178,24 @@ public class CarControllerTest {
      * Удаление автомобиля и редирект на redirect:/cars
      */
     @Captor
-    private ArgumentCaptor<Integer> carIdCaptor1;
+    private ArgumentCaptor<Integer> carIdCaptor;
     @Captor
-    private ArgumentCaptor<Integer> carIdCaptor2;
+    private ArgumentCaptor<Car> carCaptor;
 
     @Test
     public void whenDeleteCarThenGetCarsPage() {
         int carId = 1;
         Car car = getCar();
         String exceptedPage = "redirect:/cars";
-        when(carService.findById(carIdCaptor1.capture())).thenReturn(Optional.of(car));
-        when(carService.delete(carIdCaptor2.capture())).thenReturn(true);
+        when(carService.findById(carIdCaptor.capture())).thenReturn(Optional.of(car));
+        when(carService.delete(carCaptor.capture())).thenReturn(true);
         Model model = new ConcurrentModel();
 
         var actualPage = carController.delete(carId, model);
 
         assertThat(actualPage).isEqualTo(exceptedPage);
-        assertThat(carIdCaptor1.getValue()).isEqualTo(carId);
-        assertThat(carIdCaptor2.getValue()).isEqualTo(carId);
+        assertThat(carIdCaptor.getValue()).isEqualTo(carId);
+        assertThat(carCaptor.getValue()).isEqualTo(car);
     }
 
     /**
@@ -208,7 +208,7 @@ public class CarControllerTest {
         String exceptedPage = "errors/404";
         String exceptedMessage = "Произошла ошибка при удалении!";
         when(carService.findById(any(Integer.class))).thenReturn(Optional.of(car));
-        when(carService.delete(any(Integer.class))).thenReturn(false);
+        when(carService.delete(any(Car.class))).thenReturn(false);
         Model model = new ConcurrentModel();
 
         var actualPage = carController.delete(carId, model);

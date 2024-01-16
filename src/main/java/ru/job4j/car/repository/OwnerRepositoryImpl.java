@@ -40,15 +40,12 @@ public class OwnerRepositoryImpl implements OwnerRepository {
 
     /**
      * Удалить владельца по id.
-     * @param ownerId ID
+     * @param owner ID
      * @return статус транзакции
      */
     @Override
-    public boolean delete(int ownerId) {
-        return crudRepository.run(
-                "delete from Owner where id = :fId",
-                Map.of("fId", ownerId)
-        );
+    public boolean delete(Owner owner) {
+        return crudRepository.run(session -> session.delete(owner));
     }
 
     /**

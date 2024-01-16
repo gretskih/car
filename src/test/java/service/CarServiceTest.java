@@ -110,12 +110,12 @@ public class CarServiceTest {
      */
     @Test
     public void whenDeleteCarThenGetTrue() {
-        int expectedId = 1;
-        when(carRepository.delete(idArgumentCaptor.capture())).thenReturn(true);
+        Car expectedCar = getCar("test7");
+        when(carRepository.delete(carArgumentCaptor.capture())).thenReturn(true);
 
-        var actualStatus = carService.delete(expectedId);
+        var actualStatus = carService.delete(expectedCar);
 
         assertThat(actualStatus).isTrue();
-        assertThat(idArgumentCaptor.getValue()).usingRecursiveComparison().isEqualTo(expectedId);
+        assertThat(carArgumentCaptor.getValue()).usingRecursiveComparison().isEqualTo(expectedCar);
     }
 }

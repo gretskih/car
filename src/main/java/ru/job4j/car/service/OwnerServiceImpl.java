@@ -26,8 +26,8 @@ public class OwnerServiceImpl implements OwnerService {
     }
 
     @Override
-    public boolean delete(int ownerId) {
-        return ownerRepository.delete(ownerId);
+    public boolean delete(Owner owner) {
+        return ownerRepository.delete(owner);
     }
 
     @Override

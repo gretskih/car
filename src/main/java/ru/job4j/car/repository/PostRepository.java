@@ -24,10 +24,10 @@ public interface PostRepository {
 
     /**
      * Удалить объявление по идентификатору
-     * @param postId идентификатор объявления
+     * @param post идентификатор объявления
      * @return статус транзакции
      */
-    boolean delete(int postId);
+    boolean delete(Post post);
 
     /**
      * Установить статус объявлению

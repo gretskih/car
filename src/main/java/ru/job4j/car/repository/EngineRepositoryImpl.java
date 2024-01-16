@@ -42,11 +42,8 @@ public class EngineRepositoryImpl implements EngineRepository {
      * @return статус транзакции
      */
     @Override
-    public boolean delete(int engineId) {
-        return crudRepository.run(
-                "delete from Engine where id = :fId",
-                Map.of("fId", engineId)
-        );
+    public boolean delete(Engine engine) {
+        return crudRepository.run(session -> session.delete(engine));
     }
 
     /**

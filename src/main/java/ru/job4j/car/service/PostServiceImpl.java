@@ -31,7 +31,11 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public boolean delete(int postId) {
-        return postRepository.delete(postId);
+        var postOptional = postRepository.findById(postId);
+        if (postOptional.isPresent()) {
+            return postRepository.delete(postOptional.get());
+        }
+        return false;
     }
 
     @Override

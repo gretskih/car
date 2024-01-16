@@ -23,10 +23,10 @@ public interface OwnerRepository {
 
     /**
      * Удалить владельца по id.
-     * @param ownerId ID
+     * @param owner ID
      * @return статус транзакции
      */
-    boolean delete(int ownerId);
+    boolean delete(Owner owner);
 
     /**
      * Список владельцев отсортированных по id.

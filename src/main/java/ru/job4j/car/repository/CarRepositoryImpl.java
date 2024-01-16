@@ -45,11 +45,8 @@ public class CarRepositoryImpl implements CarRepository {
      * @return статус транзакции
      */
     @Override
-    public boolean delete(int carId) {
-        return crudRepository.run(
-                "delete from Car where id = :fId",
-                Map.of("fId", carId)
-        );
+    public boolean delete(Car car) {
+        return crudRepository.run(session -> session.delete(car));
     }
 
     /**

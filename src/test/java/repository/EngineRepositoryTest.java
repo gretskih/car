@@ -68,7 +68,7 @@ public class EngineRepositoryTest {
         expectedEngine.setName("engine3");
         engineRepository.create(expectedEngine);
 
-        boolean actualStatusTransaction = engineRepository.delete(expectedEngine.getId());
+        boolean actualStatusTransaction = engineRepository.delete(expectedEngine);
         Optional<Engine> actualEngine = engineRepository.findById(expectedEngine.getId());
 
         assertThat(actualStatusTransaction).isTrue();

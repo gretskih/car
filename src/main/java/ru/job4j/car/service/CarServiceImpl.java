@@ -35,7 +35,7 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public boolean delete(int carId) {
-        return carRepository.delete(carId);
+    public boolean delete(Car car) {
+        return carRepository.delete(car);
     }
 }

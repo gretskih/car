@@ -176,7 +176,7 @@ public class PostRepositoryTest {
     public void whenDeletePostThenGetPostEmpty() {
         Post expectedPost = getPost("post10");
         postRepository.create(expectedPost);
-        boolean actualStatusTransaction = postRepository.delete(expectedPost.getId());
+        boolean actualStatusTransaction = postRepository.delete(expectedPost);
 
         var actualPost = postRepository.findById(expectedPost.getId());
 

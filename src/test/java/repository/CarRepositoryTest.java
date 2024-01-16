@@ -137,7 +137,7 @@ public class CarRepositoryTest {
         Car expectedCar = getCar("test3");
         carRepository.create(expectedCar);
 
-        boolean actualStatusTransaction = carRepository.delete(expectedCar.getId());
+        boolean actualStatusTransaction = carRepository.delete(expectedCar);
         Optional<Car> actualCar = carRepository.findById(expectedCar.getId());
 
         assertThat(actualStatusTransaction).isTrue();

@@ -25,7 +25,7 @@ public interface EngineRepository {
      * @param engineId ID
      * @return статус транзакции
      */
-    boolean delete(int engineId);
+    boolean delete(Engine engine);
 
     /**
      * Список двигателей отсортированных по id.

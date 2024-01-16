@@ -12,7 +12,7 @@ public interface OwnerService {
 
     boolean update(Owner owner);
 
-    boolean delete(int ownerId);
+    boolean delete(Owner owner);
 
     List<Owner> findAllOrderById();
 

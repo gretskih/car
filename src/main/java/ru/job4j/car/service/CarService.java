@@ -18,5 +18,5 @@ public interface CarService {
 
     List<Car> findByUser(User user);
 
-    boolean delete(int carId);
+    boolean delete(Car car);
 }
