@@ -95,7 +95,7 @@ public class UserRepositoryTest {
         User expectedUser2 = getUser("user5");
         userRepository.create(expectedUser2);
 
-        List<User> actualUsers = userRepository.findAllOrderById();
+        List<User> actualUsers = userRepository.findAll();
         assertThat(actualUsers).isEqualTo(List.of(expectedUser1, expectedUser2));
     }
 

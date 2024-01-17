@@ -50,9 +50,9 @@ public class EngineServiceTest {
         Engine engine = new Engine(1, "Test");
         List<Engine> expectedEngineList = new ArrayList<>();
         expectedEngineList.add(engine);
-        when(engineRepository.findAllOrderById()).thenReturn(expectedEngineList);
+        when(engineRepository.findAll()).thenReturn(expectedEngineList);
 
-        var actualEngineList = engineService.findAllOrderById();
+        var actualEngineList = engineService.findAll();
 
         assertThat(actualEngineList).isEqualTo(expectedEngineList);
     }

@@ -23,7 +23,7 @@ public interface CarRepository {
 
     /**
      * Удалить автомобиль по id.
-     * @param carId ID
+     * @param car ID
      * @return статус транзакции
      */
     boolean delete(Car car);
@@ -32,7 +32,7 @@ public interface CarRepository {
      * Список автомобилей отсортированных по id.
      * @return список автомобилей.
      */
-    List<Car> findAllOrderById();
+    List<Car> findAll();
 
     /**
      * Найти автомобиль по ID
@@ -60,10 +60,4 @@ public interface CarRepository {
      * @return список автомобилей
      */
     List<Car> findByUser(User user);
-
-    /**
-     * Список автомобилей отсортированных по id.
-     * @return список автомобилей
-     */
-    List<Car> findAll();
 }

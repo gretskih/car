@@ -31,7 +31,7 @@ public class BrandRepositoryImpl implements BrandRepository {
      * @return список производителей.
      */
     @Override
-    public List<Brand> findAllOrderById() {
+    public List<Brand> findAll() {
         return crudRepository.query("from Brand order by id asc", Brand.class);
     }
 

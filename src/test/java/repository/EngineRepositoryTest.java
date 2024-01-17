@@ -88,8 +88,8 @@ public class EngineRepositoryTest {
         expectedEngine2.setName("engine5");
         engineRepository.create(expectedEngine2);
 
-        List<Engine> actualEngines = engineRepository.findAllOrderById();
-        assertThat(actualEngines).isEqualTo(List.of(expectedEngine1, expectedEngine2));
+        List<Engine> actualEngines = engineRepository.findAll();
+        assertThat(actualEngines).isEqualTo(List.of(expectedEngine2, expectedEngine1));
     }
 
     /**

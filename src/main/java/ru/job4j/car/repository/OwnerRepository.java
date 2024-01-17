@@ -32,7 +32,7 @@ public interface OwnerRepository {
      * Список владельцев отсортированных по id.
      * @return список владельцев.
      */
-    List<Owner> findAllOrderById();
+    List<Owner> findAll();
 
     /**
      * Найти владельца по ID

@@ -20,8 +20,8 @@ public class EngineServiceImpl implements EngineService {
     }
 
     @Override
-    public List<Engine> findAllOrderById() {
-        return engineRepository.findAllOrderById();
+    public List<Engine> findAll() {
+        return engineRepository.findAll();
     }
 
     @Override

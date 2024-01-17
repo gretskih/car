@@ -10,7 +10,7 @@ public interface ColorService {
      * Список цветов отсортированных по id.
      * @return список цветов.
      */
-    List<Color> findAllOrderById();
+    List<Color> findAll();
 
     /**
      * Найти цвет по ID

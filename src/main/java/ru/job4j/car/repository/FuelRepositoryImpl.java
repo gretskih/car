@@ -31,7 +31,7 @@ public class FuelRepositoryImpl implements FuelRepository {
      * @return List список типов топлива.
      */
     @Override
-    public List<Fuel> findAllOrderById() {
+    public List<Fuel> findAll() {
         return crudRepository.query("from Fuel order by id asc", Fuel.class
         );
     }

@@ -90,13 +90,13 @@ public class CarControllerTest {
         Fuel fuel = new Fuel();
         Model model = new ConcurrentModel();
 
-        when(engineService.findAllOrderById()).thenReturn(List.of(engine));
-        when(brandService.findAllOrderById()).thenReturn(List.of(brand));
-        when(colorService.findAllOrderById()).thenReturn(List.of(color));
-        when(yearService.findAllOrderById()).thenReturn(List.of(year));
-        when(bodyService.findAllOrderByType()).thenReturn(List.of(body));
-        when(gearboxService.findAllOrderById()).thenReturn(List.of(gearbox));
-        when(fuelService.findAllOrderById()).thenReturn(List.of(fuel));
+        when(engineService.findAll()).thenReturn(List.of(engine));
+        when(brandService.findAll()).thenReturn(List.of(brand));
+        when(colorService.findAll()).thenReturn(List.of(color));
+        when(yearService.findAll()).thenReturn(List.of(year));
+        when(bodyService.findAll()).thenReturn(List.of(body));
+        when(gearboxService.findAll()).thenReturn(List.of(gearbox));
+        when(fuelService.findAll()).thenReturn(List.of(fuel));
 
         var actualPage = carController.getCreationPage(model);
         var actualEngines = model.getAttribute("engines");

@@ -17,7 +17,7 @@ public class BrandServiceImpl implements BrandService {
      * @return список производителей.
      */
     @Override
-    public List<Brand> findAllOrderById() {
-        return brandRepository.findAllOrderById();
+    public List<Brand> findAll() {
+        return brandRepository.findAll();
     }
 }

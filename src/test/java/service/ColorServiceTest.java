@@ -33,9 +33,9 @@ public class ColorServiceTest {
         Color color = new Color(1, "color");
         List<Color> expectedColorList = new ArrayList<>();
         expectedColorList.add(color);
-        when(colorRepository.findAllOrderById()).thenReturn(expectedColorList);
+        when(colorRepository.findAll()).thenReturn(expectedColorList);
 
-        var actualColorList = colorService.findAllOrderById();
+        var actualColorList = colorService.findAll();
 
         assertThat(actualColorList).isEqualTo(expectedColorList);
     }

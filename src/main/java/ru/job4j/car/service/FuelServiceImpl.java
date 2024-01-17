@@ -18,8 +18,8 @@ public class FuelServiceImpl implements FuelService {
      * @return список типов топлива.
      */
     @Override
-    public List<Fuel> findAllOrderById() {
-        return fuelRepository.findAllOrderById();
+    public List<Fuel> findAll() {
+        return fuelRepository.findAll();
     }
 
     /**

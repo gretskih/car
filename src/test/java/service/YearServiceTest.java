@@ -33,9 +33,9 @@ public class YearServiceTest {
         Year year = new Year(1, 2020);
         List<Year> expectedYearList = new ArrayList<>();
         expectedYearList.add(year);
-        when(yearRepository.findAllOrderById()).thenReturn(expectedYearList);
+        when(yearRepository.findAll()).thenReturn(expectedYearList);
 
-        var actualYearList = yearService.findAllOrderById();
+        var actualYearList = yearService.findAll();
 
         assertThat(actualYearList).isEqualTo(expectedYearList);
     }

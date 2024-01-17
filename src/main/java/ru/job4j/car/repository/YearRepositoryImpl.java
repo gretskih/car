@@ -31,7 +31,7 @@ public class YearRepositoryImpl implements YearRepository {
      * @return список лет.
      */
     @Override
-    public List<Year> findAllOrderById() {
+    public List<Year> findAll() {
         return crudRepository.query(
                 "from Year order by id desc", Year.class
         );

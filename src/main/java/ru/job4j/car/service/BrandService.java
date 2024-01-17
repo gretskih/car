@@ -9,5 +9,5 @@ public interface BrandService {
      * Список производителей отсортированных по id.
      * @return список производителей.
      */
-    List<Brand> findAllOrderById();
+    List<Brand> findAll();
 }

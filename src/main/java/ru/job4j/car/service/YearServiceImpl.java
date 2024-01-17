@@ -18,8 +18,8 @@ public class YearServiceImpl implements YearService {
      * @return список лет.
      */
     @Override
-    public List<Year> findAllOrderById() {
-        return yearRepository.findAllOrderById();
+    public List<Year> findAll() {
+        return yearRepository.findAll();
     }
 
     /**

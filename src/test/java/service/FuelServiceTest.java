@@ -33,9 +33,9 @@ public class FuelServiceTest {
         Fuel fuel = new Fuel(1, "fuel");
         List<Fuel> expectedFuelList = new ArrayList<>();
         expectedFuelList.add(fuel);
-        when(fuelRepository.findAllOrderById()).thenReturn(expectedFuelList);
+        when(fuelRepository.findAll()).thenReturn(expectedFuelList);
 
-        var actualFuelList = fuelService.findAllOrderById();
+        var actualFuelList = fuelService.findAll();
 
         assertThat(actualFuelList).isEqualTo(expectedFuelList);
     }

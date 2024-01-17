@@ -47,7 +47,7 @@ public class BrandRepositoryTest {
         expectedBrand2.setName("brand2");
         brandRepository.create(expectedBrand2);
 
-        List<Brand> actualBrands = brandRepository.findAllOrderById();
+        List<Brand> actualBrands = brandRepository.findAll();
         assertThat(actualBrands).usingRecursiveComparison().isEqualTo(List.of(expectedBrand1, expectedBrand2));
     }
 

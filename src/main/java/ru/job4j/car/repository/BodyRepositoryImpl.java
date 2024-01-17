@@ -32,7 +32,7 @@ public class BodyRepositoryImpl implements BodyRepository {
      * @return список кузовов.
      */
     @Override
-    public List<Body> findAllOrderByType() {
+    public List<Body> findAll() {
         return crudRepository.query(
                 "from Body order by bodyType asc", Body.class
         );

@@ -102,7 +102,7 @@ class OwnerRepositoryTest {
         var expectedOwner2 = getOwner("owner5", user2);
         ownerRepository.create(expectedOwner2);
 
-        List<Owner> actualOwners = ownerRepository.findAllOrderById();
+        List<Owner> actualOwners = ownerRepository.findAll();
         assertThat(actualOwners).isEqualTo(List.of(expectedOwner1, expectedOwner2));
     }
 

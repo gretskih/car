@@ -64,7 +64,7 @@ public class ColorRepositoryTest {
         expectedColor2.setName("color2");
         colorRepository.create(expectedColor2);
 
-        List<Color> actualColors = colorRepository.findAllOrderById();
+        List<Color> actualColors = colorRepository.findAll();
         assertThat(actualColors).usingRecursiveComparison().isEqualTo(List.of(expectedColor1, expectedColor2));
     }
 

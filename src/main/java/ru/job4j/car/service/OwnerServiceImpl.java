@@ -31,8 +31,8 @@ public class OwnerServiceImpl implements OwnerService {
     }
 
     @Override
-    public List<Owner> findAllOrderById() {
-        return ownerRepository.findAllOrderById();
+    public List<Owner> findAll() {
+        return ownerRepository.findAll();
     }
 
     @Override

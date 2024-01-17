@@ -53,7 +53,7 @@ public class OwnerRepositoryImpl implements OwnerRepository {
      * @return список владельцев.
      */
     @Override
-    public List<Owner> findAllOrderById() {
+    public List<Owner> findAll() {
         return crudRepository.query("from Owner order by id asc", Owner.class);
     }
 

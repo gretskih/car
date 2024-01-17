@@ -64,7 +64,7 @@ public class YearRepositoryTest {
         expectedYear2.setYear(2020);
         yearRepository.create(expectedYear2);
 
-        List<Year> actualYears = yearRepository.findAllOrderById();
+        List<Year> actualYears = yearRepository.findAll();
         assertThat(actualYears).usingRecursiveComparison().isEqualTo(List.of(expectedYear2, expectedYear1));
     }
 

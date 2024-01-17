@@ -18,8 +18,8 @@ public class GearboxServiceImpl implements GearboxService {
      * @return список коробок.
      */
     @Override
-    public List<Gearbox> findAllOrderById() {
-        return gearboxRepository.findAllOrderById();
+    public List<Gearbox> findAll() {
+        return gearboxRepository.findAll();
     }
 
     /**

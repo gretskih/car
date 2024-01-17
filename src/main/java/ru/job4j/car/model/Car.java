@@ -55,7 +55,7 @@ public class Car {
     /**
      * Текущий владелец автомобиля
      */
-    @ManyToOne(cascade = CascadeType.REMOVE)
+    @ManyToOne
     @JoinColumn(name = "owner_id")
     private Owner owner;
 

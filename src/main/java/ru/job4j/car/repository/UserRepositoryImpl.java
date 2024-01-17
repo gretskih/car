@@ -55,7 +55,7 @@ public class UserRepositoryImpl implements UserRepository {
      * @return список пользователей.
      */
     @Override
-    public List<User> findAllOrderById() {
+    public List<User> findAll() {
         return crudRepository.query("from User order by id asc", User.class);
     }
 

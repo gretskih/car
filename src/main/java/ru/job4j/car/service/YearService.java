@@ -11,7 +11,7 @@ public interface YearService {
      * Список лет отсортированных по id.
      * @return список лет.
      */
-    List<Year> findAllOrderById();
+    List<Year> findAll();
 
     /**
      * Найти год по ID

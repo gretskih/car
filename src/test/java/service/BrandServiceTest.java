@@ -30,9 +30,9 @@ public class BrandServiceTest {
         Brand brand = new Brand(1, "Brand");
         List<Brand> expectedBrandList = new ArrayList<>();
         expectedBrandList.add(brand);
-        when(brandRepository.findAllOrderById()).thenReturn(expectedBrandList);
+        when(brandRepository.findAll()).thenReturn(expectedBrandList);
 
-        var actualBrandList = brandService.findAllOrderById();
+        var actualBrandList = brandService.findAll();
 
         assertThat(actualBrandList).isEqualTo(expectedBrandList);
     }

@@ -17,6 +17,7 @@ import ru.job4j.car.service.BrandService;
 import ru.job4j.car.service.CarService;
 import ru.job4j.car.service.PostService;
 
+import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -67,7 +68,7 @@ public class PostControllerTest {
         List<Brand> expectedBrands = List.of(new Brand(1, "Brand"));
         List<PostPreview> expectedPostPreviews = List.of(getPostPreview());
         when(postService.findAllPostPreview()).thenReturn(expectedPostPreviews);
-        when(brandService.findAllOrderById()).thenReturn(expectedBrands);
+        when(brandService.findAll()).thenReturn(expectedBrands);
         Model model = new ConcurrentModel();
 
         var actualPage = postController.getIndex(model);
@@ -109,7 +110,7 @@ public class PostControllerTest {
         List<PostPreview> expectedPostPreviews = List.of(getPostPreview());
         List<Brand> expectedBrands = List.of(new Brand(expectedId, "Brand"));
         when(postService.getPostsPreviewsBrandId(brandIdCaptor.capture())).thenReturn(expectedPostPreviews);
-        when(brandService.findAllOrderById()).thenReturn(expectedBrands);
+        when(brandService.findAll()).thenReturn(expectedBrands);
         Model model = new ConcurrentModel();
 
         var actualPage = postController.getPagePostsOneBrand(expectedId, model);
@@ -194,7 +195,7 @@ public class PostControllerTest {
         String expectedPage = "redirect:/posts";
         Post post = getPost();
         User expectedUser = getUser();
-        String expectedPrice = "10000";
+        BigInteger expectedPrice = new BigInteger(String.valueOf(10000));
         Integer expectedCarId = 1;
         Car expectedCar = getCar();
         Model model = new ConcurrentModel();
@@ -205,7 +206,7 @@ public class PostControllerTest {
 
         assertThat(actualPage).isEqualTo(expectedPage);
         assertThat(post.getUser()).usingRecursiveComparison().isEqualTo(expectedUser);
-        assertThat(post.getPrice()).isEqualTo(expectedPrice);
+        assertThat(post.getPrice()).isEqualTo(String.valueOf(expectedPrice));
         assertThat(post.getCar()).usingRecursiveComparison().isEqualTo(expectedCar);
     }
 
@@ -217,7 +218,7 @@ public class PostControllerTest {
         String expectedPage = "errors/404";
         Post post = getPost();
         User expectedUser = getUser();
-        String expectedPrice = "10000";
+        BigInteger expectedPrice = new BigInteger(String.valueOf(10000));
         Integer expectedCarId = 1;
         Car expectedCar = getCar();
         Model model = new ConcurrentModel();

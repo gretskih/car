@@ -41,7 +41,7 @@ public class CarRepositoryImpl implements CarRepository {
 
     /**
      * Удалить автомобиль по id.
-     * @param carId ID
+     * @param car ID
      * @return статус транзакции
      */
     @Override
@@ -54,7 +54,7 @@ public class CarRepositoryImpl implements CarRepository {
      * @return список автомобилей.
      */
     @Override
-    public List<Car> findAllOrderById() {
+    public List<Car> findAll() {
         return crudRepository.query("from Car car "
                 + "LEFT JOIN FETCH car.owners "
                 + "LEFT JOIN FETCH car.photos order by car.id asc", Car.class);
@@ -115,15 +115,5 @@ public class CarRepositoryImpl implements CarRepository {
                         + "where car.owner.user = :fUser "
                         + "order by car.id desc", Car.class,
                 Map.of("fUser", user));
-    }
-
-    /**
-     * Список автомобилей отсортированных по id.
-     * @return список автомобилей
-     */
-    @Override
-    public List<Car> findAll() {
-        return crudRepository.query("from Car car "
-                + "order by car.id asc", Car.class);
     }
 }

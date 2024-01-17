@@ -17,8 +17,8 @@ public class ColorServiceImpl implements ColorService {
      * Список цветов отсортированных по id.
      * @return список цветов.
      */
-    public List<Color> findAllOrderById() {
-        return colorRepository.findAllOrderById();
+    public List<Color> findAll() {
+        return colorRepository.findAll();
     }
 
     /**

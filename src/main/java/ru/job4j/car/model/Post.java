@@ -1,5 +1,6 @@
 package ru.job4j.car.model;
 
+import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.HashSet;

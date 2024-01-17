@@ -155,7 +155,7 @@ public class CarRepositoryTest {
         Car expectedCar2 = getCar("test5");
         carRepository.create(expectedCar2);
 
-        List<Car> actualCars = carRepository.findAllOrderById();
+        List<Car> actualCars = carRepository.findAll();
 
         assertThat(actualCars).isEqualTo(List.of(expectedCar1, expectedCar2));
     }

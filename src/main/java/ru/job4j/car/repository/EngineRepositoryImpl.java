@@ -38,7 +38,7 @@ public class EngineRepositoryImpl implements EngineRepository {
 
     /**
      * Удалить двигатель по id.
-     * @param engineId ID
+     * @param engine ID
      * @return статус транзакции
      */
     @Override
@@ -51,8 +51,8 @@ public class EngineRepositoryImpl implements EngineRepository {
      * @return список двигателей.
      */
     @Override
-    public List<Engine> findAllOrderById() {
-        return crudRepository.query("from Engine order by id asc", Engine.class);
+    public List<Engine> findAll() {
+        return crudRepository.query("from Engine order by id desc", Engine.class);
     }
 
     /**

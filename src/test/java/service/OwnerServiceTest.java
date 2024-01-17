@@ -110,9 +110,9 @@ public class OwnerServiceTest {
         Owner expectedOwner1 = getOwner("Name1", getUser("Login1"));
         Owner expectedOwner2 = getOwner("Name2", getUser("Login2"));
         List<Owner> expectedOwners = List.of(expectedOwner1, expectedOwner2);
-        when(ownerRepository.findAllOrderById()).thenReturn(expectedOwners);
+        when(ownerRepository.findAll()).thenReturn(expectedOwners);
 
-        var actualOwners = ownerService.findAllOrderById();
+        var actualOwners = ownerService.findAll();
 
         assertThat(actualOwners).isEqualTo(expectedOwners);
     }

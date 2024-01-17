@@ -14,7 +14,7 @@ public interface OwnerService {
 
     boolean delete(Owner owner);
 
-    List<Owner> findAllOrderById();
+    List<Owner> findAll();
 
     Optional<Owner> findById(int ownerId);
 

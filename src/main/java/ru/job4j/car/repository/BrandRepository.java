@@ -17,7 +17,7 @@ public interface BrandRepository {
      * Список производителей отсортированных по id.
      * @return список производителей.
      */
-    List<Brand> findAllOrderById();
+    List<Brand> findAll();
 
     /**
      * Найти производителя по ID

@@ -36,13 +36,13 @@ public class CarController {
 
     @GetMapping("/create")
     public String getCreationPage(Model model) {
-        model.addAttribute("engines", engineService.findAllOrderById());
-        model.addAttribute("brands", brandService.findAllOrderById());
-        model.addAttribute("colors", colorService.findAllOrderById());
-        model.addAttribute("years", yearService.findAllOrderById());
-        model.addAttribute("bodies", bodyService.findAllOrderByType());
-        model.addAttribute("gearboxes", gearboxService.findAllOrderById());
-        model.addAttribute("fuels", fuelService.findAllOrderById());
+        model.addAttribute("engines", engineService.findAll());
+        model.addAttribute("brands", brandService.findAll());
+        model.addAttribute("colors", colorService.findAll());
+        model.addAttribute("years", yearService.findAll());
+        model.addAttribute("bodies", bodyService.findAll());
+        model.addAttribute("gearboxes", gearboxService.findAll());
+        model.addAttribute("fuels", fuelService.findAll());
         return "cars/create";
     }
 

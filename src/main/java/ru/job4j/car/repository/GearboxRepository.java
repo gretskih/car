@@ -17,7 +17,7 @@ public interface GearboxRepository {
      * Список коробок отсортированных по id.
      * @return список коробок.
      */
-    List<Gearbox> findAllOrderById();
+    List<Gearbox> findAll();
 
     /**
      * Найти коробку по ID

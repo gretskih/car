@@ -9,7 +9,7 @@ public interface EngineService {
 
     Engine create(Engine engine);
 
-    List<Engine> findAllOrderById();
+    List<Engine> findAll();
 
     Optional<Engine> findById(int engineId);
 }

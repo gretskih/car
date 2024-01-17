@@ -18,7 +18,7 @@ public interface FuelRepository {
      * Список типов топлива отсортированных по id.
      * @return список типов топлива.
      */
-    List<Fuel> findAllOrderById();
+    List<Fuel> findAll();
 
     /**
      * Найти топливо по ID

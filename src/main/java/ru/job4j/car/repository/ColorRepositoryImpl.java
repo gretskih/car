@@ -31,7 +31,7 @@ public class ColorRepositoryImpl implements ColorRepository {
      * @return список цветов.
      */
     @Override
-    public List<Color> findAllOrderById() {
+    public List<Color> findAll() {
         return crudRepository.query("from Color order by id asc", Color.class);
     }
 

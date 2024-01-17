@@ -28,10 +28,10 @@ public interface UserRepository {
     boolean delete(int userId);
 
     /**
-     * Список пользователь отсортированных по id.
+     * Список пользователей отсортированных по id.
      * @return список пользователей.
      */
-    List<User> findAllOrderById();
+    List<User> findAll();
 
     /**
      * Найти пользователя по ID

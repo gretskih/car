@@ -17,7 +17,7 @@ public interface BodyRepository {
      * Список кузовов отсортированных по типу.
      * @return список кузовов.
      */
-    List<Body> findAllOrderByType();
+    List<Body> findAll();
 
     /**
      * Найти кузов по ID

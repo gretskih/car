@@ -32,9 +32,9 @@ public class BodyServiceTest {
         Body body = new Body(1, "Седан");
         List<Body> expectedBodyList = new ArrayList<>();
         expectedBodyList.add(body);
-        when(bodyRepository.findAllOrderByType()).thenReturn(expectedBodyList);
+        when(bodyRepository.findAll()).thenReturn(expectedBodyList);
 
-        var actualBodyList = bodyService.findAllOrderByType();
+        var actualBodyList = bodyService.findAll();
 
         assertThat(actualBodyList).isEqualTo(expectedBodyList);
     }

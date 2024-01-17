@@ -64,7 +64,7 @@ public class GearboxRepositoryTest {
         expectedGearbox2.setType("gearbox2");
         gearboxRepository.create(expectedGearbox2);
 
-        List<Gearbox> actualGearboxes = gearboxRepository.findAllOrderById();
+        List<Gearbox> actualGearboxes = gearboxRepository.findAll();
         assertThat(actualGearboxes).usingRecursiveComparison().isEqualTo(List.of(expectedGearbox1, expectedGearbox2));
     }
 

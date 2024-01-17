@@ -10,7 +10,7 @@ public interface GearboxService {
      * Список коробок отсортированных по id.
      * @return список трансмиссий.
      */
-    List<Gearbox> findAllOrderById();
+    List<Gearbox> findAll();
 
     /**
      * Найти коробку по ID

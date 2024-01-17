@@ -47,7 +47,7 @@ public class BodyRepositoryTest {
         expectedBody2.setBodyType("body2");
         bodyRepository.create(expectedBody2);
 
-        List<Body> actualBodies = bodyRepository.findAllOrderByType();
+        List<Body> actualBodies = bodyRepository.findAll();
         assertThat(actualBodies).usingRecursiveComparison().isEqualTo(List.of(expectedBody1, expectedBody2));
     }
 

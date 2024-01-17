@@ -31,7 +31,7 @@ public class GearboxRepositoryImpl implements GearboxRepository {
      * @return список коробок.
      */
     @Override
-    public List<Gearbox> findAllOrderById() {
+    public List<Gearbox> findAll() {
         return crudRepository.query(
                 "from Gearbox order by id asc", Gearbox.class
         );

@@ -14,8 +14,8 @@ public class BodyServiceImpl implements BodyService {
     private BodyRepository bodyRepository;
 
     @Override
-    public List<Body> findAllOrderByType() {
-        return bodyRepository.findAllOrderByType();
+    public List<Body> findAll() {
+        return bodyRepository.findAll();
     }
 
     @Override

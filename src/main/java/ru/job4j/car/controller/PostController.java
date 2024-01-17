@@ -27,14 +27,14 @@ public class PostController {
     @GetMapping
     public String getIndex(Model model) {
         model.addAttribute("postPreviews", postService.findAllPostPreview());
-        model.addAttribute("brands", brandService.findAllOrderById());
+        model.addAttribute("brands", brandService.findAll());
         return "index";
     }
 
     @PostMapping("/brand")
     public String getPagePostsOneBrand(@RequestParam int brandId, Model model) {
         model.addAttribute("postPreviews", postService.getPostsPreviewsBrandId(brandId));
-        model.addAttribute("brands", brandService.findAllOrderById());
+        model.addAttribute("brands", brandService.findAll());
         return "index";
     }
 
@@ -63,12 +63,12 @@ public class PostController {
     }
 
     @PostMapping("/create")
-    public String create(@ModelAttribute Post post, @SessionAttribute User user, @RequestParam String price, @RequestParam Integer carId, Model model) {
+    public String create(@ModelAttribute Post post, @SessionAttribute User user, @RequestParam BigInteger price, @RequestParam Integer carId, Model model) {
         post.setCreated(LocalDateTime.now());
         post.setUser(user);
         PriceHistory priceHistory = new PriceHistory();
-        priceHistory.setBefore(new BigInteger(price.replaceAll(" ", "")));
-        priceHistory.setAfter(new BigInteger(price.replaceAll(" ", "")));
+        priceHistory.setBefore(price);
+        priceHistory.setAfter(price);
         priceHistory.setCreated(LocalDateTime.now());
         post.setPriceHistories(Set.of(priceHistory));
 

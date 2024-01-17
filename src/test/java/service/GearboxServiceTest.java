@@ -34,9 +34,9 @@ public class GearboxServiceTest {
         Gearbox gearbox = new Gearbox(1, "gearbox");
         List<Gearbox> expectedGearboxList = new ArrayList<>();
         expectedGearboxList.add(gearbox);
-        when(gearboxRepository.findAllOrderById()).thenReturn(expectedGearboxList);
+        when(gearboxRepository.findAll()).thenReturn(expectedGearboxList);
 
-        var actualGearboxList = gearboxService.findAllOrderById();
+        var actualGearboxList = gearboxService.findAll();
 
         assertThat(actualGearboxList).isEqualTo(expectedGearboxList);
     }

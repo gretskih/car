@@ -31,7 +31,7 @@ public interface EngineRepository {
      * Список двигателей отсортированных по id.
      * @return список двигателей.
      */
-    List<Engine> findAllOrderById();
+    List<Engine> findAll();
 
     /**
      * Найти двигатель по ID

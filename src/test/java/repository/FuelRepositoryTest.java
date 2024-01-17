@@ -64,7 +64,7 @@ public class FuelRepositoryTest {
         expectedFuel2.setType("fuel2");
         fuelRepository.create(expectedFuel2);
 
-        List<Fuel> actualFuels = fuelRepository.findAllOrderById();
+        List<Fuel> actualFuels = fuelRepository.findAll();
         assertThat(actualFuels).usingRecursiveComparison().isEqualTo(List.of(expectedFuel1, expectedFuel2));
     }
 
