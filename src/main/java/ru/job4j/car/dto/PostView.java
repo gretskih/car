@@ -33,7 +33,7 @@ public class PostView {
     private int numberOfOwners;
     private String contact;
 
-    private String price;
+    private Long price;
 
     private String description;
     private LocalDateTime created;

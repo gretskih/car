@@ -63,7 +63,7 @@ public class PostController {
     }
 
     @PostMapping("/create")
-    public String create(@ModelAttribute Post post, @SessionAttribute User user, @RequestParam BigInteger price, @RequestParam Integer carId, Model model) {
+    public String create(@ModelAttribute Post post, @SessionAttribute User user, @RequestParam Long price, @RequestParam Integer carId, Model model) {
         post.setCreated(LocalDateTime.now());
         post.setUser(user);
         PriceHistory priceHistory = new PriceHistory();

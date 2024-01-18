@@ -58,7 +58,7 @@ public class Post {
     @JoinColumn(name = "car_id")
     private Car car;
 
-    public String getPrice() {
-        return priceHistories.stream().max(Comparator.comparing(PriceHistory::getCreated)).get().getBefore().toString();
+    public Long getPrice() {
+        return priceHistories.stream().max(Comparator.comparing(PriceHistory::getCreated)).get().getBefore();
     }
 }

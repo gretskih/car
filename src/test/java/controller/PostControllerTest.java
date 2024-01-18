@@ -56,7 +56,7 @@ public class PostControllerTest {
     private PostPreview getPostPreview() {
         return new PostPreview(1, Set.of(new Photo(1, "Name", "Path")), "Photo",
                 "Brand", 1000, 2015, "Body", "Gearbox", "Fuel",
-                "Color", "Type", false, "Engine", "Owner", "1500000");
+                "Color", "Type", false, "Engine", "Owner", 1500000L);
     }
 
     /**
@@ -195,7 +195,7 @@ public class PostControllerTest {
         String expectedPage = "redirect:/posts";
         Post post = getPost();
         User expectedUser = getUser();
-        BigInteger expectedPrice = new BigInteger(String.valueOf(10000));
+        Long expectedPrice = 10000L;
         Integer expectedCarId = 1;
         Car expectedCar = getCar();
         Model model = new ConcurrentModel();
@@ -206,7 +206,7 @@ public class PostControllerTest {
 
         assertThat(actualPage).isEqualTo(expectedPage);
         assertThat(post.getUser()).usingRecursiveComparison().isEqualTo(expectedUser);
-        assertThat(post.getPrice()).isEqualTo(String.valueOf(expectedPrice));
+        assertThat(post.getPrice()).isEqualTo(expectedPrice);
         assertThat(post.getCar()).usingRecursiveComparison().isEqualTo(expectedCar);
     }
 
@@ -218,7 +218,7 @@ public class PostControllerTest {
         String expectedPage = "errors/404";
         Post post = getPost();
         User expectedUser = getUser();
-        BigInteger expectedPrice = new BigInteger(String.valueOf(10000));
+        Long expectedPrice = 10000L;
         Integer expectedCarId = 1;
         Car expectedCar = getCar();
         Model model = new ConcurrentModel();
@@ -245,7 +245,7 @@ public class PostControllerTest {
         PostView expectedPostView = new PostView(2, 1, Set.of(new Photo()), "Name",
                 "Brand", 1000, 2020, "Body", "Gearbox", "Fuel",
                 "Color", "Type", false, "Engine", "Owner", 2,
-                "0000", "100000", "Description", LocalDateTime.now(), "City");
+                "0000", 100000L, "Description", LocalDateTime.now(), "City");
         when(postService.findById(idCaptor.capture())).thenReturn(Optional.of(expectedPostView));
         Model model = new ConcurrentModel();
 
@@ -269,7 +269,7 @@ public class PostControllerTest {
         PostView expectedPostView = new PostView(2, 1, Set.of(new Photo()), "Name",
                 "Brand", 1000, 2020, "Body", "Gearbox", "Fuel",
                 "Color", "Type", false, "Engine", "Owner", 2,
-                "0000", "100000", "Description", LocalDateTime.now(), "City");
+                "0000", 100000L, "Description", LocalDateTime.now(), "City");
         when(postService.findById(any(Integer.class))).thenReturn(Optional.empty());
         Model model = new ConcurrentModel();
 
