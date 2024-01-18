@@ -49,13 +49,15 @@ public class PostServiceTest {
     }
 
     @Captor
-    ArgumentCaptor<Integer> integerArgumentCaptor;
+    private ArgumentCaptor<Integer> integerArgumentCaptor;
     @Captor
-    ArgumentCaptor<Post> postArgumentCaptor;
+    private ArgumentCaptor<Post> postArgumentCaptor;
     @Captor
-    ArgumentCaptor<Car> carArgumentCaptor;
+    private ArgumentCaptor<Car> carArgumentCaptor;
     @Captor
-    ArgumentCaptor<User> userArgumentCaptor;
+    private ArgumentCaptor<User> userArgumentCaptor;
+    @Captor
+    private ArgumentCaptor<Boolean> statusArgumentCaptor;
 
     /**
      * Поиск объявления по id
@@ -304,5 +306,22 @@ public class PostServiceTest {
         var actualPostPreviews = postService.getPostsPreviewsBrandId(expectedId);
 
         assertThat(actualPostPreviews).isEmpty();
+    }
+
+    /**
+     * установить статус объявлению true
+     */
+    @Test
+    public void whenSetStatusPostTrueThenGetTrue() {
+        int expectedId = 2;
+        boolean expectedStatus = true;
+        when(postRepository.setStatus(integerArgumentCaptor.capture(), statusArgumentCaptor.capture()))
+                .thenReturn(true);
+
+        var actualStatus = postService.setStatus(expectedId, expectedStatus);
+
+        assertThat(actualStatus).isTrue();
+        assertThat(integerArgumentCaptor.getValue()).isEqualTo(expectedId);
+        assertThat(statusArgumentCaptor.getValue()).isEqualTo(expectedStatus);
     }
 }

@@ -20,10 +20,10 @@ public class EngineRepositoryImpl implements EngineRepository {
      */
     @Override
     public Engine create(Engine engine) {
-        if (crudRepository.run(session -> session.persist(engine))) {
-            return engine;
+        if (!crudRepository.run(session -> session.persist(engine))) {
+            throw new RuntimeException("Ошибка при добавлении двигателя.");
         }
-        return null;
+        return engine;
     }
 
     /**

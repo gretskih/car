@@ -42,10 +42,10 @@ public class BrandRepositoryTest {
         clearTableBefore();
         Brand expectedBrand1 = new Brand();
         expectedBrand1.setName("brand1");
-        brandRepository.create(expectedBrand1);
+        crudRepository.run(session -> session.persist(expectedBrand1));
         Brand expectedBrand2 = new Brand();
         expectedBrand2.setName("brand2");
-        brandRepository.create(expectedBrand2);
+        crudRepository.run(session -> session.persist(expectedBrand2));
 
         List<Brand> actualBrands = brandRepository.findAll();
         assertThat(actualBrands).usingRecursiveComparison().isEqualTo(List.of(expectedBrand1, expectedBrand2));
@@ -58,7 +58,7 @@ public class BrandRepositoryTest {
     public void whenFindBrandByIdThenGetBrand() {
         Brand expectedBrand = new Brand();
         expectedBrand.setName("brand3");
-        brandRepository.create(expectedBrand);
+        crudRepository.run(session -> session.persist(expectedBrand));
 
         Optional<Brand> actualBrand = brandRepository.findById(expectedBrand.getId());
         assertThat(actualBrand)

@@ -6,12 +6,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface BodyRepository {
-    /**
-     * Сохранить в базе
-     * @param body кузов
-     * @return кузов
-     */
-    Body create(Body body);
 
     /**
      * Список кузовов отсортированных по типу.

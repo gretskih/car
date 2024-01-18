@@ -1,6 +1,7 @@
 package ru.job4j.car.service;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.job4j.car.model.Owner;
 import ru.job4j.car.model.User;
@@ -11,13 +12,19 @@ import java.util.Optional;
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class OwnerServiceImpl implements OwnerService {
 
     private final OwnerRepository ownerRepository;
 
     @Override
     public Owner create(Owner owner) {
-        return ownerRepository.create(owner);
+        try {
+            return ownerRepository.create(owner);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            return null;
+        }
     }
 
     @Override

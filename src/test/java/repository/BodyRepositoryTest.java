@@ -42,10 +42,10 @@ public class BodyRepositoryTest {
         clearTableBefore();
         Body expectedBody1 = new Body();
         expectedBody1.setBodyType("body1");
-        bodyRepository.create(expectedBody1);
+        crudRepository.run(session -> session.persist(expectedBody1));
         Body expectedBody2 = new Body();
         expectedBody2.setBodyType("body2");
-        bodyRepository.create(expectedBody2);
+        crudRepository.run(session -> session.persist(expectedBody2));
 
         List<Body> actualBodies = bodyRepository.findAll();
         assertThat(actualBodies).usingRecursiveComparison().isEqualTo(List.of(expectedBody1, expectedBody2));
@@ -58,7 +58,7 @@ public class BodyRepositoryTest {
     public void whenFindBodyByIdThenGetBody() {
         Body expectedBody = new Body();
         expectedBody.setBodyType("body3");
-        bodyRepository.create(expectedBody);
+        crudRepository.run(session -> session.persist(expectedBody));
 
         Optional<Body> actualBody = bodyRepository.findById(expectedBody.getId());
         assertThat(actualBody)

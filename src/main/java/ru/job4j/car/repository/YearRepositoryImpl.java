@@ -14,19 +14,6 @@ public class YearRepositoryImpl implements YearRepository {
     private final CrudRepository crudRepository;
 
     /**
-     * Сохранить в базе
-     * @param year год
-     * @return Year или null
-     */
-    @Override
-    public Year create(Year year) {
-        if (crudRepository.run(session -> session.persist(year))) {
-            return year;
-        }
-        return null;
-    }
-
-    /**
      * Список лет отсортированных по id.
      * @return список лет.
      */

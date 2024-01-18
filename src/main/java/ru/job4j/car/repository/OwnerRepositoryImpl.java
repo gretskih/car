@@ -22,10 +22,10 @@ public class OwnerRepositoryImpl implements OwnerRepository {
      */
     @Override
     public Owner create(Owner owner) {
-        if (crudRepository.run(session -> session.persist(owner))) {
-            return owner;
+        if (!crudRepository.run(session -> session.persist(owner))) {
+            throw new RuntimeException("Ошибка при добавлении владельца.");
         }
-        return null;
+        return owner;
     }
 
     /**

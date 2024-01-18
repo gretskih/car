@@ -59,10 +59,10 @@ public class YearRepositoryTest {
         clearTableBefore();
         Year expectedYear1 = new Year();
         expectedYear1.setYear(2021);
-        yearRepository.create(expectedYear1);
+        crudRepository.run(session -> session.persist(expectedYear1));
         Year expectedYear2 = new Year();
         expectedYear2.setYear(2020);
-        yearRepository.create(expectedYear2);
+        crudRepository.run(session -> session.persist(expectedYear2));
 
         List<Year> actualYears = yearRepository.findAll();
         assertThat(actualYears).usingRecursiveComparison().isEqualTo(List.of(expectedYear2, expectedYear1));
@@ -75,7 +75,7 @@ public class YearRepositoryTest {
     public void whenFindYearByIdThenGetYear() {
         Year expectedYear = new Year();
         expectedYear.setYear(2022);
-        yearRepository.create(expectedYear);
+        crudRepository.run(session -> session.persist(expectedYear));
 
         Optional<Year> actualYear = yearRepository.findById(expectedYear.getId());
         assertThat(actualYear)

@@ -15,19 +15,6 @@ public class BodyRepositoryImpl implements BodyRepository {
     private final CrudRepository crudRepository;
 
     /**
-     * Сохранить в базе
-     * @param body кузов
-     * @return кузов
-     */
-    @Override
-    public Body create(Body body) {
-        if (crudRepository.run(session -> session.persist(body))) {
-            return body;
-        }
-        return null;
-    }
-
-    /**
      * Список кузовов отсортированных по типу.
      * @return список кузовов.
      */

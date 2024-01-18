@@ -14,19 +14,6 @@ public class BrandRepositoryImpl implements BrandRepository {
     private final CrudRepository crudRepository;
 
     /**
-     * Сохранить в базе
-     * @param brand бренд
-     * @return бренд
-     */
-    @Override
-    public Brand create(Brand brand) {
-        if (crudRepository.run(session -> session.persist(brand))) {
-            return brand;
-        }
-        return null;
-    }
-
-    /**
      * Список производителей отсортированных по id.
      * @return список производителей.
      */

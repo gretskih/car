@@ -59,10 +59,10 @@ public class FuelRepositoryTest {
         clearTableBefore();
         Fuel expectedFuel1 = new Fuel();
         expectedFuel1.setType("fuel1");
-        fuelRepository.create(expectedFuel1);
+        crudRepository.run(session -> session.persist(expectedFuel1));
         Fuel expectedFuel2 = new Fuel();
         expectedFuel2.setType("fuel2");
-        fuelRepository.create(expectedFuel2);
+        crudRepository.run(session -> session.persist(expectedFuel2));
 
         List<Fuel> actualFuels = fuelRepository.findAll();
         assertThat(actualFuels).usingRecursiveComparison().isEqualTo(List.of(expectedFuel1, expectedFuel2));
@@ -75,7 +75,7 @@ public class FuelRepositoryTest {
     public void whenFindFuelByIdThenGetFuel() {
         Fuel expectedFuel = new Fuel();
         expectedFuel.setType("fuel3");
-        fuelRepository.create(expectedFuel);
+        crudRepository.run(session -> session.persist(expectedFuel));
 
         Optional<Fuel> actualFuel = fuelRepository.findById(expectedFuel.getId());
         assertThat(actualFuel)

@@ -59,10 +59,10 @@ public class GearboxRepositoryTest {
         clearTableBefore();
         Gearbox expectedGearbox1 = new Gearbox();
         expectedGearbox1.setType("gearbox1");
-        gearboxRepository.create(expectedGearbox1);
+        crudRepository.run(session -> session.persist(expectedGearbox1));
         Gearbox expectedGearbox2 = new Gearbox();
         expectedGearbox2.setType("gearbox2");
-        gearboxRepository.create(expectedGearbox2);
+        crudRepository.run(session -> session.persist(expectedGearbox2));
 
         List<Gearbox> actualGearboxes = gearboxRepository.findAll();
         assertThat(actualGearboxes).usingRecursiveComparison().isEqualTo(List.of(expectedGearbox1, expectedGearbox2));
@@ -75,7 +75,7 @@ public class GearboxRepositoryTest {
     public void whenFindGearboxByIdThenGetGearbox() {
         Gearbox expectedGearbox = new Gearbox();
         expectedGearbox.setType("gearbox3");
-        gearboxRepository.create(expectedGearbox);
+        crudRepository.run(session -> session.persist(expectedGearbox));
 
         Optional<Gearbox> actualGearbox = gearboxRepository.findById(expectedGearbox.getId());
         assertThat(actualGearbox)

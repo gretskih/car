@@ -23,10 +23,10 @@ public class CarRepositoryImpl implements CarRepository {
      */
     @Override
     public Car create(Car car) {
-        if (crudRepository.run(session -> session.persist(car))) {
-            return car;
+        if (!crudRepository.run(session -> session.persist(car))) {
+            throw new RuntimeException("Ошибка при добавлении автомобиля.");
         }
-        return null;
+        return car;
     }
 
     /**

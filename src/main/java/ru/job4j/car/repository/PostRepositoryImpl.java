@@ -21,10 +21,10 @@ public class PostRepositoryImpl implements PostRepository {
      */
     @Override
     public Post create(Post post) {
-        if (crudRepository.run(session -> session.persist(post))) {
-            return post;
+        if (!crudRepository.run(session -> session.persist(post))) {
+            throw new RuntimeException("Ошибка при создании объявления.");
         }
-        return null;
+        return post;
     }
 
     /**

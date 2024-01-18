@@ -59,10 +59,10 @@ public class ColorRepositoryTest {
         clearTableBefore();
         Color expectedColor1 = new Color();
         expectedColor1.setName("color1");
-        colorRepository.create(expectedColor1);
+        crudRepository.run(session -> session.persist(expectedColor1));
         Color expectedColor2 = new Color();
         expectedColor2.setName("color2");
-        colorRepository.create(expectedColor2);
+        crudRepository.run(session -> session.persist(expectedColor2));
 
         List<Color> actualColors = colorRepository.findAll();
         assertThat(actualColors).usingRecursiveComparison().isEqualTo(List.of(expectedColor1, expectedColor2));
@@ -75,7 +75,7 @@ public class ColorRepositoryTest {
     public void whenFindColorByIdThenGetColor() {
         Color expectedColor = new Color();
         expectedColor.setName("color3");
-        colorRepository.create(expectedColor);
+        crudRepository.run(session -> session.persist(expectedColor));
 
         Optional<Color> actualColor = colorRepository.findById(expectedColor.getId());
         assertThat(actualColor)

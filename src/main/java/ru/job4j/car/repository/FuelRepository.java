@@ -8,13 +8,6 @@ import java.util.Optional;
 public interface FuelRepository {
 
     /**
-     * Сохранить в базе
-     * @param fuel топливо
-     * @return Fuel
-     */
-    Fuel create(Fuel fuel);
-
-    /**
      * Список типов топлива отсортированных по id.
      * @return список типов топлива.
      */

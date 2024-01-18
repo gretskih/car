@@ -14,19 +14,6 @@ public class GearboxRepositoryImpl implements GearboxRepository {
     private final CrudRepository crudRepository;
 
     /**
-     * Сохранить в базе
-     * @param gearbox коробка
-     * @return Gearbox или null
-     */
-    @Override
-    public Gearbox create(Gearbox gearbox) {
-        if (crudRepository.run(session -> session.persist(gearbox))) {
-            return gearbox;
-        }
-        return null;
-    }
-
-    /**
      * Список коробок отсортированных по id.
      * @return список коробок.
      */

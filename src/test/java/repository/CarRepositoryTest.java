@@ -22,12 +22,6 @@ public class CarRepositoryTest {
     public static EngineRepository engineRepository = new EngineRepositoryImpl(crudRepository);
     public static OwnerRepository ownerRepository = new OwnerRepositoryImpl(crudRepository);
     public static UserRepository userRepository = new UserRepositoryImpl(crudRepository);
-    public static BrandRepository brandRepository = new BrandRepositoryImpl(crudRepository);
-    public static ColorRepository colorRepository = new ColorRepositoryImpl(crudRepository);
-    public static YearRepository yearRepository = new YearRepositoryImpl(crudRepository);
-    public static BodyRepository bodyRepository = new BodyRepositoryImpl(crudRepository);
-    public static GearboxRepository gearboxRepository = new GearboxRepositoryImpl(crudRepository);
-    public static FuelRepository fuelRepository = new FuelRepositoryImpl(crudRepository);
     public static int yearCar = 1950;
 
     /**
@@ -71,28 +65,28 @@ public class CarRepositoryTest {
         expectedCar.setName(name);
         Brand expectedBrand = new Brand();
         expectedBrand.setName("brand" + name);
-        brandRepository.create(expectedBrand);
+        crudRepository.run(session -> session.persist(expectedBrand));
         expectedCar.setBrand(expectedBrand);
         expectedCar.setMileage(1000);
         Year expectedYear = new Year();
         expectedYear.setYear(yearCar++);
-        yearRepository.create(expectedYear);
+        crudRepository.run(session -> session.persist(expectedYear));
         expectedCar.setYear(expectedYear);
         Body expectedBody = new Body();
         expectedBody.setBodyType("body" + name);
-        bodyRepository.create(expectedBody);
+        crudRepository.run(session -> session.persist(expectedBody));
         expectedCar.setBody(expectedBody);
         Gearbox expectedGearbox = new Gearbox();
         expectedGearbox.setType("gearbox" + name);
-        gearboxRepository.create(expectedGearbox);
+        crudRepository.run(session -> session.persist(expectedGearbox));
         expectedCar.setGearbox(expectedGearbox);
         Fuel expectedFuel = new Fuel();
         expectedFuel.setType("fuel" + name);
-        fuelRepository.create(expectedFuel);
+        crudRepository.run(session -> session.persist(expectedFuel));
         expectedCar.setFuel(expectedFuel);
         Color expectedColor = new Color();
         expectedColor.setName("color" + name);
-        colorRepository.create(expectedColor);
+        crudRepository.run(session -> session.persist(expectedColor));
         expectedCar.setColor(expectedColor);
         expectedCar.setType("С пробегом");
         var user = getUser("user" + name);
