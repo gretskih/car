@@ -160,16 +160,20 @@ class OwnerRepositoryTest {
     }
 
     /**
-     * Найти владельца по User
+     * Найти владельца по UserId
      */
     @Test
-    public void whenFindOwnerByUserThenGetOwner() {
+    public void whenFindOwnerByUserIdThenGetOwner() {
         User user = getUser("user10");
         userRepository.create(user);
+        User user2 = getUser("user11");
+        userRepository.create(user2);
         var expectedOwner = getOwner("owner10", user);
         ownerRepository.create(expectedOwner);
+        var expectedOwner2 = getOwner("owner11", user2);
+        ownerRepository.create(expectedOwner2);
 
-        Optional<Owner> actualOwner = ownerRepository.findByUser(user);
+        Optional<Owner> actualOwner = ownerRepository.findByUserId(user.getId());
         assertThat(actualOwner)
                 .isPresent()
                 .isNotEmpty()

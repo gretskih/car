@@ -59,6 +59,6 @@ public class OwnerServiceImpl implements OwnerService {
 
     @Override
     public Optional<Owner> findByUser(User user) {
-        return ownerRepository.findByUser(user);
+        return ownerRepository.findByUserId(user.getId());
     }
 }

@@ -96,14 +96,14 @@ public class OwnerRepositoryImpl implements OwnerRepository {
     }
 
     /**
-     * Найти владельца по User
+     * Найти владельца по userId
      * @return Optional or owner.
      */
     @Override
-    public Optional<Owner> findByUser(User user) {
+    public Optional<Owner> findByUserId(int userId) {
         return crudRepository.optional(
-                "from Owner where user = :fUser", Owner.class,
-                Map.of("fUser", user)
+                "from Owner where user.id = :fUserId", Owner.class,
+                Map.of("fUserId", userId)
         );
     }
 }

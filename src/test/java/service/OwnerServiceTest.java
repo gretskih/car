@@ -178,12 +178,12 @@ public class OwnerServiceTest {
     public void whenFindOwnerByUserThenGetOwner() {
         Owner expectedOwner = getOwner("Name", getUser("Login"));
         User expectedUser = expectedOwner.getUser();
-        var captureUser = ArgumentCaptor.forClass(User.class);
-        when(ownerRepository.findByUser(captureUser.capture())).thenReturn(Optional.of(expectedOwner));
+        var captureUserId = ArgumentCaptor.forClass(int.class);
+        when(ownerRepository.findByUserId(captureUserId.capture())).thenReturn(Optional.of(expectedOwner));
 
         Optional<Owner> actualOwner = ownerService.findByUser(expectedUser);
 
-        assertThat(captureUser.getValue()).isEqualTo(expectedUser);
+        assertThat(captureUserId.getValue()).isEqualTo(expectedUser.getId());
         assertThat(actualOwner)
                 .isPresent()
                 .isNotEmpty()

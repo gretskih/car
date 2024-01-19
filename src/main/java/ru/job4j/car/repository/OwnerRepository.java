@@ -58,5 +58,5 @@ public interface OwnerRepository {
      * Найти владельца по userId
      * @return Optional of owner.
      */
-    Optional<Owner> findByUser(User user);
+    Optional<Owner> findByUserId(int userId);
 }
