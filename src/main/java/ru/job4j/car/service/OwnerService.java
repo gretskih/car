@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface OwnerService {
 
-    Owner create(Owner owner);
+    Owner create(User user);
 
     boolean update(Owner owner);
 

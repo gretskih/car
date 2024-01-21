@@ -68,7 +68,7 @@ public class Car {
                     @JoinColumn(name = "car_id", nullable = false, updatable = false)},
             inverseJoinColumns = {
                     @JoinColumn(name = "owner_id", nullable = false, updatable = false)})
-    private Set<Owner> owners = new HashSet<>();
+    private Set<Owner> historyOwners = new HashSet<>();
 
     /**
      * Список периодов владения автомобилем
@@ -85,6 +85,6 @@ public class Car {
     private Set<Photo> photos = new HashSet<>();
 
     public int getNumberOfOwners() {
-        return owners.size();
+        return historyOwners.size();
     }
 }

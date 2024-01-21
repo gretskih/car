@@ -65,8 +65,8 @@ public interface PostRepository {
 
     /**
      * Объявления от заданного пользователя.
-     * @param user пользователь
+     * @param userId идентификатор пользователя
      * @return список объявлений пользователя user
      */
-    List<Post> getPostsUser(User user);
+    List<Post> getPostsUserId(int userId);
 }

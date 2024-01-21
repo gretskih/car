@@ -7,14 +7,13 @@ import ru.job4j.car.dto.PostPreview;
 import ru.job4j.car.dto.PostView;
 import ru.job4j.car.mappers.PostPreviewMapper;
 import ru.job4j.car.mappers.PostViewMapper;
-import ru.job4j.car.model.Photo;
-import ru.job4j.car.model.Post;
-import ru.job4j.car.model.User;
+import ru.job4j.car.model.*;
 import ru.job4j.car.repository.PostRepository;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
@@ -25,10 +24,15 @@ public class PostServiceImpl implements PostService {
     private final PostRepository postRepository;
     private final PostPreviewMapper postPreviewMapper;
     private final PostViewMapper postViewMapper;
+    private final CarService carService;
 
     @Override
-    public Post create(Post post) {
+    public Post create(Post post, User user, Long price, Integer carId) {
+        post.setCreated(LocalDateTime.now());
+        post.setUser(user);
+        setPriceHistory(post, price);
         try {
+            setCar(post, carId);
             return postRepository.create(post);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
@@ -36,13 +40,26 @@ public class PostServiceImpl implements PostService {
         }
     }
 
+    private void setPriceHistory(Post post, Long price) {
+        PriceHistory priceHistory = new PriceHistory();
+        priceHistory.setBefore(price);
+        priceHistory.setAfter(price);
+        priceHistory.setCreated(LocalDateTime.now());
+        post.setPriceHistories(Set.of(priceHistory));
+    }
+
+    private void setCar(Post post, Integer carId) {
+        Optional<Car> carOptional = carService.findById(carId);
+        if (carOptional.isEmpty()) {
+            throw new RuntimeException("Автомобиль не найден.");
+        }
+        post.setCar(carOptional.get());
+    }
+
     @Override
     public boolean delete(int postId) {
         var postOptional = postRepository.findById(postId);
-        if (postOptional.isPresent()) {
-            return postRepository.delete(postOptional.get());
-        }
-        return false;
+        return postOptional.filter(postRepository::delete).isPresent();
     }
 
     @Override
@@ -118,7 +135,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public List<PostPreview> getPostPreviewsUser(User user) {
-        List<Post> posts = postRepository.getPostsUser(user);
+        List<Post> posts = postRepository.getPostsUserId(user.getId());
         if (posts.isEmpty()) {
             return Collections.emptyList();
         }
@@ -129,7 +146,7 @@ public class PostServiceImpl implements PostService {
         return postPreviews;
     }
 
-    public boolean isEmpty(Collection<Photo> photos) {
+    private boolean isEmpty(Collection<Photo> photos) {
         try {
             for (Photo photo : photos) {
                 return Files.readAllBytes(Path.of(photo.getPath())).length != 0;

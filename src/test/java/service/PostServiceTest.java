@@ -14,6 +14,7 @@ import ru.job4j.car.mappers.PostPreviewMapper;
 import ru.job4j.car.mappers.PostViewMapper;
 import ru.job4j.car.model.*;
 import ru.job4j.car.repository.PostRepository;
+import ru.job4j.car.service.CarService;
 import ru.job4j.car.service.PostServiceImpl;
 
 import java.io.IOException;
@@ -33,9 +34,22 @@ public class PostServiceTest {
     private PostPreviewMapper postPreviewMapper;
     @Mock
     private PostViewMapper postViewMapper;
+    @Mock
+    private CarService carService;
     @InjectMocks
     private PostServiceImpl postService;
     private int idPost = 0;
+
+    @Captor
+    private ArgumentCaptor<Integer> integerArgumentCaptor;
+    @Captor
+    private ArgumentCaptor<Post> postArgumentCaptor;
+    @Captor
+    private ArgumentCaptor<Car> carArgumentCaptor;
+    @Captor
+    private ArgumentCaptor<User> userArgumentCaptor;
+    @Captor
+    private ArgumentCaptor<Boolean> statusArgumentCaptor;
 
     private Post getPost(String postDescription) {
         Post post = new Post();
@@ -48,16 +62,46 @@ public class PostServiceTest {
         return post;
     }
 
-    @Captor
-    private ArgumentCaptor<Integer> integerArgumentCaptor;
-    @Captor
-    private ArgumentCaptor<Post> postArgumentCaptor;
-    @Captor
-    private ArgumentCaptor<Car> carArgumentCaptor;
-    @Captor
-    private ArgumentCaptor<User> userArgumentCaptor;
-    @Captor
-    private ArgumentCaptor<Boolean> statusArgumentCaptor;
+    /**
+     * Создать новое объявление
+     */
+    @Test
+    public void whenCreateNewPostThenGetCreatedPost() {
+        Post exceptedPost = getPost("post0");
+        User expectedUser = new User(1, "user0", "login0", "pass0", "contacts");
+        Long expectedPrice = 1000000L;
+        int expectedCarId = 5;
+        Car expectedCar = new Car();
+        expectedCar.setId(expectedCarId);
+        when(carService.findById(integerArgumentCaptor.capture())).thenReturn(Optional.of(expectedCar));
+        when(postRepository.create(postArgumentCaptor.capture())).thenReturn(exceptedPost);
+
+        Post actualPost = postService.create(exceptedPost, expectedUser, expectedPrice, expectedCarId);
+
+        assertThat(actualPost).usingRecursiveComparison().isEqualTo(exceptedPost);
+        assertThat(integerArgumentCaptor.getValue()).isEqualTo(expectedCarId);
+        assertThat(postArgumentCaptor.getValue()).usingRecursiveComparison().isEqualTo(exceptedPost);
+        assertThat(actualPost.getUser()).usingRecursiveComparison().isEqualTo(expectedUser);
+        assertThat(actualPost.getPrice()).isEqualTo(expectedPrice);
+        assertThat(actualPost.getCar()).usingRecursiveComparison().isEqualTo(expectedCar);
+    }
+
+    /**
+     * Удалить объявление
+     */
+    @Test
+    public void whenDeletePostByIdThenGetTrue() {
+        Post exceptedPost = getPost("post00");
+        int expectedId = exceptedPost.getId();
+        when(postRepository.findById(integerArgumentCaptor.capture())).thenReturn(Optional.of(exceptedPost));
+        when(postRepository.delete(postArgumentCaptor.capture())).thenReturn(true);
+
+        var actualStatusTransaction = postService.delete(expectedId);
+
+        assertThat(actualStatusTransaction).isTrue();
+        assertThat(integerArgumentCaptor.getValue()).isEqualTo(expectedId);
+        assertThat(postArgumentCaptor.getValue()).isEqualTo(exceptedPost);
+    }
 
     /**
      * Поиск объявления по id
@@ -238,7 +282,7 @@ public class PostServiceTest {
         User expectedUser = new User();
         expectedUser.setId(2);
 
-        when(postRepository.getPostsUser(userArgumentCaptor.capture())).thenReturn(List.of(exceptedPost1,
+        when(postRepository.getPostsUserId(integerArgumentCaptor.capture())).thenReturn(List.of(exceptedPost1,
                 exceptedPost2));
         when(postPreviewMapper.getPostPreview(carArgumentCaptor.capture(), postArgumentCaptor.capture()))
                 .thenReturn(expectedPostPreview1, expectedPostPreview2);
@@ -249,7 +293,7 @@ public class PostServiceTest {
                 expectedPostPreview2));
         assertThat(postArgumentCaptor.getAllValues()).isEqualTo(List.of(exceptedPost1, exceptedPost2));
         assertThat(carArgumentCaptor.getAllValues()).isEqualTo(List.of(exceptedPost1.getCar(), exceptedPost2.getCar()));
-        assertThat(userArgumentCaptor.getValue()).isEqualTo(expectedUser);
+        assertThat(integerArgumentCaptor.getValue()).isEqualTo(expectedUser.getId());
     }
 
     /**
@@ -261,7 +305,7 @@ public class PostServiceTest {
         User expectedUser = new User();
         expectedUser.setId(2);
 
-        when(postRepository.getPostsUser(any(User.class))).thenReturn(Collections.emptyList());
+        when(postRepository.getPostsUserId(any(int.class))).thenReturn(Collections.emptyList());
 
         var actualPostPreviews = postService.getPostPreviewsUser(expectedUser);
 

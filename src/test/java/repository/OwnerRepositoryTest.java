@@ -169,7 +169,7 @@ class OwnerRepositoryTest {
         var expectedOwner = getOwner("owner10", user);
         ownerRepository.create(expectedOwner);
 
-        Optional<Owner> actualOwner = ownerRepository.findByUser(user);
+        Optional<Owner> actualOwner = ownerRepository.findByUserId(user.getId());
         assertThat(actualOwner)
                 .isPresent()
                 .isNotEmpty()

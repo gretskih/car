@@ -21,8 +21,8 @@ public interface EngineRepository {
     boolean update(Engine engine);
 
     /**
-     * Удалить двигатель по id.
-     * @param engineId ID
+     * Удалить двигатель.
+     * @param engine двигатель
      * @return статус транзакции
      */
     boolean delete(Engine engine);

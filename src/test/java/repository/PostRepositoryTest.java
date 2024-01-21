@@ -147,7 +147,7 @@ public class PostRepositoryTest {
         Post post = getPost("post8");
         postRepository.create(post);
 
-        List<Post> actualPosts = postRepository.getPostsUser(expectedPost.getUser());
+        List<Post> actualPosts = postRepository.getPostsUserId(expectedPost.getUser().getId());
 
         assertThat(actualPosts).isEqualTo(List.of(expectedPost));
     }

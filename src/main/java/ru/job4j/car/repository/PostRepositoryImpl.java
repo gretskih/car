@@ -38,7 +38,7 @@ public class PostRepositoryImpl implements PostRepository {
                 "FROM Post post "
                         + "LEFT JOIN FETCH post.priceHistories "
                         + "LEFT JOIN FETCH post.participates "
-                        + "LEFT JOIN FETCH post.car.owners "
+                        + "LEFT JOIN FETCH post.car.historyOwners "
                         + "LEFT JOIN FETCH post.car.photos "
                         + "WHERE post.id = :fId",
                 Post.class, Map.of("fId", id)
@@ -79,7 +79,7 @@ public class PostRepositoryImpl implements PostRepository {
                 "FROM Post post "
                         + "LEFT JOIN FETCH post.priceHistories "
                         + "LEFT JOIN FETCH post.participates "
-                        + "LEFT JOIN FETCH post.car.owners "
+                        + "LEFT JOIN FETCH post.car.historyOwners "
                         + "LEFT JOIN FETCH post.car.photos "
                         + "WHERE post.status = false",
                 Post.class
@@ -98,7 +98,7 @@ public class PostRepositoryImpl implements PostRepository {
                         + "LEFT JOIN FETCH post.priceHistories "
                         + "LEFT JOIN FETCH post.participates "
                         + "LEFT JOIN FETCH post.car.photos "
-                        + "LEFT JOIN FETCH post.car.owners "
+                        + "LEFT JOIN FETCH post.car.historyOwners "
                         + "WHERE post.status = false AND "
                         + "post.created > :fLocalDateTimeNow",
                 Post.class, Map.of("fLocalDateTimeNow", localDateTimeNow.minusDays(1))
@@ -117,7 +117,7 @@ public class PostRepositoryImpl implements PostRepository {
                         + "LEFT JOIN FETCH post.priceHistories "
                         + "LEFT JOIN FETCH post.participates "
                         + "LEFT JOIN FETCH post.car.photos "
-                        + "LEFT JOIN FETCH post.car.owners "
+                        + "LEFT JOIN FETCH post.car.historyOwners "
                         + "WHERE post.status = false AND "
                         + "post.car.brand.name = :fBrand",
                 Post.class, Map.of("fBrand", brand)
@@ -136,7 +136,7 @@ public class PostRepositoryImpl implements PostRepository {
                         + "LEFT JOIN FETCH post.priceHistories "
                         + "LEFT JOIN FETCH post.participates "
                         + "LEFT JOIN FETCH post.car.photos "
-                        + "LEFT JOIN FETCH post.car.owners "
+                        + "LEFT JOIN FETCH post.car.historyOwners "
                         + "WHERE post.status = false AND "
                         + "post.car.brand.id = :fId",
                 Post.class, Map.of("fId", brandId)
@@ -145,19 +145,19 @@ public class PostRepositoryImpl implements PostRepository {
 
     /**
      * Объявления от заданного пользователя.
-     * @param user пользователь
+     * @param userId идентификатор пользователя
      * @return список объявлений пользователя user
      */
     @Override
-    public List<Post> getPostsUser(User user) {
+    public List<Post> getPostsUserId(int userId) {
         return crudRepository.query(
                 "FROM Post post "
                         + "LEFT JOIN FETCH post.priceHistories "
                         + "LEFT JOIN FETCH post.participates "
                         + "LEFT JOIN FETCH post.car.photos "
-                        + "LEFT JOIN FETCH post.car.owners "
-                        + "WHERE post.user = :fUser",
-                Post.class, Map.of("fUser", user)
+                        + "LEFT JOIN FETCH post.car.historyOwners "
+                        + "WHERE post.user.id = :fUserId",
+                Post.class, Map.of("fUserId", userId)
         );
     }
 }

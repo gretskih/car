@@ -12,7 +12,6 @@ import org.springframework.ui.ConcurrentModel;
 import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
 import ru.job4j.car.controller.CarController;
-import ru.job4j.car.dto.PhotoDto;
 import ru.job4j.car.model.*;
 import ru.job4j.car.service.*;
 
@@ -31,8 +30,6 @@ public class CarControllerTest {
     @Mock
     private EngineService engineService;
     @Mock
-    private OwnerService ownerService;
-    @Mock
     private BrandService brandService;
     @Mock
     private ColorService colorService;
@@ -48,11 +45,19 @@ public class CarControllerTest {
     private PhotoService photoService;
     @InjectMocks
     private CarController carController;
+    @Captor
+    private ArgumentCaptor<Set<MultipartFile>> fileCaptor;
+    @Captor
+    private ArgumentCaptor<User> userCaptor;
+    @Captor
+    private ArgumentCaptor<Car> carCaptor;
+    @Captor
+    private ArgumentCaptor<Integer> carIdCaptor;
 
     private Car getCar() {
         return new Car(1, "Car", 1000, new Brand(), new Year(), new Body(),
                 new Gearbox(), new Fuel(), new Color(), "New", new Engine(1, ""),
-                new Owner(), Set.of(new Owner()), Set.of(new PeriodHistory()), Set.of(new Photo()));
+                new Owner(), Set.of(new Owner()), Set.of(new PeriodHistory()), Set.of(new Photo(1, "", "path")));
     }
 
     /**
@@ -120,35 +125,22 @@ public class CarControllerTest {
     /**
      * Сохранение нового автомобиля и редирект на страницу redirect:/posts/create
      */
+
     @Test
     public void whenCreateCarThenGetCreateNewPostPage() {
         String expectedPage = "redirect:/posts/create";
-        User user = new User(1, "Name", "login", "pass", "1111");
-        Car car = getCar();
-        Engine engine = new Engine(1, "engine");
-        Photo photo = new Photo(1, "Photo", "PathPhoto");
-        Owner owner = Owner.of()
-                .user(user)
-                .name(user.getName())
-                .build();
+        User expectedUser = new User(1, "Name", "login", "pass", "1111");
+        Car expectedCar = getCar();
         MultipartFile multipartFile = new MockMultipartFile("File", new byte[] {1, 2, 3});
-        var engineIdCaptor = ArgumentCaptor.forClass(int.class);
-        var userCaptor = ArgumentCaptor.forClass(User.class);
-        var carCaptor = ArgumentCaptor.forClass(Car.class);
-        when(engineService.findById(engineIdCaptor.capture())).thenReturn(Optional.of(engine));
-        when(ownerService.findByUser(userCaptor.capture())).thenReturn(Optional.of(owner));
-        when(carService.create(carCaptor.capture())).thenReturn(car);
-        when(photoService.save(any(PhotoDto.class))).thenReturn(photo);
+        when(carService.create(carCaptor.capture(), userCaptor.capture(), fileCaptor.capture())).thenReturn(expectedCar);
         Model model = new ConcurrentModel();
 
-        var actualPage = carController.create(car, user, Set.of(multipartFile), model);
+        var actualPage = carController.create(expectedCar, expectedUser, Set.of(multipartFile), model);
 
         assertThat(actualPage).isEqualTo(expectedPage);
-        assertThat(car.getEngine()).usingRecursiveComparison().isEqualTo(engine);
-        assertThat(car.getOwner()).usingRecursiveComparison().isEqualTo(owner);
-        assertThat(engineIdCaptor.getValue()).isEqualTo(engine.getId());
-        assertThat(userCaptor.getValue()).isEqualTo(user);
-        assertThat(carCaptor.getValue()).usingRecursiveComparison().isEqualTo(car);
+        assertThat(fileCaptor.getValue()).isEqualTo(Set.of(multipartFile));
+        assertThat(userCaptor.getValue()).isEqualTo(expectedUser);
+        assertThat(carCaptor.getValue()).usingRecursiveComparison().isEqualTo(expectedCar);
     }
 
     /**
@@ -158,16 +150,12 @@ public class CarControllerTest {
     public void whenCreateCarThenGetErrorPage() {
         String expectedPage = "errors/404";
         String expectedMessage = "Автомобиль не создан!";
-        User user = new User(1, "Name", "login", "pass", "1111");
-        Car car = getCar();
-        Engine engine = new Engine(1, "engine");
-        Photo photo = new Photo(1, "Photo", "PathPhoto");
+        User expectedUser = new User(1, "Name", "login", "pass", "1111");
+        Car expectedCar = getCar();
         MultipartFile multipartFile = new MockMultipartFile("File", new byte[]{1, 2, 3});
-        when(engineService.findById(any(Integer.class))).thenReturn(Optional.of(engine));
-        when(photoService.save(any(PhotoDto.class))).thenReturn(photo);
         Model model = new ConcurrentModel();
 
-        var actualPage = carController.create(car, user, Set.of(multipartFile), model);
+        var actualPage = carController.create(expectedCar, expectedUser, Set.of(multipartFile), model);
         var actualMessage = model.getAttribute("message");
 
         assertThat(actualPage).isEqualTo(expectedPage);
@@ -177,10 +165,6 @@ public class CarControllerTest {
     /**
      * Удаление автомобиля и редирект на redirect:/cars
      */
-    @Captor
-    private ArgumentCaptor<Integer> carIdCaptor;
-    @Captor
-    private ArgumentCaptor<Car> carCaptor;
 
     @Test
     public void whenDeleteCarThenGetCarsPage() {

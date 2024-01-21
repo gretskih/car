@@ -56,7 +56,7 @@ public class CarRepositoryImpl implements CarRepository {
     @Override
     public List<Car> findAll() {
         return crudRepository.query("from Car car "
-                + "LEFT JOIN FETCH car.owners "
+                + "LEFT JOIN FETCH car.historyOwners "
                 + "LEFT JOIN FETCH car.photos order by car.id asc", Car.class);
     }
 
@@ -68,7 +68,7 @@ public class CarRepositoryImpl implements CarRepository {
     public Optional<Car> findById(int carId) {
         return crudRepository.optional(
                 "from Car car "
-                        + "LEFT JOIN FETCH car.owners "
+                        + "LEFT JOIN FETCH car.historyOwners "
                         + "LEFT JOIN FETCH car.photos where car.id = :fId", Car.class,
                 Map.of("fId", carId)
         );
@@ -83,7 +83,7 @@ public class CarRepositoryImpl implements CarRepository {
     public List<Car> findByLikeName(String key) {
         return crudRepository.query(
                 "from Car car "
-                        + "LEFT JOIN FETCH car.owners "
+                        + "LEFT JOIN FETCH car.historyOwners "
                         + "LEFT JOIN FETCH car.photos where car.name like :fKey", Car.class,
                 Map.of("fKey", "%" + key + "%")
         );
@@ -98,7 +98,7 @@ public class CarRepositoryImpl implements CarRepository {
     public Optional<Car> findByName(String name) {
         return crudRepository.optional(
                 "from Car car "
-                        + "LEFT JOIN FETCH car.owners "
+                        + "LEFT JOIN FETCH car.historyOwners "
                         + "LEFT JOIN FETCH car.photos where car.name = :fName", Car.class,
                 Map.of("fName", name)
         );
@@ -106,14 +106,14 @@ public class CarRepositoryImpl implements CarRepository {
 
     /**
      * Найти все автомобили пользователя
-     * @param user пользователь
+     * @param userId идентификатор пользователя
      * @return список автомобилей
      */
     @Override
-    public List<Car> findByUser(User user) {
+    public List<Car> findByUserId(int userId) {
         return crudRepository.query("from Car car "
-                        + "where car.owner.user = :fUser "
+                        + "where car.owner.user.id = :fUserId "
                         + "order by car.id desc", Car.class,
-                Map.of("fUser", user));
+                Map.of("fUserId", userId));
     }
 }

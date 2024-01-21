@@ -59,11 +59,13 @@ public class OwnerServiceTest {
      */
     @Test
     public void whenCreateOwnerThenGetOwner() {
-        Owner expectedOwner = getOwner("Name", getUser("Login"));
+        User expectedUser = getUser("Login");
+        Owner expectedOwner = getOwner(expectedUser.getName(), expectedUser);
+        expectedOwner.setId(0);
         var ownerCaptor = ArgumentCaptor.forClass(Owner.class);
         when(ownerRepository.create(ownerCaptor.capture())).thenReturn(expectedOwner);
 
-        var actualOwner = ownerService.create(expectedOwner);
+        var actualOwner = ownerService.create(expectedUser);
         var actualOwnerCaptor = ownerCaptor.getValue();
 
         assertThat(actualOwner).usingRecursiveComparison().isEqualTo(expectedOwner);
@@ -178,12 +180,12 @@ public class OwnerServiceTest {
     public void whenFindOwnerByUserThenGetOwner() {
         Owner expectedOwner = getOwner("Name", getUser("Login"));
         User expectedUser = expectedOwner.getUser();
-        var captureUser = ArgumentCaptor.forClass(User.class);
-        when(ownerRepository.findByUser(captureUser.capture())).thenReturn(Optional.of(expectedOwner));
+        var captureUserId = ArgumentCaptor.forClass(int.class);
+        when(ownerRepository.findByUserId(captureUserId.capture())).thenReturn(Optional.of(expectedOwner));
 
         Optional<Owner> actualOwner = ownerService.findByUser(expectedUser);
 
-        assertThat(captureUser.getValue()).isEqualTo(expectedUser);
+        assertThat(captureUserId.getValue()).isEqualTo(expectedUser.getId());
         assertThat(actualOwner)
                 .isPresent()
                 .isNotEmpty()
