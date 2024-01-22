@@ -12,7 +12,7 @@ public interface CarService {
 
     List<Car> findAll();
 
-    Car create(Car car, User user, Set<MultipartFile> files);
+    Car create(Car car, User user, Set<MultipartFile> files) throws Exception;
 
     Optional<Car> findById(int carId);
 

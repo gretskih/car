@@ -127,7 +127,7 @@ public class CarControllerTest {
      */
 
     @Test
-    public void whenCreateCarThenGetCreateNewPostPage() {
+    public void whenCreateCarThenGetCreateNewPostPage() throws Exception {
         String expectedPage = "redirect:/posts/create";
         User expectedUser = new User(1, "Name", "login", "pass", "1111");
         Car expectedCar = getCar();
