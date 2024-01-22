@@ -12,7 +12,7 @@ public interface OwnerRepository {
      * @param owner владелец.
      * @return владелец с id.
      */
-    Owner create(Owner owner);
+    Owner create(Owner owner) throws Exception;
 
     /**
      * Обновить в базе владельца.

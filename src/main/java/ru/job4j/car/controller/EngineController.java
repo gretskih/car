@@ -24,9 +24,11 @@ public class EngineController {
 
     @PostMapping("/create")
     public String create(@ModelAttribute Engine engine, Model model) {
-        if (engineService.create(engine) == null) {
-            model.addAttribute("message", "Двигатель не создан!");
-            return "errors/404";
+        try {
+            engineService.create(engine);
+        } catch (Exception e) {
+            model.addAttribute("message1", e.getMessage());
+            return "errors/500";
         }
         return "redirect:/cars/create";
     }

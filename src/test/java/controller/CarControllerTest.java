@@ -127,7 +127,7 @@ public class CarControllerTest {
      */
 
     @Test
-    public void whenCreateCarThenGetCreateNewPostPage() {
+    public void whenCreateCarThenGetCreateNewPostPage() throws Exception {
         String expectedPage = "redirect:/posts/create";
         User expectedUser = new User(1, "Name", "login", "pass", "1111");
         Car expectedCar = getCar();
@@ -144,22 +144,30 @@ public class CarControllerTest {
     }
 
     /**
-     * Неудачное cохранение нового автомобиля и редирект на страницу errors/404
+     * Неудачное cохранение нового автомобиля и редирект на страницу errors/500
      */
     @Test
-    public void whenCreateCarThenGetErrorPage() {
-        String expectedPage = "errors/404";
-        String expectedMessage = "Автомобиль не создан!";
+    public void whenCreateCarThenGetErrorPage() throws Exception {
+        String expectedPage = "errors/500";
+        String expectedMessage1 = "Автомобиль не добавлен.";
+        String expectedMessage2 = "Подробности: ошибка при сохранении автомобиля.";
         User expectedUser = new User(1, "Name", "login", "pass", "1111");
         Car expectedCar = getCar();
         MultipartFile multipartFile = new MockMultipartFile("File", new byte[]{1, 2, 3});
+        when(carService.create(carCaptor.capture(), userCaptor.capture(), fileCaptor.capture()))
+                .thenThrow(new RuntimeException("ошибка при сохранении автомобиля."));
         Model model = new ConcurrentModel();
 
         var actualPage = carController.create(expectedCar, expectedUser, Set.of(multipartFile), model);
-        var actualMessage = model.getAttribute("message");
+        var actualMessage1 = model.getAttribute("message1");
+        var actualMessage2 = model.getAttribute("message2");
 
         assertThat(actualPage).isEqualTo(expectedPage);
-        assertThat(actualMessage).isEqualTo(expectedMessage);
+        assertThat(actualMessage1).isEqualTo(expectedMessage1);
+        assertThat(actualMessage2).isEqualTo(expectedMessage2);
+        assertThat(carCaptor.getValue()).usingRecursiveComparison().isEqualTo(expectedCar);
+        assertThat(userCaptor.getValue()).usingRecursiveComparison().isEqualTo(expectedUser);
+        assertThat(fileCaptor.getValue()).isEqualTo(Set.of(multipartFile));
     }
 
     /**
@@ -183,20 +191,20 @@ public class CarControllerTest {
     }
 
     /**
-     * Неудачное удаление автомобиля и редирект на errors/404
+     * Неудачное удаление автомобиля и редирект на errors/500
      */
     @Test
     public void whenDeleteCarThenGetErrorPage() {
         int carId = 1;
         Car car = getCar();
-        String exceptedPage = "errors/404";
-        String exceptedMessage = "Произошла ошибка при удалении!";
+        String exceptedPage = "errors/500";
+        String exceptedMessage = "Произошла ошибка при удалении.";
         when(carService.findById(any(Integer.class))).thenReturn(Optional.of(car));
         when(carService.delete(any(Car.class))).thenReturn(false);
         Model model = new ConcurrentModel();
 
         var actualPage = carController.delete(carId, model);
-        var actualMessage = model.getAttribute("message");
+        var actualMessage = model.getAttribute("message1");
 
         assertThat(actualPage).isEqualTo(exceptedPage);
         assertThat(actualMessage).isEqualTo(exceptedMessage);

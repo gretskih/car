@@ -22,7 +22,7 @@ public class CarServiceImpl implements CarService {
     private final PhotoService photoService;
 
     @Override
-    public Car create(Car car, User user, Set<MultipartFile> files) {
+    public Car create(Car car, User user, Set<MultipartFile> files) throws Exception {
         try {
             setPhotos(car, files);
             setOwner(car, user);
@@ -32,7 +32,7 @@ public class CarServiceImpl implements CarService {
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             photoService.deleteAllPhotos(car.getPhotos());
-            return null;
+            throw e;
         }
     }
 
@@ -40,10 +40,10 @@ public class CarServiceImpl implements CarService {
         car.setPhotos(photoService.savePhotos(files));
     }
 
-    private void setOwner(Car car, User user) {
+    private void setOwner(Car car, User user) throws Exception {
         Owner owner = ownerService.create(user);
         if (owner == null) {
-            throw new RuntimeException("Новый владелец не найден и не создан");
+            throw new Exception("владелец автомобиля не добавлен в ПТС.");
         }
         car.setOwner(owner);
         car.setHistoryOwners(Set.of(owner));
@@ -60,7 +60,7 @@ public class CarServiceImpl implements CarService {
     private void setEngine(Car car) {
         Optional<Engine> engineOptional = engineService.findById(car.getEngine().getId());
         if (engineOptional.isEmpty()) {
-            throw new RuntimeException("Двигатель не найден.");
+            throw new RuntimeException("двигатель не найден.");
         }
         car.setEngine(engineOptional.get());
     }

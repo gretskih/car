@@ -56,7 +56,7 @@ public class CarRepositoryTest {
      * @param name название
      * @return автомобиль с name
      */
-    static Car getCar(String name) {
+    static Car getCar(String name) throws Exception {
         Car expectedCar = new Car();
         Engine engine = new Engine();
         engine.setName("engine" + name);
@@ -107,7 +107,7 @@ public class CarRepositoryTest {
      * Создание/обновление записи
      */
     @Test
-    public void whenUpdateCarThenGetUpdatedCar() {
+    public void whenUpdateCarThenGetUpdatedCar() throws Exception {
         Car expectedCar = getCar("test1");
         System.out.println(expectedCar);
         carRepository.create(expectedCar);
@@ -127,7 +127,7 @@ public class CarRepositoryTest {
      * Создание/удаление записи
      */
     @Test
-    public void whenDeleteCarThenGetEmptyCar() {
+    public void whenDeleteCarThenGetEmptyCar() throws Exception {
         Car expectedCar = getCar("test3");
         carRepository.create(expectedCar);
 
@@ -142,7 +142,7 @@ public class CarRepositoryTest {
      * Получение полного списка записей
      */
     @Test
-    public void whenFindAllCarsOrderByIdThenGetAllCars() {
+    public void whenFindAllCarsOrderByIdThenGetAllCars() throws Exception {
         clearTablesBefore();
         Car expectedCar1 = getCar("test4");
         carRepository.create(expectedCar1);
@@ -158,7 +158,7 @@ public class CarRepositoryTest {
      * Поиск записи по Id
      */
     @Test
-    public void whenFindCarByIdThenGetCar() {
+    public void whenFindCarByIdThenGetCar() throws Exception {
         Car expectedCar = getCar("test6");
         carRepository.create(expectedCar);
 
@@ -174,7 +174,7 @@ public class CarRepositoryTest {
      * Поиск по части названия name
      */
     @Test
-    public void whenFindByLikeNameThenGetCar() {
+    public void whenFindByLikeNameThenGetCar() throws Exception {
         clearTablesBefore();
         Car expectedCar1 = getCar("car7");
         carRepository.create(expectedCar1);
@@ -190,7 +190,7 @@ public class CarRepositoryTest {
      * Поиск по названию name
      */
     @Test
-    public void whenFindCarByNameThenGetCar() {
+    public void whenFindCarByNameThenGetCar() throws Exception {
         Car expectedCar = getCar("test9");
         carRepository.create(expectedCar);
 
@@ -205,7 +205,7 @@ public class CarRepositoryTest {
      * Поиск автомобилей по владельцу
      */
     @Test
-    public void whenFindCarByUserThenGetCar() {
+    public void whenFindCarByUserThenGetCar() throws Exception {
         Car expectedCar = getCar("test10");
         carRepository.create(expectedCar);
 
@@ -217,7 +217,7 @@ public class CarRepositoryTest {
      * Получение полного списка записей (Lazy)
      */
     @Test
-    public void whenFindAllCarsThenGetAllCars() {
+    public void whenFindAllCarsThenGetAllCars() throws Exception {
         clearTablesBefore();
         Car expectedCar1 = getCar("test11");
         carRepository.create(expectedCar1);

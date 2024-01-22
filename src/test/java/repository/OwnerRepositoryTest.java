@@ -52,7 +52,7 @@ class OwnerRepositoryTest {
      * Обновление записи
      */
     @Test
-    public void whenUpdateOwnerThenGetUpdatedOwner() {
+    public void whenUpdateOwnerThenGetUpdatedOwner() throws Exception {
         User user = getUser("user1");
         userRepository.create(user);
         var expectedOwner = getOwner("owner1", user);
@@ -73,7 +73,7 @@ class OwnerRepositoryTest {
      * Удаление записи
      */
     @Test
-    public void whenDeleteOwnerThenGetEmpty() {
+    public void whenDeleteOwnerThenGetEmpty() throws Exception {
         User user = getUser("user3");
         userRepository.create(user);
         var expectedOwner = getOwner("owner3", user);
@@ -90,7 +90,7 @@ class OwnerRepositoryTest {
      * Получение полного списка записей
      */
     @Test
-    public void whenFindAllOwnerOrderByIdThenGetAllOwners() {
+    public void whenFindAllOwnerOrderByIdThenGetAllOwners() throws Exception {
         clearTableBefore();
         User user1 = getUser("user4");
         userRepository.create(user1);
@@ -110,7 +110,7 @@ class OwnerRepositoryTest {
      * Поиск записи по Id
      */
     @Test
-    public void whenFindOwnerByIdThenGetOwner() {
+    public void whenFindOwnerByIdThenGetOwner() throws Exception {
         User user = getUser("user6");
         userRepository.create(user);
         var expectedOwner = getOwner("owner6", user);
@@ -127,7 +127,7 @@ class OwnerRepositoryTest {
      * Поиск по части имени
      */
     @Test
-    public void whenFindOwnerByLikeNameThenGetOwner() {
+    public void whenFindOwnerByLikeNameThenGetOwner() throws Exception {
         User user1 = getUser("user7");
         userRepository.create(user1);
         User user2 = getUser("user8");
@@ -146,7 +146,7 @@ class OwnerRepositoryTest {
      * Поиск по имени name
      */
     @Test
-    public void whenFindOwnerByNameThenGetOwner() {
+    public void whenFindOwnerByNameThenGetOwner() throws Exception {
         User user = getUser("user9");
         userRepository.create(user);
         var expectedOwner = getOwner("owner9", user);
@@ -163,7 +163,7 @@ class OwnerRepositoryTest {
      * Найти владельца по UserId
      */
     @Test
-    public void whenFindOwnerByUserIdThenGetOwner() {
+    public void whenFindOwnerByUserIdThenGetOwner() throws Exception {
         User user = getUser("user10");
         userRepository.create(user);
         User user2 = getUser("user11");

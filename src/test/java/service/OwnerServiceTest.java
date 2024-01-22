@@ -58,7 +58,7 @@ public class OwnerServiceTest {
      * Создание новой записи
      */
     @Test
-    public void whenCreateOwnerThenGetOwner() {
+    public void whenCreateOwnerThenGetOwner() throws Exception {
         User expectedUser = getUser("Login");
         Owner expectedOwner = getOwner(expectedUser.getName(), expectedUser);
         expectedOwner.setId(0);

@@ -17,12 +17,12 @@ public class EngineServiceImpl implements EngineService {
     private final EngineRepository engineRepository;
 
     @Override
-    public Engine create(Engine engine) {
+    public Engine create(Engine engine) throws Exception {
         try {
             return engineRepository.create(engine);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
-            return null;
+            throw e;
         }
     }
 

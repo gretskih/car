@@ -21,9 +21,9 @@ public class OwnerRepositoryImpl implements OwnerRepository {
      * @return владелец с id.
      */
     @Override
-    public Owner create(Owner owner) {
+    public Owner create(Owner owner) throws Exception {
         if (!crudRepository.run(session -> session.persist(owner))) {
-            throw new RuntimeException("Ошибка при добавлении владельца.");
+            throw new Exception("Ошибка при добавлении владельца.");
         }
         return owner;
     }

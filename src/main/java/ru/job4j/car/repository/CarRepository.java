@@ -12,7 +12,7 @@ public interface CarRepository {
      * @param car автомобиль.
      * @return автомобиль с id.
      */
-    Car create(Car car);
+    Car create(Car car) throws Exception;
 
     /**
      * Обновить в базе автомобиль.

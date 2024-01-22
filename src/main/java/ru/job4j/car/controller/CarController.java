@@ -1,6 +1,7 @@
 package ru.job4j.car.controller;
 
 import lombok.AllArgsConstructor;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -44,9 +45,12 @@ public class CarController {
 
     @PostMapping("/create")
     public String create(@ModelAttribute Car car, @SessionAttribute User user, @RequestParam Set<MultipartFile> files, Model model) {
-        if (carService.create(car, user, files) == null) {
-            model.addAttribute("message", "Автомобиль не создан!");
-            return "errors/404";
+        try {
+            carService.create(car, user, files);
+        } catch (Exception e) {
+            model.addAttribute("message1", "Автомобиль не добавлен.");
+            model.addAttribute("message2", "Подробности: " + e.getMessage());
+            return "errors/500";
         }
         return "redirect:/posts/create";
     }
@@ -61,7 +65,7 @@ public class CarController {
                 return "redirect:/cars";
             }
         }
-        model.addAttribute("message", "Произошла ошибка при удалении!");
-        return "errors/404";
+        model.addAttribute("message1", "Произошла ошибка при удалении.");
+        return "errors/500";
     }
 }

@@ -22,9 +22,9 @@ public class CarRepositoryImpl implements CarRepository {
      * @return автомобиль с id.
      */
     @Override
-    public Car create(Car car) {
+    public Car create(Car car) throws Exception {
         if (!crudRepository.run(session -> session.persist(car))) {
-            throw new RuntimeException("Ошибка при добавлении автомобиля.");
+            throw new Exception("ошибка при сохранении автомобиля.");
         }
         return car;
     }
