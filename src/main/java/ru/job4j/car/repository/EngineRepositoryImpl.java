@@ -37,8 +37,8 @@ public class EngineRepositoryImpl implements EngineRepository {
     }
 
     /**
-     * Удалить двигатель по id.
-     * @param engine ID
+     * Удалить двигатель.
+     * @param engine двигатель
      * @return статус транзакции
      */
     @Override

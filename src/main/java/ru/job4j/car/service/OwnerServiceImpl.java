@@ -18,9 +18,18 @@ public class OwnerServiceImpl implements OwnerService {
     private final OwnerRepository ownerRepository;
 
     @Override
-    public Owner create(Owner owner) {
+    public Owner create(User user) {
         try {
-            return ownerRepository.create(owner);
+            var ownerOptional = findByUser(user);
+            if (ownerOptional.isEmpty()) {
+                Owner owner =
+                        Owner.of()
+                                .user(user)
+                                .name(user.getName())
+                                .build();
+                return ownerRepository.create(owner);
+            }
+            return ownerOptional.get();
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             return null;

@@ -37,9 +37,16 @@ public class PostRepositoryImpl implements PostRepository {
         return crudRepository.optional(
                 "FROM Post post "
                         + "LEFT JOIN FETCH post.priceHistories "
-                        + "LEFT JOIN FETCH post.participates "
-                        + "LEFT JOIN FETCH post.car.owners "
                         + "LEFT JOIN FETCH post.car.photos "
+                        + "LEFT JOIN FETCH post.car.engine "
+                        + "LEFT JOIN FETCH post.car.brand "
+                        + "LEFT JOIN FETCH post.car.year "
+                        + "LEFT JOIN FETCH post.car.body "
+                        + "LEFT JOIN FETCH post.car.gearbox "
+                        + "LEFT JOIN FETCH post.car.fuel "
+                        + "LEFT JOIN FETCH post.car.color "
+                        + "LEFT JOIN FETCH post.car.owner "
+                        + "LEFT JOIN FETCH post.car.historyOwners "
                         + "WHERE post.id = :fId",
                 Post.class, Map.of("fId", id)
         );
@@ -78,9 +85,15 @@ public class PostRepositoryImpl implements PostRepository {
         return crudRepository.query(
                 "FROM Post post "
                         + "LEFT JOIN FETCH post.priceHistories "
-                        + "LEFT JOIN FETCH post.participates "
-                        + "LEFT JOIN FETCH post.car.owners "
                         + "LEFT JOIN FETCH post.car.photos "
+                        + "LEFT JOIN FETCH post.car.engine "
+                        + "LEFT JOIN FETCH post.car.brand "
+                        + "LEFT JOIN FETCH post.car.year "
+                        + "LEFT JOIN FETCH post.car.body "
+                        + "LEFT JOIN FETCH post.car.gearbox "
+                        + "LEFT JOIN FETCH post.car.fuel "
+                        + "LEFT JOIN FETCH post.car.color "
+                        + "LEFT JOIN FETCH post.car.owner "
                         + "WHERE post.status = false",
                 Post.class
         );
@@ -96,9 +109,15 @@ public class PostRepositoryImpl implements PostRepository {
         return crudRepository.query(
                 "FROM Post post "
                         + "LEFT JOIN FETCH post.priceHistories "
-                        + "LEFT JOIN FETCH post.participates "
                         + "LEFT JOIN FETCH post.car.photos "
-                        + "LEFT JOIN FETCH post.car.owners "
+                        + "LEFT JOIN FETCH post.car.engine "
+                        + "LEFT JOIN FETCH post.car.brand "
+                        + "LEFT JOIN FETCH post.car.year "
+                        + "LEFT JOIN FETCH post.car.body "
+                        + "LEFT JOIN FETCH post.car.gearbox "
+                        + "LEFT JOIN FETCH post.car.fuel "
+                        + "LEFT JOIN FETCH post.car.color "
+                        + "LEFT JOIN FETCH post.car.owner "
                         + "WHERE post.status = false AND "
                         + "post.created > :fLocalDateTimeNow",
                 Post.class, Map.of("fLocalDateTimeNow", localDateTimeNow.minusDays(1))
@@ -115,9 +134,15 @@ public class PostRepositoryImpl implements PostRepository {
         return crudRepository.query(
                 "FROM Post post "
                         + "LEFT JOIN FETCH post.priceHistories "
-                        + "LEFT JOIN FETCH post.participates "
                         + "LEFT JOIN FETCH post.car.photos "
-                        + "LEFT JOIN FETCH post.car.owners "
+                        + "LEFT JOIN FETCH post.car.engine "
+                        + "LEFT JOIN FETCH post.car.brand "
+                        + "LEFT JOIN FETCH post.car.year "
+                        + "LEFT JOIN FETCH post.car.body "
+                        + "LEFT JOIN FETCH post.car.gearbox "
+                        + "LEFT JOIN FETCH post.car.fuel "
+                        + "LEFT JOIN FETCH post.car.color "
+                        + "LEFT JOIN FETCH post.car.owner "
                         + "WHERE post.status = false AND "
                         + "post.car.brand.name = :fBrand",
                 Post.class, Map.of("fBrand", brand)
@@ -134,9 +159,15 @@ public class PostRepositoryImpl implements PostRepository {
         return crudRepository.query(
                 "FROM Post post "
                         + "LEFT JOIN FETCH post.priceHistories "
-                        + "LEFT JOIN FETCH post.participates "
                         + "LEFT JOIN FETCH post.car.photos "
-                        + "LEFT JOIN FETCH post.car.owners "
+                        + "LEFT JOIN FETCH post.car.engine "
+                        + "LEFT JOIN FETCH post.car.brand "
+                        + "LEFT JOIN FETCH post.car.year "
+                        + "LEFT JOIN FETCH post.car.body "
+                        + "LEFT JOIN FETCH post.car.gearbox "
+                        + "LEFT JOIN FETCH post.car.fuel "
+                        + "LEFT JOIN FETCH post.car.color "
+                        + "LEFT JOIN FETCH post.car.owner "
                         + "WHERE post.status = false AND "
                         + "post.car.brand.id = :fId",
                 Post.class, Map.of("fId", brandId)
@@ -145,19 +176,25 @@ public class PostRepositoryImpl implements PostRepository {
 
     /**
      * Объявления от заданного пользователя.
-     * @param user пользователь
+     * @param userId идентификатор пользователя
      * @return список объявлений пользователя user
      */
     @Override
-    public List<Post> getPostsUser(User user) {
+    public List<Post> getPostsUserId(int userId) {
         return crudRepository.query(
                 "FROM Post post "
                         + "LEFT JOIN FETCH post.priceHistories "
-                        + "LEFT JOIN FETCH post.participates "
                         + "LEFT JOIN FETCH post.car.photos "
-                        + "LEFT JOIN FETCH post.car.owners "
-                        + "WHERE post.user = :fUser",
-                Post.class, Map.of("fUser", user)
+                        + "LEFT JOIN FETCH post.car.engine "
+                        + "LEFT JOIN FETCH post.car.brand "
+                        + "LEFT JOIN FETCH post.car.year "
+                        + "LEFT JOIN FETCH post.car.body "
+                        + "LEFT JOIN FETCH post.car.gearbox "
+                        + "LEFT JOIN FETCH post.car.fuel "
+                        + "LEFT JOIN FETCH post.car.color "
+                        + "LEFT JOIN FETCH post.car.owner "
+                        + "WHERE post.user.id = :fUserId",
+                Post.class, Map.of("fUserId", userId)
         );
     }
 }

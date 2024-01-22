@@ -1,9 +1,9 @@
 package ru.job4j.car.service;
 
-import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import ru.job4j.car.dto.PhotoDto;
 import ru.job4j.car.model.Photo;
 import ru.job4j.car.repository.PhotoRepository;
@@ -11,11 +11,13 @@ import ru.job4j.car.repository.PhotoRepository;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
-@Service
 @Slf4j
+@Service
 public class PhotoServiceImpl implements PhotoService {
     private final PhotoRepository photoRepository;
     private final String storageDirectory;
@@ -36,13 +38,18 @@ public class PhotoServiceImpl implements PhotoService {
     }
 
     @Override
-    public Photo save(PhotoDto photoDto) {
+    public Photo save(PhotoDto photoDto) throws IOException {
         var path = getNewFilePath(photoDto.getName());
-        writeFileBytes(path, photoDto.getContent());
-        Photo photo = new Photo();
-        photo.setName(photoDto.getName());
-        photo.setPath(path);
-        return photo;
+        try {
+            writeFileBytes(path, photoDto.getContent());
+            Photo photo = new Photo();
+            photo.setName(photoDto.getName());
+            photo.setPath(path);
+            return photo;
+        } catch (Exception e) {
+            deleteFile(path);
+            throw e;
+        }
     }
 
     @Override
@@ -63,6 +70,27 @@ public class PhotoServiceImpl implements PhotoService {
             return photoRepository.deleteById(id);
         }
         return false;
+    }
+
+    @Override
+    public Set<Photo> savePhotos(Set<MultipartFile> files) throws IOException {
+        Set<Photo> photos = new HashSet<>();
+        try {
+            for (MultipartFile file : files) {
+                PhotoDto photoDto = new PhotoDto(file.getOriginalFilename(), file.getBytes());
+                Photo photo = save(photoDto);
+                photos.add(photo);
+            }
+            return photos;
+        } catch (IOException e) {
+            deleteAllPhotos(photos);
+            throw e;
+        }
+    }
+
+    @Override
+    public void deleteAllPhotos(Set<Photo> photos) {
+        photos.forEach(this::deleteByPhoto);
     }
 
     @Override
@@ -92,11 +120,7 @@ public class PhotoServiceImpl implements PhotoService {
         return storageDirectory + java.io.File.separator + UUID.randomUUID() + sourceName;
     }
 
-    private void writeFileBytes(String path, byte[] content) {
-        try {
+    private void writeFileBytes(String path, byte[] content) throws IOException {
             Files.write(Path.of(path), content);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
     }
 }

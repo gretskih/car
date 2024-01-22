@@ -97,7 +97,8 @@ public class OwnerRepositoryImpl implements OwnerRepository {
 
     /**
      * Найти владельца по userId
-     * @return Optional or owner.
+     * @param userId идентификатор пользователя
+     * @return Optional of owner.
      */
     @Override
     public Optional<Owner> findByUserId(int userId) {

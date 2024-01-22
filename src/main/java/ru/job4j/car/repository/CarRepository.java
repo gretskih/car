@@ -56,8 +56,8 @@ public interface CarRepository {
 
     /**
      * Найти все автомобили пользователя
-     * @param user пользователь
+     * @param userId идентификатор пользователя
      * @return список автомобилей
      */
-    List<Car> findByUser(User user);
+    List<Car> findByUserId(int userId);
 }

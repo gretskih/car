@@ -63,19 +63,8 @@ public class PostController {
     }
 
     @PostMapping("/create")
-    public String create(@ModelAttribute Post post, @SessionAttribute User user, @RequestParam BigInteger price, @RequestParam Integer carId, Model model) {
-        post.setCreated(LocalDateTime.now());
-        post.setUser(user);
-        PriceHistory priceHistory = new PriceHistory();
-        priceHistory.setBefore(price);
-        priceHistory.setAfter(price);
-        priceHistory.setCreated(LocalDateTime.now());
-        post.setPriceHistories(Set.of(priceHistory));
-
-        Car car = carService.findById(carId).get();
-        post.setCar(car);
-
-        if (postService.create(post) == null) {
+    public String create(@ModelAttribute Post post, @SessionAttribute User user, @RequestParam Long price, @RequestParam Integer carId, Model model) {
+        if (postService.create(post, user, price, carId) == null) {
             model.addAttribute("message", "Объявление не создано!");
             return "errors/404";
         }

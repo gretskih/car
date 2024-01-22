@@ -94,7 +94,7 @@ public class CarRepositoryTest {
         var owner = getOwner("owner" + name, user);
         ownerRepository.create(owner);
         expectedCar.setOwner(owner);
-        expectedCar.setOwners(Set.of(owner));
+        expectedCar.setHistoryOwners(Set.of(owner));
         expectedCar.setPeriodHistories(Set.of(PeriodHistory.of().build()));
         Photo photo = new Photo();
         photo.setName("photo" + name);
@@ -209,7 +209,7 @@ public class CarRepositoryTest {
         Car expectedCar = getCar("test10");
         carRepository.create(expectedCar);
 
-        List<Car> actualCars = carRepository.findByUser(expectedCar.getOwner().getUser());
+        List<Car> actualCars = carRepository.findByUserId(expectedCar.getOwner().getUser().getId());
         assertThat(actualCars).isEqualTo(List.of(expectedCar));
     }
 

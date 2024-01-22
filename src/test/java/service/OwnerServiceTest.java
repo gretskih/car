@@ -59,11 +59,13 @@ public class OwnerServiceTest {
      */
     @Test
     public void whenCreateOwnerThenGetOwner() {
-        Owner expectedOwner = getOwner("Name", getUser("Login"));
+        User expectedUser = getUser("Login");
+        Owner expectedOwner = getOwner(expectedUser.getName(), expectedUser);
+        expectedOwner.setId(0);
         var ownerCaptor = ArgumentCaptor.forClass(Owner.class);
         when(ownerRepository.create(ownerCaptor.capture())).thenReturn(expectedOwner);
 
-        var actualOwner = ownerService.create(expectedOwner);
+        var actualOwner = ownerService.create(expectedUser);
         var actualOwnerCaptor = ownerCaptor.getValue();
 
         assertThat(actualOwner).usingRecursiveComparison().isEqualTo(expectedOwner);

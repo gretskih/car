@@ -27,6 +27,12 @@ public class UserControllerTest {
     private UserService userService;
     @InjectMocks
     private UserController userController;
+    @Captor
+    private ArgumentCaptor<String> loginArgumentCaptor;
+    @Captor
+    private ArgumentCaptor<String> passwordArgumentCaptor;
+    @Captor
+    private ArgumentCaptor<User> userArgumentCaptor;
 
     private User getUser() {
         return new User(1, "Name", "login", "pass", "1111");
@@ -45,8 +51,6 @@ public class UserControllerTest {
     /**
      * Создание нового пользователя и перенаправление на страницу /users/login.
      */
-    @Captor
-    private ArgumentCaptor<User> userArgumentCaptor;
 
     @Test
     public void whenPostUserRegisterThenGetLoginPage() {
@@ -94,11 +98,6 @@ public class UserControllerTest {
     /**
      * Валидация существующего пользователя, сохранение пользователя в сессии, перенаправление на страницу /posts.
      */
-    @Captor
-    private ArgumentCaptor<String> loginArgumentCaptor;
-    @Captor
-    private ArgumentCaptor<String> passwordArgumentCaptor;
-
     @Test
     public void whenPostLoginUserThenGetVacanciesPage() {
         String expectedPage = "redirect:/posts";

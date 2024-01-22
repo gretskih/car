@@ -38,6 +38,21 @@ public class PostControllerTest {
     @InjectMocks
     private PostController postController;
 
+    @Captor
+    private ArgumentCaptor<Integer> carIdCaptor;
+    @Captor
+    private ArgumentCaptor<Long> priceCaptor;
+    @Captor
+    private ArgumentCaptor<Post> postArgumentCaptor;
+    @Captor
+    private ArgumentCaptor<Integer> idCaptor;
+    @Captor
+    private ArgumentCaptor<Boolean> statusCaptor;
+    @Captor
+    private ArgumentCaptor<User> userCaptor;
+    @Captor
+    private ArgumentCaptor<Integer> brandIdCaptor;
+
     private User getUser() {
         return new User(1, "Name", "login", "pass", "1111");
     }
@@ -56,7 +71,7 @@ public class PostControllerTest {
     private PostPreview getPostPreview() {
         return new PostPreview(1, Set.of(new Photo(1, "Name", "Path")), "Photo",
                 "Brand", 1000, 2015, "Body", "Gearbox", "Fuel",
-                "Color", "Type", false, "Engine", "Owner", "1500000");
+                "Color", "Type", false, "Engine", "Owner", 1500000L);
     }
 
     /**
@@ -100,8 +115,6 @@ public class PostControllerTest {
     /**
      * Получение страницы index со списком объявлений бренда
      */
-    @Captor
-    private ArgumentCaptor<Integer> brandIdCaptor;
 
     @Test
     public void whenRequestFindPostsPostsOneBrandThenGetPosts() {
@@ -143,8 +156,6 @@ public class PostControllerTest {
     /**
      * Получение страницы index со списком объявлений от текущего пользователя user
      */
-    @Captor
-    private ArgumentCaptor<User> userCaptor;
 
     @Test
     public void whenRequestFindMyPostsThenGetMyPosts() {
@@ -184,30 +195,25 @@ public class PostControllerTest {
     /**
      * Сохранение нового объявления и редирект на страницу redirect:/posts
      */
-    @Captor
-    private ArgumentCaptor<Integer> carIdCaptor;
-
-    @Captor
-    private ArgumentCaptor<Post> postArgumentCaptor;
 
     @Test
     public void whenCreatePostThenGetPostsPage() {
         String expectedPage = "redirect:/posts";
-        Post post = getPost();
+        Post expectedPost = getPost();
         User expectedUser = getUser();
-        BigInteger expectedPrice = new BigInteger(String.valueOf(10000));
+        Long expectedPrice = 10000L;
         Integer expectedCarId = 1;
-        Car expectedCar = getCar();
         Model model = new ConcurrentModel();
-        when(carService.findById(carIdCaptor.capture())).thenReturn(Optional.of(expectedCar));
-        when(postService.create(postArgumentCaptor.capture())).thenReturn(post);
+        when(postService.create(postArgumentCaptor.capture(), userCaptor.capture(), priceCaptor.capture(),
+                carIdCaptor.capture())).thenReturn(expectedPost);
 
-        String actualPage = postController.create(post, expectedUser, expectedPrice, expectedCarId, model);
+        String actualPage = postController.create(expectedPost, expectedUser, expectedPrice, expectedCarId, model);
 
         assertThat(actualPage).isEqualTo(expectedPage);
-        assertThat(post.getUser()).usingRecursiveComparison().isEqualTo(expectedUser);
-        assertThat(post.getPrice()).isEqualTo(String.valueOf(expectedPrice));
-        assertThat(post.getCar()).usingRecursiveComparison().isEqualTo(expectedCar);
+        assertThat(userCaptor.getValue()).usingRecursiveComparison().isEqualTo(expectedUser);
+        assertThat(priceCaptor.getValue()).isEqualTo(expectedPrice);
+        assertThat(carIdCaptor.getValue()).usingRecursiveComparison().isEqualTo(expectedCarId);
+        assertThat(postArgumentCaptor.getValue()).isEqualTo(expectedPost);
     }
 
     /**
@@ -218,12 +224,10 @@ public class PostControllerTest {
         String expectedPage = "errors/404";
         Post post = getPost();
         User expectedUser = getUser();
-        BigInteger expectedPrice = new BigInteger(String.valueOf(10000));
+        Long expectedPrice = 10000L;
         Integer expectedCarId = 1;
-        Car expectedCar = getCar();
         Model model = new ConcurrentModel();
-        when(carService.findById(any(Integer.class))).thenReturn(Optional.of(expectedCar));
-        when(postService.create(any())).thenReturn(null);
+        when(postService.create(any(Post.class), any(User.class), any(Long.class), any(Integer.class))).thenReturn(null);
 
         String actualPage = postController.create(post, expectedUser, expectedPrice, expectedCarId, model);
 
@@ -234,8 +238,6 @@ public class PostControllerTest {
     /**
      * Получение страницы posts/view с подробной информацией об объявлении
      */
-    @Captor
-    private ArgumentCaptor<Integer> idCaptor;
 
     @Test
     public void whenRequestPostViewThenGetViewPage() {
@@ -245,7 +247,7 @@ public class PostControllerTest {
         PostView expectedPostView = new PostView(2, 1, Set.of(new Photo()), "Name",
                 "Brand", 1000, 2020, "Body", "Gearbox", "Fuel",
                 "Color", "Type", false, "Engine", "Owner", 2,
-                "0000", "100000", "Description", LocalDateTime.now(), "City");
+                "0000", 100000L, "Description", LocalDateTime.now(), "City");
         when(postService.findById(idCaptor.capture())).thenReturn(Optional.of(expectedPostView));
         Model model = new ConcurrentModel();
 
@@ -269,7 +271,7 @@ public class PostControllerTest {
         PostView expectedPostView = new PostView(2, 1, Set.of(new Photo()), "Name",
                 "Brand", 1000, 2020, "Body", "Gearbox", "Fuel",
                 "Color", "Type", false, "Engine", "Owner", 2,
-                "0000", "100000", "Description", LocalDateTime.now(), "City");
+                "0000", 100000L, "Description", LocalDateTime.now(), "City");
         when(postService.findById(any(Integer.class))).thenReturn(Optional.empty());
         Model model = new ConcurrentModel();
 
@@ -284,8 +286,6 @@ public class PostControllerTest {
     /**
      * Объявление завершено, редирект на страницу redirect:/posts
      */
-    @Captor
-    private ArgumentCaptor<Boolean> statusCaptor;
 
     @Test
     public void whenRequestPostCompleteThenGetPostsPage() {

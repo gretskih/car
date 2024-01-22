@@ -20,27 +20,27 @@ public class Car {
     private String name;
     private Integer mileage;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "brand_id")
     private Brand brand;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "year_prod_id")
     private Year year;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "body_id")
     private Body body;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "gearbox_id")
     private Gearbox gearbox;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "fuel_id")
     private Fuel fuel;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "color_id")
     private Color color;
     private String type;
@@ -48,14 +48,14 @@ public class Car {
     /**
      * Модель двигателя
      */
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "engine_id", foreignKey = @ForeignKey(name = "ENGINE_ID_FK"))
     private Engine engine;
 
     /**
      * Текущий владелец автомобиля
      */
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "owner_id")
     private Owner owner;
 
@@ -68,7 +68,7 @@ public class Car {
                     @JoinColumn(name = "car_id", nullable = false, updatable = false)},
             inverseJoinColumns = {
                     @JoinColumn(name = "owner_id", nullable = false, updatable = false)})
-    private Set<Owner> owners = new HashSet<>();
+    private Set<Owner> historyOwners = new HashSet<>();
 
     /**
      * Список периодов владения автомобилем
@@ -85,6 +85,6 @@ public class Car {
     private Set<Photo> photos = new HashSet<>();
 
     public int getNumberOfOwners() {
-        return owners.size();
+        return historyOwners.size();
     }
 }

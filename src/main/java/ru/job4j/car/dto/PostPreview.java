@@ -26,5 +26,5 @@ public class PostPreview {
     private String engine;
     private String owner;
 
-    private String price;
+    private Long price;
 }
