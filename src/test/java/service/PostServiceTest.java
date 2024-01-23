@@ -66,7 +66,7 @@ public class PostServiceTest {
      * Создать новое объявление
      */
     @Test
-    public void whenCreateNewPostThenGetCreatedPost() {
+    public void whenCreateNewPostThenGetCreatedPost() throws Exception {
         Post exceptedPost = getPost("post0");
         User expectedUser = new User(1, "user0", "login0", "pass0", "contacts");
         Long expectedPrice = 1000000L;

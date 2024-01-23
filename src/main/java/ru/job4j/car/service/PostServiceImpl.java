@@ -27,7 +27,7 @@ public class PostServiceImpl implements PostService {
     private final CarService carService;
 
     @Override
-    public Post create(Post post, User user, Long price, Integer carId) {
+    public Post create(Post post, User user, Long price, Integer carId) throws Exception {
         post.setCreated(LocalDateTime.now());
         post.setUser(user);
         setPriceHistory(post, price);
@@ -36,7 +36,7 @@ public class PostServiceImpl implements PostService {
             return postRepository.create(post);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
-            return null;
+            throw e;
         }
     }
 
@@ -48,10 +48,10 @@ public class PostServiceImpl implements PostService {
         post.setPriceHistories(Set.of(priceHistory));
     }
 
-    private void setCar(Post post, Integer carId) {
+    private void setCar(Post post, Integer carId) throws Exception {
         Optional<Car> carOptional = carService.findById(carId);
         if (carOptional.isEmpty()) {
-            throw new RuntimeException("Автомобиль не найден.");
+            throw new Exception("Автомобиль не найден.");
         }
         post.setCar(carOptional.get());
     }

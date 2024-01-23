@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 import ru.job4j.car.model.Engine;
 
+import javax.accessibility.AccessibleComponent;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -19,9 +20,9 @@ public class EngineRepositoryImpl implements EngineRepository {
      * @return двигатель с id.
      */
     @Override
-    public Engine create(Engine engine) {
+    public Engine create(Engine engine) throws Exception {
         if (!crudRepository.run(session -> session.persist(engine))) {
-            throw new RuntimeException("Ошибка при добавлении двигателя.");
+            throw new Exception("Ошибка при добавлении двигателя.");
         }
         return engine;
     }

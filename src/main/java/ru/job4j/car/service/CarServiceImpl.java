@@ -40,10 +40,10 @@ public class CarServiceImpl implements CarService {
         car.setPhotos(photoService.savePhotos(files));
     }
 
-    private void setOwner(Car car, User user) {
+    private void setOwner(Car car, User user) throws Exception {
         Owner owner = ownerService.create(user);
         if (owner == null) {
-            throw new RuntimeException("новый владелец автомобиля не найден и не создан");
+            throw new Exception("владелец автомобиля не добавлен в ПТС.");
         }
         car.setOwner(owner);
         car.setHistoryOwners(Set.of(owner));

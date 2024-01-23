@@ -29,7 +29,7 @@ public class EngineServiceTest {
      * Создание новой записи
      */
     @Test
-    public void whenCreateEngineThenGetReturnEngine() {
+    public void whenCreateEngineThenGetReturnEngine() throws Exception {
         Engine expectedEngine = new Engine(1, "Test");
         var engineCaptor = ArgumentCaptor.forClass(Engine.class);
         when(engineRepository.create(engineCaptor.capture())).thenReturn(expectedEngine);

@@ -40,7 +40,7 @@ public class EngineControllerTest {
      * Сохранение нового двигателя в базу и редирект на страницу /cars/create
      */
     @Test
-    public void whenPostEngineThenGetCreateNewCarPage() {
+    public void whenPostEngineThenGetCreateNewCarPage() throws Exception {
         String expectedPage = "redirect:/cars/create";
         Engine expectedEngine = new Engine(1, "Седан");
         var model = new ConcurrentModel();
@@ -53,18 +53,18 @@ public class EngineControllerTest {
     }
 
     /**
-     * Неудачное сохранение нового двигателя в базу и редирект на страницу errors/404
+     * Неудачное сохранение нового двигателя в базу и редирект на страницу errors/500
      */
     @Test
-    public void whenPostEngineThenGetErrorPage() {
-        String expectedPage = "errors/404";
-        String expectedMessage = "Двигатель не создан!";
+    public void whenPostEngineThenGetErrorPage() throws Exception {
+        String expectedPage = "errors/500";
+        String expectedMessage = "Ошибка при добавлении двигателя.";
         Engine expectedEngine = new Engine(1, "Седан");
+        when(engineService.create(any(Engine.class))).thenThrow(new RuntimeException("Ошибка при добавлении двигателя."));
         var model = new ConcurrentModel();
-        when(engineService.create(any(Engine.class))).thenReturn(null);
 
         var actualPage = engineController.create(expectedEngine, model);
-        var actualMessage = model.getAttribute("message");
+        var actualMessage = model.getAttribute("message1");
 
         assertThat(actualPage).isEqualTo(expectedPage);
         assertThat(actualMessage).isEqualTo(expectedMessage);

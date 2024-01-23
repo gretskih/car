@@ -50,7 +50,7 @@ public class PostRepositoryTest {
         }
     }
 
-    static Post getPost(String postName) {
+    static Post getPost(String postName) throws Exception {
         Car car = getCar("Car" + postName);
         carRepository.create(car);
 
@@ -75,7 +75,7 @@ public class PostRepositoryTest {
      * - показать объявления за последний день;
      */
     @Test
-    public void whenFindPostsLastDayThenGetPostsLastDay() {
+    public void whenFindPostsLastDayThenGetPostsLastDay() throws Exception {
         Post expectedPost = getPost("post1");
         postRepository.create(expectedPost);
 
@@ -92,7 +92,7 @@ public class PostRepositoryTest {
      * Показать все объявления
      */
     @Test
-    public void whenFindPostsThenGetAllPosts() {
+    public void whenFindPostsThenGetAllPosts() throws Exception {
         Post expectedPost1 = getPost("post3");
         postRepository.create(expectedPost1);
 
@@ -108,7 +108,7 @@ public class PostRepositoryTest {
      * - показать объявления определенной марки.
      */
     @Test
-    public void whenFindPostsBrandThenGetPostBrand() {
+    public void whenFindPostsBrandThenGetPostBrand() throws Exception {
         Post expectedPost = getPost("post5");
         postRepository.create(expectedPost);
 
@@ -124,7 +124,7 @@ public class PostRepositoryTest {
      * - показать объявления по идентификатору марки.
      */
     @Test
-    public void whenFindPostsBrandIdThenGetPostBrand() {
+    public void whenFindPostsBrandIdThenGetPostBrand() throws Exception {
         Post expectedPost = getPost("post5");
         postRepository.create(expectedPost);
 
@@ -140,7 +140,7 @@ public class PostRepositoryTest {
      * - показать объявления от заданного пользователя.
      */
     @Test
-    public void whenFindPostsUserThenGetPosts() {
+    public void whenFindPostsUserThenGetPosts() throws Exception {
         Post expectedPost = getPost("post7");
         postRepository.create(expectedPost);
 
@@ -156,7 +156,7 @@ public class PostRepositoryTest {
      * - найти по идентификатору
      */
     @Test
-    public void whenFindPostByIdThenGetPost() {
+    public void whenFindPostByIdThenGetPost() throws Exception {
         Post expectedPost = getPost("post9");
         postRepository.create(expectedPost);
 
@@ -173,7 +173,7 @@ public class PostRepositoryTest {
      */
 
     @Test
-    public void whenDeletePostThenGetPostEmpty() {
+    public void whenDeletePostThenGetPostEmpty() throws Exception {
         Post expectedPost = getPost("post10");
         postRepository.create(expectedPost);
         boolean actualStatusTransaction = postRepository.delete(expectedPost);
@@ -189,7 +189,7 @@ public class PostRepositoryTest {
      */
 
     @Test
-    public void whenSetTrueToPostThenGetPostStatusTrue() {
+    public void whenSetTrueToPostThenGetPostStatusTrue() throws Exception {
         Post expectedPost = getPost("post11");
         postRepository.create(expectedPost);
         boolean actualStatusTransaction = postRepository.setStatus(expectedPost.getId(), true);

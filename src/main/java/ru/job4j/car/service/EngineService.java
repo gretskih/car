@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface EngineService {
 
-    Engine create(Engine engine);
+    Engine create(Engine engine) throws Exception;
 
     List<Engine> findAll();
 

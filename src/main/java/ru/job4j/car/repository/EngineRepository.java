@@ -11,7 +11,7 @@ public interface EngineRepository {
      * @param engine двигатель.
      * @return двигатель с id.
      */
-    Engine create(Engine engine);
+    Engine create(Engine engine) throws Exception;
 
     /**
      * Обновить в базе двигатель.

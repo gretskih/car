@@ -197,7 +197,7 @@ public class PostControllerTest {
      */
 
     @Test
-    public void whenCreatePostThenGetPostsPage() {
+    public void whenCreatePostThenGetPostsPage() throws Exception {
         String expectedPage = "redirect:/posts";
         Post expectedPost = getPost();
         User expectedUser = getUser();
@@ -217,22 +217,23 @@ public class PostControllerTest {
     }
 
     /**
-     * Неудачное сохранение нового объявления и редирект на страницу errors/404
+     * Неудачное сохранение нового объявления и редирект на страницу errors/500
      */
     @Test
-    public void whenCreatePostThenGetErrorPage() {
-        String expectedPage = "errors/404";
+    public void whenCreatePostThenGetErrorPage() throws Exception {
+        String expectedPage = "errors/500";
         Post post = getPost();
         User expectedUser = getUser();
         Long expectedPrice = 10000L;
         Integer expectedCarId = 1;
         Model model = new ConcurrentModel();
-        when(postService.create(any(Post.class), any(User.class), any(Long.class), any(Integer.class))).thenReturn(null);
+        when(postService.create(any(Post.class), any(User.class), any(Long.class), any(Integer.class)))
+                .thenThrow(new RuntimeException("Ошибка при создании объявления."));
 
         String actualPage = postController.create(post, expectedUser, expectedPrice, expectedCarId, model);
 
         assertThat(actualPage).isEqualTo(expectedPage);
-        assertThat(model.getAttribute("message")).isEqualTo("Объявление не создано!");
+        assertThat(model.getAttribute("message1")).isEqualTo("Ошибка при создании объявления.");
     }
 
     /**
@@ -260,12 +261,12 @@ public class PostControllerTest {
     }
 
     /**
-     * Объявление по id не найдено, получение страницы errors/404
+     * Объявление по id не найдено, получение страницы errors/500
      */
     @Test
     public void whenRequestPostViewThenGetErrorPage() {
-        String expectedPage = "errors/404";
-        String expectedMessage = "Объявление не найдено!";
+        String expectedPage = "errors/500";
+        String expectedMessage = "Объявление не найдено.";
         User expectedUser = getUser();
         int expectedId = 2;
         PostView expectedPostView = new PostView(2, 1, Set.of(new Photo()), "Name",
@@ -280,7 +281,7 @@ public class PostControllerTest {
         assertThat(actualPage).isEqualTo(expectedPage);
         assertThat(model.getAttribute("postView")).isNull();
         assertThat(model.getAttribute("currentUserId")).isNull();
-        assertThat(model.getAttribute("message")).isEqualTo(expectedMessage);
+        assertThat(model.getAttribute("message1")).isEqualTo(expectedMessage);
     }
 
     /**
@@ -302,12 +303,12 @@ public class PostControllerTest {
     }
 
     /**
-     * Статус объявления не изменен, получение страницы errors/404
+     * Статус объявления не изменен, получение страницы errors/500
      */
     @Test
     public void whenRequestPostCompleteThenGetErrorPage() {
-        String expectedPage = "errors/404";
-        String expectedMessage = "Статус объявления не обновлен!";
+        String expectedPage = "errors/500";
+        String expectedMessage = "Статус объявления не обновлен.";
         int expectedId = 2;
         when(postService.setStatus(any(Integer.class), any(Boolean.class))).thenReturn(false);
         Model model = new ConcurrentModel();
@@ -315,7 +316,7 @@ public class PostControllerTest {
         String actualPage = postController.complete(expectedId, model);
 
         assertThat(actualPage).isEqualTo(expectedPage);
-        assertThat(model.getAttribute("message")).isEqualTo(expectedMessage);
+        assertThat(model.getAttribute("message1")).isEqualTo(expectedMessage);
     }
 
     /**
@@ -336,12 +337,12 @@ public class PostControllerTest {
     }
 
     /**
-     * Объявление повторно не размещено, получение страницы errors/404
+     * Объявление повторно не размещено, получение страницы errors/500
      */
     @Test
     public void whenRequestPostPlaceThenGetErrorPage() {
-        String expectedPage = "errors/404";
-        String expectedMessage = "Статус объявления не обновлен!";
+        String expectedPage = "errors/500";
+        String expectedMessage = "Статус объявления не обновлен.";
         int expectedId = 2;
         when(postService.setStatus(any(Integer.class), any(Boolean.class))).thenReturn(false);
         Model model = new ConcurrentModel();
@@ -349,7 +350,7 @@ public class PostControllerTest {
         String actualPage = postController.place(expectedId, model);
 
         assertThat(actualPage).isEqualTo(expectedPage);
-        assertThat(model.getAttribute("message")).isEqualTo(expectedMessage);
+        assertThat(model.getAttribute("message1")).isEqualTo(expectedMessage);
     }
 
     /**
@@ -369,12 +370,12 @@ public class PostControllerTest {
     }
 
     /**
-     * Неудачное удаление объявления и получение страницы errors/404
+     * Неудачное удаление объявления и получение страницы errors/500
      */
     @Test
     public void whenRequestDeletePostThenGetErrorPage() {
-        String expectedPage = "errors/404";
-        String expectedMessage = "Оъявление не было удалено!";
+        String expectedPage = "errors/500";
+        String expectedMessage = "Оъявление не было удалено.";
         int expectedId = 2;
         when(postService.delete(any(Integer.class))).thenReturn(false);
         Model model = new ConcurrentModel();
@@ -382,6 +383,6 @@ public class PostControllerTest {
         String actualPage = postController.delete(expectedId, model);
 
         assertThat(actualPage).isEqualTo(expectedPage);
-        assertThat(model.getAttribute("message")).isEqualTo(expectedMessage);
+        assertThat(model.getAttribute("message1")).isEqualTo(expectedMessage);
     }
 }

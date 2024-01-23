@@ -43,7 +43,7 @@ public class EngineRepositoryTest {
      * Обновление записи
      */
     @Test
-    public void whenUpdateEngineThenGetUpdatedEngine() {
+    public void whenUpdateEngineThenGetUpdatedEngine() throws Exception {
         Engine expectedEngine = new Engine();
         expectedEngine.setName("engine1");
         engineRepository.create(expectedEngine);
@@ -63,7 +63,7 @@ public class EngineRepositoryTest {
      * Создание/удаление записи
      */
     @Test
-    public void whenDeleteEngineThenGetEmpty() {
+    public void whenDeleteEngineThenGetEmpty() throws Exception {
         Engine expectedEngine = new Engine();
         expectedEngine.setName("engine3");
         engineRepository.create(expectedEngine);
@@ -79,7 +79,7 @@ public class EngineRepositoryTest {
      * Получение полного списка записей
      */
     @Test
-    public void whenFindAllEnginesOrderByIdThenGetAllEngines() {
+    public void whenFindAllEnginesOrderByIdThenGetAllEngines() throws Exception {
         clearTableBefore();
         Engine expectedEngine1 = new Engine();
         expectedEngine1.setName("engine4");
@@ -96,7 +96,7 @@ public class EngineRepositoryTest {
      * Поиск записи по Id
      */
     @Test
-    public void whenFindEngineByIdThenGetEngine() {
+    public void whenFindEngineByIdThenGetEngine() throws Exception {
         Engine expectedEngine = new Engine();
         expectedEngine.setName("engine6");
         engineRepository.create(expectedEngine);
@@ -112,7 +112,7 @@ public class EngineRepositoryTest {
      * Поиск по части имени
      */
     @Test
-    public void whenFindEngineByLikeNameThenGetEngine() {
+    public void whenFindEngineByLikeNameThenGetEngine() throws Exception {
         Engine expectedEngine1 = new Engine();
         expectedEngine1.setName("engine7");
         engineRepository.create(expectedEngine1);
@@ -128,7 +128,7 @@ public class EngineRepositoryTest {
      * Поиск по имени name
      */
     @Test
-    public void whenFindEngineByNameThenEngine() {
+    public void whenFindEngineByNameThenEngine() throws Exception {
         Engine expectedEngine = new Engine();
         expectedEngine.setName("engine9");
         engineRepository.create(expectedEngine);

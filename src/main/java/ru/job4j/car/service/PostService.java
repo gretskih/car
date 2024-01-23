@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface PostService {
-    Post create(Post post, User user, Long price, Integer carId);
+    Post create(Post post, User user, Long price, Integer carId) throws Exception;
 
     boolean delete(int postId);
 
