@@ -13,7 +13,7 @@ public interface PostService {
 
     boolean delete(int postId);
 
-    boolean setStatus(int postId, boolean status);
+    boolean changeStatus(int postId, boolean status);
 
     Optional<PostView> findById(int id);
 

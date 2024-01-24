@@ -10,10 +10,7 @@ import ru.job4j.car.service.BrandService;
 import ru.job4j.car.service.CarService;
 import ru.job4j.car.service.PostService;
 
-import java.math.BigInteger;
-import java.time.LocalDateTime;
 import java.util.Optional;
-import java.util.Set;
 
 @Controller
 @AllArgsConstructor
@@ -87,7 +84,7 @@ public class PostController {
 
     @GetMapping("/complete/{id}")
     public String complete(@PathVariable int id, Model model) {
-        if (!postService.setStatus(id, true)) {
+        if (!postService.changeStatus(id, true)) {
             model.addAttribute("message1", "Статус объявления не обновлен.");
             return "errors/500";
         }
@@ -96,7 +93,7 @@ public class PostController {
 
     @GetMapping("/place/{id}")
     public String place(@PathVariable int id, Model model) {
-        if (!postService.setStatus(id, false)) {
+        if (!postService.changeStatus(id, false)) {
             model.addAttribute("message1", "Статус объявления не обновлен.");
             return "errors/500";
         }

@@ -17,7 +17,6 @@ import ru.job4j.car.service.BrandService;
 import ru.job4j.car.service.CarService;
 import ru.job4j.car.service.PostService;
 
-import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -292,7 +291,7 @@ public class PostControllerTest {
     public void whenRequestPostCompleteThenGetPostsPage() {
         String expectedPage = "redirect:/posts";
         int expectedId = 2;
-        when(postService.setStatus(idCaptor.capture(), statusCaptor.capture())).thenReturn(true);
+        when(postService.changeStatus(idCaptor.capture(), statusCaptor.capture())).thenReturn(true);
         Model model = new ConcurrentModel();
 
         String actualPage = postController.complete(expectedId, model);
@@ -310,7 +309,7 @@ public class PostControllerTest {
         String expectedPage = "errors/500";
         String expectedMessage = "Статус объявления не обновлен.";
         int expectedId = 2;
-        when(postService.setStatus(any(Integer.class), any(Boolean.class))).thenReturn(false);
+        when(postService.changeStatus(any(Integer.class), any(Boolean.class))).thenReturn(false);
         Model model = new ConcurrentModel();
 
         String actualPage = postController.complete(expectedId, model);
@@ -326,7 +325,7 @@ public class PostControllerTest {
     public void whenRequestPostPlaceThenGetPostsPage() {
         String expectedPage = "redirect:/posts";
         int expectedId = 2;
-        when(postService.setStatus(idCaptor.capture(), statusCaptor.capture())).thenReturn(true);
+        when(postService.changeStatus(idCaptor.capture(), statusCaptor.capture())).thenReturn(true);
         Model model = new ConcurrentModel();
 
         String actualPage = postController.place(expectedId, model);
@@ -344,7 +343,7 @@ public class PostControllerTest {
         String expectedPage = "errors/500";
         String expectedMessage = "Статус объявления не обновлен.";
         int expectedId = 2;
-        when(postService.setStatus(any(Integer.class), any(Boolean.class))).thenReturn(false);
+        when(postService.changeStatus(any(Integer.class), any(Boolean.class))).thenReturn(false);
         Model model = new ConcurrentModel();
 
         String actualPage = postController.place(expectedId, model);

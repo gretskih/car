@@ -2,6 +2,7 @@ package ru.job4j.car.service;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.service.spi.ServiceException;
 import org.springframework.stereotype.Service;
 import ru.job4j.car.model.Engine;
 import ru.job4j.car.repository.EngineRepository;
@@ -22,7 +23,7 @@ public class EngineServiceImpl implements EngineService {
             return engineRepository.create(engine);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
-            throw e;
+            throw new ServiceException(e.getMessage(), e);
         }
     }
 

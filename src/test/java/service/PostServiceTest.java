@@ -356,13 +356,13 @@ public class PostServiceTest {
      * установить статус объявлению true
      */
     @Test
-    public void whenSetStatusPostTrueThenGetTrue() {
+    public void whenChangeStatusPostTrueThenGetTrue() {
         int expectedId = 2;
         boolean expectedStatus = true;
         when(postRepository.setStatus(integerArgumentCaptor.capture(), statusArgumentCaptor.capture()))
                 .thenReturn(true);
 
-        var actualStatus = postService.setStatus(expectedId, expectedStatus);
+        var actualStatus = postService.changeStatus(expectedId, expectedStatus);
 
         assertThat(actualStatus).isTrue();
         assertThat(integerArgumentCaptor.getValue()).isEqualTo(expectedId);

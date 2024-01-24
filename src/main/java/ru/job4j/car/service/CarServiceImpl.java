@@ -2,6 +2,7 @@ package ru.job4j.car.service;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.service.spi.ServiceException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import ru.job4j.car.model.*;
@@ -24,32 +25,32 @@ public class CarServiceImpl implements CarService {
     @Override
     public Car create(Car car, User user, Set<MultipartFile> files) throws Exception {
         try {
-            setPhotos(car, files);
-            setOwner(car, user);
-            setPeriodHistory(car);
-            setEngine(car);
+            addPhotos(car, files);
+            addOwnerAndHistoryOwners(car, user);
+            addPeriodHistory(car);
+            addEngine(car);
             return carRepository.create(car);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             photoService.deleteAllPhotos(car.getPhotos());
-            throw e;
+            throw new ServiceException(e.getMessage(), e);
         }
     }
 
-    private void setPhotos(Car car, Set<MultipartFile> files) throws Exception {
+    private void addPhotos(Car car, Set<MultipartFile> files) throws Exception {
         car.setPhotos(photoService.savePhotos(files));
     }
 
-    private void setOwner(Car car, User user) throws Exception {
+    private void addOwnerAndHistoryOwners(Car car, User user) {
         Owner owner = ownerService.create(user);
         if (owner == null) {
-            throw new Exception("владелец автомобиля не добавлен в ПТС.");
+            throw new ServiceException("владелец автомобиля не добавлен в ПТС.");
         }
         car.setOwner(owner);
         car.setHistoryOwners(Set.of(owner));
     }
 
-    private void setPeriodHistory(Car car) {
+    private void addPeriodHistory(Car car) {
         var periodHistory = PeriodHistory.of()
                 .ownerId(car.getOwner().getId())
                 .startAt(LocalDateTime.now())
@@ -57,10 +58,10 @@ public class CarServiceImpl implements CarService {
         car.setPeriodHistories(Set.of(periodHistory));
     }
 
-    private void setEngine(Car car) {
+    private void addEngine(Car car) {
         Optional<Engine> engineOptional = engineService.findById(car.getEngine().getId());
         if (engineOptional.isEmpty()) {
-            throw new RuntimeException("двигатель не найден.");
+            throw new ServiceException("двигатель не найден.");
         }
         car.setEngine(engineOptional.get());
     }

@@ -2,6 +2,7 @@ package ru.job4j.car.service;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.service.spi.ServiceException;
 import org.springframework.stereotype.Service;
 import ru.job4j.car.dto.PostPreview;
 import ru.job4j.car.dto.PostView;
@@ -27,20 +28,20 @@ public class PostServiceImpl implements PostService {
     private final CarService carService;
 
     @Override
-    public Post create(Post post, User user, Long price, Integer carId) throws Exception {
+    public Post create(Post post, User user, Long price, Integer carId) {
         post.setCreated(LocalDateTime.now());
         post.setUser(user);
-        setPriceHistory(post, price);
+        addPriceHistory(post, price);
         try {
-            setCar(post, carId);
+            addCar(post, carId);
             return postRepository.create(post);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
-            throw e;
+            throw new ServiceException(e.getMessage(), e);
         }
     }
 
-    private void setPriceHistory(Post post, Long price) {
+    private void addPriceHistory(Post post, Long price) {
         PriceHistory priceHistory = new PriceHistory();
         priceHistory.setBefore(price);
         priceHistory.setAfter(price);
@@ -48,10 +49,13 @@ public class PostServiceImpl implements PostService {
         post.setPriceHistories(Set.of(priceHistory));
     }
 
-    private void setCar(Post post, Integer carId) throws Exception {
+    /**
+     * Это же дает гарантии, что объект будет при вставке данных. Поэтому не нужно.
+     */
+    private void addCar(Post post, Integer carId) {
         Optional<Car> carOptional = carService.findById(carId);
         if (carOptional.isEmpty()) {
-            throw new Exception("Автомобиль не найден.");
+            throw new ServiceException("Автомобиль не найден.");
         }
         post.setCar(carOptional.get());
     }
@@ -63,7 +67,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public boolean setStatus(int postId, boolean status) {
+    public boolean changeStatus(int postId, boolean status) {
         return postRepository.setStatus(postId, status);
     }
 
@@ -152,7 +156,7 @@ public class PostServiceImpl implements PostService {
                 return Files.readAllBytes(Path.of(photo.getPath())).length != 0;
             }
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new ServiceException(e.getMessage(), e);
         }
         return false;
     }
