@@ -9,8 +9,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ru.job4j.car.model.Owner;
 import ru.job4j.car.model.User;
-import ru.job4j.car.repository.OwnerRepositoryImpl;
-import ru.job4j.car.service.OwnerServiceImpl;
+import ru.job4j.car.repository.owner.HibernateOwnerRepository;
+import ru.job4j.car.service.owner.SimpleOwnerService;
 
 import java.util.List;
 import java.util.Optional;
@@ -21,9 +21,9 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 public class OwnerServiceTest {
     @Mock
-    private OwnerRepositoryImpl ownerRepository;
+    private HibernateOwnerRepository ownerRepository;
     @InjectMocks
-    private OwnerServiceImpl ownerService;
+    private SimpleOwnerService ownerService;
 
     /**
      * Фабрика пользователей

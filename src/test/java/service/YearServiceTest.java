@@ -8,8 +8,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ru.job4j.car.model.Year;
-import ru.job4j.car.repository.YearRepository;
-import ru.job4j.car.service.YearServiceImpl;
+import ru.job4j.car.repository.year.YearRepository;
+import ru.job4j.car.service.year.SimpleYearService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +23,7 @@ public class YearServiceTest {
     @Mock
     private YearRepository yearRepository;
     @InjectMocks
-    private YearServiceImpl yearService;
+    private SimpleYearService yearService;
 
     /**
      * Получение полного списка записей

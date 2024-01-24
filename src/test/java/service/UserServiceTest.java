@@ -8,8 +8,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ru.job4j.car.model.User;
-import ru.job4j.car.repository.UserRepository;
-import ru.job4j.car.service.UserServiceImpl;
+import ru.job4j.car.repository.user.UserRepository;
+import ru.job4j.car.service.user.SimpleUserService;
 
 import java.util.Optional;
 
@@ -21,7 +21,7 @@ public class UserServiceTest {
     @Mock
     private UserRepository userRepository;
     @InjectMocks
-    private UserServiceImpl userService;
+    private SimpleUserService userService;
 
     /**
      * Фабрика пользователей

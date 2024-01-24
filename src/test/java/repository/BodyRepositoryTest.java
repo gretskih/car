@@ -5,8 +5,8 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import ru.job4j.car.model.Body;
-import ru.job4j.car.repository.BodyRepository;
-import ru.job4j.car.repository.BodyRepositoryImpl;
+import ru.job4j.car.repository.body.BodyRepository;
+import ru.job4j.car.repository.body.HibernateBodyRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -15,7 +15,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static repository.ConfigurationTest.crudRepository;
 
 public class BodyRepositoryTest {
-    private final BodyRepository bodyRepository = new BodyRepositoryImpl(crudRepository);
+    private final BodyRepository bodyRepository = new HibernateBodyRepository(crudRepository);
 
     /**
      * Очистка базы

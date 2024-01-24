@@ -12,7 +12,7 @@ import org.springframework.mock.web.MockHttpSession;
 import org.springframework.ui.ConcurrentModel;
 import ru.job4j.car.controller.UserController;
 import ru.job4j.car.model.User;
-import ru.job4j.car.service.UserService;
+import ru.job4j.car.service.user.UserService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;

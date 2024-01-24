@@ -5,8 +5,8 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import ru.job4j.car.model.Fuel;
-import ru.job4j.car.repository.FuelRepository;
-import ru.job4j.car.repository.FuelRepositoryImpl;
+import ru.job4j.car.repository.fuel.FuelRepository;
+import ru.job4j.car.repository.fuel.HibernateFuelRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -15,7 +15,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static repository.ConfigurationTest.crudRepository;
 
 public class FuelRepositoryTest {
-    private final FuelRepository fuelRepository = new FuelRepositoryImpl(crudRepository);
+    private final FuelRepository fuelRepository = new HibernateFuelRepository(crudRepository);
 
     /**
      * Очистка базы

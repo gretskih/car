@@ -7,7 +7,12 @@ import org.junit.jupiter.api.Test;
 import ru.job4j.car.model.Car;
 import ru.job4j.car.model.Post;
 import ru.job4j.car.model.User;
-import ru.job4j.car.repository.*;
+import ru.job4j.car.repository.car.CarRepository;
+import ru.job4j.car.repository.car.HibernateCarRepository;
+import ru.job4j.car.repository.post.PostRepository;
+import ru.job4j.car.repository.post.HibernatePostRepository;
+import ru.job4j.car.repository.user.UserRepository;
+import ru.job4j.car.repository.user.HibernateUserRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -18,9 +23,9 @@ import static repository.ConfigurationTest.crudRepository;
 
 public class PostRepositoryTest {
 
-    public static PostRepository postRepository = new PostRepositoryImpl(crudRepository);
-    public static UserRepository userRepository = new UserRepositoryImpl(crudRepository);
-    public static CarRepository carRepository = new CarRepositoryImpl(crudRepository);
+    public static PostRepository postRepository = new HibernatePostRepository(crudRepository);
+    public static UserRepository userRepository = new HibernateUserRepository(crudRepository);
+    public static CarRepository carRepository = new HibernateCarRepository(crudRepository);
 
     /**
      * Очистка базы

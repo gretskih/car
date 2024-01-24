@@ -5,8 +5,8 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import ru.job4j.car.model.Engine;
-import ru.job4j.car.repository.EngineRepository;
-import ru.job4j.car.repository.EngineRepositoryImpl;
+import ru.job4j.car.repository.engine.EngineRepository;
+import ru.job4j.car.repository.engine.HibernateEngineRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,7 +16,7 @@ import static repository.ConfigurationTest.crudRepository;
 
 public class EngineRepositoryTest {
 
-    private final EngineRepository engineRepository = new EngineRepositoryImpl(crudRepository);
+    private final EngineRepository engineRepository = new HibernateEngineRepository(crudRepository);
 
     /**
      * Очистка базы

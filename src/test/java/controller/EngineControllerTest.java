@@ -10,7 +10,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.ui.ConcurrentModel;
 import ru.job4j.car.controller.EngineController;
 import ru.job4j.car.model.Engine;
-import ru.job4j.car.service.EngineService;
+import ru.job4j.car.service.engine.EngineService;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.ArgumentMatchers.any;

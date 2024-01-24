@@ -13,9 +13,9 @@ import ru.job4j.car.dto.PostView;
 import ru.job4j.car.mappers.PostPreviewMapper;
 import ru.job4j.car.mappers.PostViewMapper;
 import ru.job4j.car.model.*;
-import ru.job4j.car.repository.PostRepository;
-import ru.job4j.car.service.CarService;
-import ru.job4j.car.service.PostServiceImpl;
+import ru.job4j.car.repository.post.PostRepository;
+import ru.job4j.car.service.car.CarService;
+import ru.job4j.car.service.post.SimplePostService;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -37,7 +37,7 @@ public class PostServiceTest {
     @Mock
     private CarService carService;
     @InjectMocks
-    private PostServiceImpl postService;
+    private SimplePostService postService;
     private int idPost = 0;
 
     @Captor
@@ -356,13 +356,13 @@ public class PostServiceTest {
      * установить статус объявлению true
      */
     @Test
-    public void whenSetStatusPostTrueThenGetTrue() {
+    public void whenChangeStatusPostTrueThenGetTrue() {
         int expectedId = 2;
         boolean expectedStatus = true;
         when(postRepository.setStatus(integerArgumentCaptor.capture(), statusArgumentCaptor.capture()))
                 .thenReturn(true);
 
-        var actualStatus = postService.setStatus(expectedId, expectedStatus);
+        var actualStatus = postService.changeStatus(expectedId, expectedStatus);
 
         assertThat(actualStatus).isTrue();
         assertThat(integerArgumentCaptor.getValue()).isEqualTo(expectedId);

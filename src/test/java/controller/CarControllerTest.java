@@ -13,7 +13,15 @@ import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
 import ru.job4j.car.controller.CarController;
 import ru.job4j.car.model.*;
-import ru.job4j.car.service.*;
+import ru.job4j.car.service.body.BodyService;
+import ru.job4j.car.service.brand.BrandService;
+import ru.job4j.car.service.car.CarService;
+import ru.job4j.car.service.color.ColorService;
+import ru.job4j.car.service.engine.EngineService;
+import ru.job4j.car.service.fuel.FuelService;
+import ru.job4j.car.service.gearbox.GearboxService;
+import ru.job4j.car.service.photo.PhotoService;
+import ru.job4j.car.service.year.YearService;
 
 import java.util.List;
 import java.util.Optional;

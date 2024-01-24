@@ -8,8 +8,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ru.job4j.car.model.Fuel;
-import ru.job4j.car.repository.FuelRepository;
-import ru.job4j.car.service.FuelServiceImpl;
+import ru.job4j.car.repository.fuel.FuelRepository;
+import ru.job4j.car.service.fuel.SimpleFuelService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +23,7 @@ public class FuelServiceTest {
     @Mock
     private FuelRepository fuelRepository;
     @InjectMocks
-    private FuelServiceImpl fuelService;
+    private SimpleFuelService fuelService;
 
     /**
      * Получение полного списка записей

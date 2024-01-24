@@ -8,8 +8,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ru.job4j.car.model.Color;
-import ru.job4j.car.repository.ColorRepository;
-import ru.job4j.car.service.ColorServiceImpl;
+import ru.job4j.car.repository.color.ColorRepository;
+import ru.job4j.car.service.color.SimpleColorService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +23,7 @@ public class ColorServiceTest {
     @Mock
     private ColorRepository colorRepository;
     @InjectMocks
-    private ColorServiceImpl colorService;
+    private SimpleColorService colorService;
 
     /**
      * Получение полного списка записей

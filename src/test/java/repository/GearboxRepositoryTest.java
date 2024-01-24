@@ -5,8 +5,8 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import ru.job4j.car.model.Gearbox;
-import ru.job4j.car.repository.GearboxRepository;
-import ru.job4j.car.repository.GearboxRepositoryImpl;
+import ru.job4j.car.repository.gearbox.GearboxRepository;
+import ru.job4j.car.repository.gearbox.HibernateGearboxRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -15,7 +15,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static repository.ConfigurationTest.crudRepository;
 
 public class GearboxRepositoryTest {
-    private final GearboxRepository gearboxRepository = new GearboxRepositoryImpl(crudRepository);
+    private final GearboxRepository gearboxRepository = new HibernateGearboxRepository(crudRepository);
 
     /**
      * Очистка базы

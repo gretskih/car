@@ -9,8 +9,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ru.job4j.car.model.Gearbox;
-import ru.job4j.car.repository.GearboxRepository;
-import ru.job4j.car.service.GearboxServiceImpl;
+import ru.job4j.car.repository.gearbox.GearboxRepository;
+import ru.job4j.car.service.gearbox.SimpleGearboxService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +24,7 @@ public class GearboxServiceTest {
     @Mock
     private GearboxRepository gearboxRepository;
     @InjectMocks
-    private GearboxServiceImpl gearboxService;
+    private SimpleGearboxService gearboxService;
 
     /**
      * Получение полного списка записей

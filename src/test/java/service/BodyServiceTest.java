@@ -7,8 +7,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ru.job4j.car.model.Body;
-import ru.job4j.car.repository.BodyRepository;
-import ru.job4j.car.service.BodyServiceImpl;
+import ru.job4j.car.repository.body.BodyRepository;
+import ru.job4j.car.service.body.SimpleBodyService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +22,7 @@ public class BodyServiceTest {
     @Mock
     private BodyRepository bodyRepository;
     @InjectMocks
-    private BodyServiceImpl bodyService;
+    private SimpleBodyService bodyService;
 
     /**
      * Получение полного списка записей

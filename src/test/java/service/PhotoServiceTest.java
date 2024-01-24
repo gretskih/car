@@ -5,8 +5,8 @@ import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import ru.job4j.car.dto.PhotoDto;
 import ru.job4j.car.model.Photo;
-import ru.job4j.car.repository.PhotoRepository;
-import ru.job4j.car.service.PhotoServiceImpl;
+import ru.job4j.car.repository.photo.PhotoRepository;
+import ru.job4j.car.service.photo.SimplePhotoService;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -21,12 +21,12 @@ import static org.mockito.Mockito.when;
 
 public class PhotoServiceTest {
     private PhotoRepository photoRepository;
-    private PhotoServiceImpl photoService;
+    private SimplePhotoService photoService;
 
     @BeforeEach
     public void initServices() {
         photoRepository = mock(PhotoRepository.class);
-        photoService = new PhotoServiceImpl(photoRepository, "files");
+        photoService = new SimplePhotoService(photoRepository, "files");
     }
 
     /**
@@ -34,7 +34,7 @@ public class PhotoServiceTest {
      * @throws IOException
      */
     @Test
-    public void whenSavePhotoDtoThenGetPhoto() throws IOException {
+    public void whenSavePhotoDtoThenGetPhoto() throws Exception {
         PhotoDto expectedPhotoDto = new PhotoDto("TestPhoto", new byte[]{1, 2, 3});
 
         Photo actualPhoto = photoService.save(expectedPhotoDto);
@@ -50,7 +50,7 @@ public class PhotoServiceTest {
      * @throws IOException
      */
     @Test
-    public void whenGetPhotoByIdThenGetPhotoDto() throws IOException {
+    public void whenGetPhotoByIdThenGetPhotoDto() throws Exception {
         PhotoDto expectedPhotoDto = new PhotoDto("TestPhoto", new byte[]{1, 2, 3});
         Photo expectedPhoto = photoService.save(expectedPhotoDto);
         expectedPhoto.setId(1);
@@ -83,7 +83,7 @@ public class PhotoServiceTest {
      * @throws IOException
      */
     @Test
-    public void whenDeletePhotoByIdThenGetTrue() throws IOException {
+    public void whenDeletePhotoByIdThenGetTrue() throws Exception {
         PhotoDto expectedPhotoDto = new PhotoDto("TestPhoto", new byte[]{1, 2, 3});
         Photo expectedPhoto = photoService.save(expectedPhotoDto);
         expectedPhoto.setId(1);
@@ -119,7 +119,7 @@ public class PhotoServiceTest {
      * @throws IOException
      */
     @Test
-    public void whenDeletePhotoThenPhotoIsAbsent() throws IOException {
+    public void whenDeletePhotoThenPhotoIsAbsent() throws Exception {
         PhotoDto expectedPhotoDto = new PhotoDto("TestPhoto", new byte[]{1, 2, 3});
         Photo expectedPhoto = photoService.save(expectedPhotoDto);
 

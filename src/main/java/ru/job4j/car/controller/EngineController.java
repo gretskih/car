@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ru.job4j.car.model.Engine;
-import ru.job4j.car.service.EngineService;
+import ru.job4j.car.service.engine.EngineService;
 
 @Controller
 @AllArgsConstructor

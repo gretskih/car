@@ -6,8 +6,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ru.job4j.car.model.Brand;
-import ru.job4j.car.repository.BrandRepository;
-import ru.job4j.car.service.BrandServiceImpl;
+import ru.job4j.car.repository.brand.BrandRepository;
+import ru.job4j.car.service.brand.SimpleBrandService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +20,7 @@ public class BrandServiceTest {
     @Mock
     private BrandRepository brandRepository;
     @InjectMocks
-    private BrandServiceImpl brandService;
+    private SimpleBrandService brandService;
 
     /**
      * Получение полного списка записей

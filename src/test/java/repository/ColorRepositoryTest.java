@@ -5,8 +5,8 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import ru.job4j.car.model.Color;
-import ru.job4j.car.repository.ColorRepository;
-import ru.job4j.car.repository.ColorRepositoryImpl;
+import ru.job4j.car.repository.color.ColorRepository;
+import ru.job4j.car.repository.color.HibernateColorRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -15,7 +15,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static repository.ConfigurationTest.crudRepository;
 
 public class ColorRepositoryTest {
-    private final ColorRepository colorRepository = new ColorRepositoryImpl(crudRepository);
+    private final ColorRepository colorRepository = new HibernateColorRepository(crudRepository);
 
     /**
      * Очистка базы

@@ -4,14 +4,14 @@ import org.hibernate.Session;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import ru.job4j.car.model.Photo;
-import ru.job4j.car.repository.PhotoRepository;
-import ru.job4j.car.repository.PhotoRepositoryImpl;
+import ru.job4j.car.repository.photo.PhotoRepository;
+import ru.job4j.car.repository.photo.HibernatePhotoRepository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static repository.ConfigurationTest.crudRepository;
 
 public class PhotoRepositoryTest {
-    public static PhotoRepository photoRepository = new PhotoRepositoryImpl(crudRepository);
+    public static PhotoRepository photoRepository = new HibernatePhotoRepository(crudRepository);
 
     /**
      * Очистка базы

@@ -12,7 +12,7 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
 import ru.job4j.car.controller.FileController;
 import ru.job4j.car.dto.PhotoDto;
-import ru.job4j.car.service.PhotoService;
+import ru.job4j.car.service.photo.PhotoService;
 
 import java.util.Optional;
 

@@ -5,7 +5,14 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import ru.job4j.car.model.*;
-import ru.job4j.car.repository.*;
+import ru.job4j.car.repository.car.CarRepository;
+import ru.job4j.car.repository.car.HibernateCarRepository;
+import ru.job4j.car.repository.engine.EngineRepository;
+import ru.job4j.car.repository.engine.HibernateEngineRepository;
+import ru.job4j.car.repository.owner.OwnerRepository;
+import ru.job4j.car.repository.owner.HibernateOwnerRepository;
+import ru.job4j.car.repository.user.UserRepository;
+import ru.job4j.car.repository.user.HibernateUserRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -18,10 +25,10 @@ import static repository.UserRepositoryTest.getUser;
 
 public class CarRepositoryTest {
 
-    public static CarRepository carRepository = new CarRepositoryImpl(crudRepository);
-    public static EngineRepository engineRepository = new EngineRepositoryImpl(crudRepository);
-    public static OwnerRepository ownerRepository = new OwnerRepositoryImpl(crudRepository);
-    public static UserRepository userRepository = new UserRepositoryImpl(crudRepository);
+    public static CarRepository carRepository = new HibernateCarRepository(crudRepository);
+    public static EngineRepository engineRepository = new HibernateEngineRepository(crudRepository);
+    public static OwnerRepository ownerRepository = new HibernateOwnerRepository(crudRepository);
+    public static UserRepository userRepository = new HibernateUserRepository(crudRepository);
     public static int yearCar = 1950;
 
     /**

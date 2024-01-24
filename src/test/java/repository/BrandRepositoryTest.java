@@ -5,8 +5,8 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import ru.job4j.car.model.Brand;
-import ru.job4j.car.repository.BrandRepository;
-import ru.job4j.car.repository.BrandRepositoryImpl;
+import ru.job4j.car.repository.brand.BrandRepository;
+import ru.job4j.car.repository.brand.HibernateBrandRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -15,7 +15,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static repository.ConfigurationTest.crudRepository;
 
 public class BrandRepositoryTest {
-    private final BrandRepository brandRepository = new BrandRepositoryImpl(crudRepository);
+    private final BrandRepository brandRepository = new HibernateBrandRepository(crudRepository);
 
     /**
      * Очистка базы

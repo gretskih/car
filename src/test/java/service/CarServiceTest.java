@@ -10,8 +10,11 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
 import ru.job4j.car.model.*;
-import ru.job4j.car.repository.CarRepository;
-import ru.job4j.car.service.*;
+import ru.job4j.car.repository.car.CarRepository;
+import ru.job4j.car.service.car.SimpleCarService;
+import ru.job4j.car.service.engine.EngineService;
+import ru.job4j.car.service.owner.OwnerService;
+import ru.job4j.car.service.photo.PhotoService;
 
 import java.util.List;
 import java.util.Optional;
@@ -31,7 +34,7 @@ public class CarServiceTest {
     @Mock
     private PhotoService photoService;
     @InjectMocks
-    private CarServiceImpl carService;
+    private SimpleCarService carService;
 
     @Captor
     private ArgumentCaptor<Car> carArgumentCaptor;
