@@ -15,6 +15,7 @@ import ru.job4j.car.model.User;
 import ru.job4j.car.service.user.UserService;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -49,17 +50,19 @@ public class UserControllerTest {
     }
 
     /**
-     * Создание нового пользователя и перенаправление на страницу /users/login.
+     * Создание нового пользователя и перенаправление на страницу /posts.
      */
 
     @Test
     public void whenPostUserRegisterThenGetLoginPage() {
-        String expectedPage = "redirect:/users/login";
+        String expectedPage = "redirect:/posts";
         User expectedUser = getUser();
+        HttpServletRequest request = new MockHttpServletRequest();
         when(userService.create(userArgumentCaptor.capture())).thenReturn(Optional.of(expectedUser));
+        when(userService.findByLoginAndPassword(loginArgumentCaptor.capture(), passwordArgumentCaptor.capture())).thenReturn(Optional.of(expectedUser));
         var model = new ConcurrentModel();
 
-        var actualPage = userController.register(expectedUser, model);
+        var actualPage = userController.register(expectedUser, model, request);
         var actualUser = userArgumentCaptor.getValue();
 
         assertThat(actualPage).isEqualTo(expectedPage);
@@ -74,11 +77,12 @@ public class UserControllerTest {
     public void whenPostExistUserRegisterThenGetRegisterPage() {
         String expectedPage = "users/register";
         User expectedUser = getUser();
+        HttpServletRequest request = new MockHttpServletRequest();
         String expectedMessage = String.format("Пользователь с логином %s уже существует.".formatted(expectedUser.getLogin()));
         when(userService.create(any())).thenReturn(Optional.empty());
         var model = new ConcurrentModel();
 
-        var actualPage = userController.register(expectedUser, model);
+        var actualPage = userController.register(expectedUser, model, request);
         var actualMessage = model.getAttribute("error");
 
         assertThat(actualPage).isEqualTo(expectedPage);

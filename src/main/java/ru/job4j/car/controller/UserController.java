@@ -26,13 +26,13 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public String register(@ModelAttribute User user, Model model) {
+    public String register(@ModelAttribute User user, Model model, HttpServletRequest request) {
         var savedUser = userService.create(user);
         if (savedUser.isEmpty()) {
             model.addAttribute("error", "Пользователь с логином %s уже существует.".formatted(user.getLogin()));
             return "users/register";
         }
-        return "redirect:/users/login";
+        return loginUser(user, model, request);
     }
 
     @GetMapping("/login")
